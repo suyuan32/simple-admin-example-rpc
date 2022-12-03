@@ -5,7 +5,7 @@
 > You just need to run the command below to generate this project
 
 ```shell
-goctls rpc new example --ent=true --moduleName=github.com/suyuan32/simple-admin-example-rpc --goZeroVersion=v1.4.2 --toolVersion=v0.0.9
+goctls rpc new example --ent=true --moduleName=github.com/suyuan32/simple-admin-example-rpc --goZeroVersion=v1.4.2 --toolVersion=v0.0.9 --port=8080
 ```
 
 > 修改 ent/schema/examle.go \
