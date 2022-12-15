@@ -25,7 +25,6 @@ type (
 
 	Example interface {
 		InitDatabase(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*BaseResp, error)
-		// Student management
 		CreateOrUpdateStudent(ctx context.Context, in *StudentInfo, opts ...grpc.CallOption) (*BaseResp, error)
 		GetStudentList(ctx context.Context, in *StudentPageReq, opts ...grpc.CallOption) (*StudentListResp, error)
 		DeleteStudent(ctx context.Context, in *IDReq, opts ...grpc.CallOption) (*BaseResp, error)
@@ -48,7 +47,6 @@ func (m *defaultExample) InitDatabase(ctx context.Context, in *Empty, opts ...gr
 	return client.InitDatabase(ctx, in, opts...)
 }
 
-// Student management
 func (m *defaultExample) CreateOrUpdateStudent(ctx context.Context, in *StudentInfo, opts ...grpc.CallOption) (*BaseResp, error) {
 	client := example.NewExampleClient(m.cli.Conn())
 	return client.CreateOrUpdateStudent(ctx, in, opts...)

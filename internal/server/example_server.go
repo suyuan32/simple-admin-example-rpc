@@ -7,7 +7,8 @@ import (
 	"context"
 
 	"github.com/suyuan32/simple-admin-example-rpc/example"
-	"github.com/suyuan32/simple-admin-example-rpc/internal/logic"
+	"github.com/suyuan32/simple-admin-example-rpc/internal/logic/base"
+	"github.com/suyuan32/simple-admin-example-rpc/internal/logic/student"
 	"github.com/suyuan32/simple-admin-example-rpc/internal/svc"
 )
 
@@ -23,27 +24,26 @@ func NewExampleServer(svcCtx *svc.ServiceContext) *ExampleServer {
 }
 
 func (s *ExampleServer) InitDatabase(ctx context.Context, in *example.Empty) (*example.BaseResp, error) {
-	l := logic.NewInitDatabaseLogic(ctx, s.svcCtx)
+	l := base.NewInitDatabaseLogic(ctx, s.svcCtx)
 	return l.InitDatabase(in)
 }
 
-// Student management
 func (s *ExampleServer) CreateOrUpdateStudent(ctx context.Context, in *example.StudentInfo) (*example.BaseResp, error) {
-	l := logic.NewCreateOrUpdateStudentLogic(ctx, s.svcCtx)
+	l := student.NewCreateOrUpdateStudentLogic(ctx, s.svcCtx)
 	return l.CreateOrUpdateStudent(in)
 }
 
 func (s *ExampleServer) GetStudentList(ctx context.Context, in *example.StudentPageReq) (*example.StudentListResp, error) {
-	l := logic.NewGetStudentListLogic(ctx, s.svcCtx)
+	l := student.NewGetStudentListLogic(ctx, s.svcCtx)
 	return l.GetStudentList(in)
 }
 
 func (s *ExampleServer) DeleteStudent(ctx context.Context, in *example.IDReq) (*example.BaseResp, error) {
-	l := logic.NewDeleteStudentLogic(ctx, s.svcCtx)
+	l := student.NewDeleteStudentLogic(ctx, s.svcCtx)
 	return l.DeleteStudent(in)
 }
 
 func (s *ExampleServer) BatchDeleteStudent(ctx context.Context, in *example.IDsReq) (*example.BaseResp, error) {
-	l := logic.NewBatchDeleteStudentLogic(ctx, s.svcCtx)
+	l := student.NewBatchDeleteStudentLogic(ctx, s.svcCtx)
 	return l.BatchDeleteStudent(in)
 }
