@@ -157,9 +157,9 @@ func (su *StudentUpdate) SetEnrollAt(t time.Time) *StudentUpdate {
 	return su
 }
 
-// SetStatus sets the "status" field.
-func (su *StudentUpdate) SetStatus(b bool) *StudentUpdate {
-	su.mutation.SetStatus(b)
+// SetStatusBool sets the "status_bool" field.
+func (su *StudentUpdate) SetStatusBool(b bool) *StudentUpdate {
+	su.mutation.SetStatusBool(b)
 	return su
 }
 
@@ -282,8 +282,8 @@ func (su *StudentUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := su.mutation.EnrollAt(); ok {
 		_spec.SetField(student.FieldEnrollAt, field.TypeTime, value)
 	}
-	if value, ok := su.mutation.Status(); ok {
-		_spec.SetField(student.FieldStatus, field.TypeBool, value)
+	if value, ok := su.mutation.StatusBool(); ok {
+		_spec.SetField(student.FieldStatusBool, field.TypeBool, value)
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, su.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -433,9 +433,9 @@ func (suo *StudentUpdateOne) SetEnrollAt(t time.Time) *StudentUpdateOne {
 	return suo
 }
 
-// SetStatus sets the "status" field.
-func (suo *StudentUpdateOne) SetStatus(b bool) *StudentUpdateOne {
-	suo.mutation.SetStatus(b)
+// SetStatusBool sets the "status_bool" field.
+func (suo *StudentUpdateOne) SetStatusBool(b bool) *StudentUpdateOne {
+	suo.mutation.SetStatusBool(b)
 	return suo
 }
 
@@ -582,8 +582,8 @@ func (suo *StudentUpdateOne) sqlSave(ctx context.Context) (_node *Student, err e
 	if value, ok := suo.mutation.EnrollAt(); ok {
 		_spec.SetField(student.FieldEnrollAt, field.TypeTime, value)
 	}
-	if value, ok := suo.mutation.Status(); ok {
-		_spec.SetField(student.FieldStatus, field.TypeBool, value)
+	if value, ok := suo.mutation.StatusBool(); ok {
+		_spec.SetField(student.FieldStatusBool, field.TypeBool, value)
 	}
 	_node = &Student{config: suo.config}
 	_spec.Assign = _node.assignValues

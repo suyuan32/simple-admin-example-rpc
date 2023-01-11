@@ -8,6 +8,7 @@ package example
 
 import (
 	context "context"
+
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -22,11 +23,16 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ExampleClient interface {
+	// group: base
 	InitDatabase(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*BaseResp, error)
 	// Student management
+	// group: student
 	CreateOrUpdateStudent(ctx context.Context, in *StudentInfo, opts ...grpc.CallOption) (*BaseResp, error)
+	// group: student
 	GetStudentList(ctx context.Context, in *StudentPageReq, opts ...grpc.CallOption) (*StudentListResp, error)
+	// group: student
 	DeleteStudent(ctx context.Context, in *IDReq, opts ...grpc.CallOption) (*BaseResp, error)
+	// group: student
 	BatchDeleteStudent(ctx context.Context, in *IDsReq, opts ...grpc.CallOption) (*BaseResp, error)
 }
 
@@ -87,31 +93,39 @@ func (c *exampleClient) BatchDeleteStudent(ctx context.Context, in *IDsReq, opts
 // All implementations must embed UnimplementedExampleServer
 // for forward compatibility
 type ExampleServer interface {
+	// group: base
 	InitDatabase(context.Context, *Empty) (*BaseResp, error)
 	// Student management
+	// group: student
 	CreateOrUpdateStudent(context.Context, *StudentInfo) (*BaseResp, error)
+	// group: student
 	GetStudentList(context.Context, *StudentPageReq) (*StudentListResp, error)
+	// group: student
 	DeleteStudent(context.Context, *IDReq) (*BaseResp, error)
+	// group: student
 	BatchDeleteStudent(context.Context, *IDsReq) (*BaseResp, error)
 	mustEmbedUnimplementedExampleServer()
 }
 
 // UnimplementedExampleServer must be embedded to have forward compatible implementations.
-type UnimplementedExampleServer struct {
-}
+type UnimplementedExampleServer struct{}
 
 func (UnimplementedExampleServer) InitDatabase(context.Context, *Empty) (*BaseResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method InitDatabase not implemented")
 }
+
 func (UnimplementedExampleServer) CreateOrUpdateStudent(context.Context, *StudentInfo) (*BaseResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateOrUpdateStudent not implemented")
 }
+
 func (UnimplementedExampleServer) GetStudentList(context.Context, *StudentPageReq) (*StudentListResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetStudentList not implemented")
 }
+
 func (UnimplementedExampleServer) DeleteStudent(context.Context, *IDReq) (*BaseResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteStudent not implemented")
 }
+
 func (UnimplementedExampleServer) BatchDeleteStudent(context.Context, *IDsReq) (*BaseResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method BatchDeleteStudent not implemented")
 }

@@ -27,7 +27,7 @@ func (Teacher) Fields() []ent.Field {
 		field.UUID("class_id", uuid.UUID{}),
 		field.Time("enroll_at"),
 		field.Bool("status"),
-		//field.JSON("info", Info{}),
+		// field.JSON("info", Info{}),
 	}
 }
 

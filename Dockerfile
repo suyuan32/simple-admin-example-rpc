@@ -17,5 +17,5 @@ WORKDIR /home
 COPY --from=builder /home/example_rpc ./
 COPY --from=builder /home/etc/example.yaml ./
 
-EXPOSE 9101
+EXPOSE 8080
 ENTRYPOINT ./example_rpc -f example.yaml

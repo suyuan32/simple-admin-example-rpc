@@ -115,9 +115,9 @@ func (sc *StudentCreate) SetEnrollAt(t time.Time) *StudentCreate {
 	return sc
 }
 
-// SetStatus sets the "status" field.
-func (sc *StudentCreate) SetStatus(b bool) *StudentCreate {
-	sc.mutation.SetStatus(b)
+// SetStatusBool sets the "status_bool" field.
+func (sc *StudentCreate) SetStatusBool(b bool) *StudentCreate {
+	sc.mutation.SetStatusBool(b)
 	return sc
 }
 
@@ -213,8 +213,8 @@ func (sc *StudentCreate) check() error {
 	if _, ok := sc.mutation.EnrollAt(); !ok {
 		return &ValidationError{Name: "enroll_at", err: errors.New(`ent: missing required field "Student.enroll_at"`)}
 	}
-	if _, ok := sc.mutation.Status(); !ok {
-		return &ValidationError{Name: "status", err: errors.New(`ent: missing required field "Student.status"`)}
+	if _, ok := sc.mutation.StatusBool(); !ok {
+		return &ValidationError{Name: "status_bool", err: errors.New(`ent: missing required field "Student.status_bool"`)}
 	}
 	return nil
 }
@@ -306,9 +306,9 @@ func (sc *StudentCreate) createSpec() (*Student, *sqlgraph.CreateSpec) {
 		_spec.SetField(student.FieldEnrollAt, field.TypeTime, value)
 		_node.EnrollAt = value
 	}
-	if value, ok := sc.mutation.Status(); ok {
-		_spec.SetField(student.FieldStatus, field.TypeBool, value)
-		_node.Status = value
+	if value, ok := sc.mutation.StatusBool(); ok {
+		_spec.SetField(student.FieldStatusBool, field.TypeBool, value)
+		_node.StatusBool = value
 	}
 	return _node, _spec
 }

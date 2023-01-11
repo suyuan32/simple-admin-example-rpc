@@ -20,18 +20,12 @@ const (
 
 type PageDetails struct {
 	Page  uint64 `json:"page"`
-	Limit uint64 `json:"limit"`
+	Size  uint64 `json:"size"`
 	Total uint64 `json:"total"`
 }
 
 // OrderDirection defines the directions in which to order a list of items.
 type OrderDirection string
-
-// Cursor of an edge type.
-type Cursor struct {
-	ID    uint64
-	Value Value
-}
 
 const (
 	// OrderDirectionAsc specifies an ascending order.
@@ -60,62 +54,33 @@ func (o OrderDirection) reverse() OrderDirection {
 	return OrderDirectionDesc
 }
 
-func (o OrderDirection) orderFunc(field string) OrderFunc {
-	if o == OrderDirectionDesc {
-		return Desc(field)
-	}
-	return Asc(field)
-}
-
 const errInvalidPagination = "INVALID_PAGINATION"
 
-type studentPager struct {
-	order  *StudentOrder
-	filter func(*StudentQuery) (*StudentQuery, error)
+type StudentPager struct {
+	Order  OrderFunc
+	Filter func(*StudentQuery) (*StudentQuery, error)
 }
 
 // StudentPaginateOption enables pagination customization.
-type StudentPaginateOption func(*studentPager) error
-
-// StudentOrder defines the ordering of Student.
-type StudentOrder struct {
-	Direction OrderDirection     `json:"direction"`
-	Field     *StudentOrderField `json:"field"`
-}
-
-// StudentOrderField defines the ordering field of Student.
-type StudentOrderField struct {
-	field    string
-	toCursor func(*Student) Cursor
-}
+type StudentPaginateOption func(*StudentPager)
 
 // DefaultStudentOrder is the default ordering of Student.
-var DefaultStudentOrder = &StudentOrder{
-	Direction: OrderDirectionAsc,
-	Field: &StudentOrderField{
-		field: student.FieldID,
-		toCursor: func(s *Student) Cursor {
-			return Cursor{ID: s.ID}
-		},
-	},
-}
+var DefaultStudentOrder = Asc(student.FieldID)
 
-func newStudentPager(opts []StudentPaginateOption) (*studentPager, error) {
-	pager := &studentPager{}
+func newStudentPager(opts []StudentPaginateOption) (*StudentPager, error) {
+	pager := &StudentPager{}
 	for _, opt := range opts {
-		if err := opt(pager); err != nil {
-			return nil, err
-		}
+		opt(pager)
 	}
-	if pager.order == nil {
-		pager.order = DefaultStudentOrder
+	if pager.Order == nil {
+		pager.Order = DefaultStudentOrder
 	}
 	return pager, nil
 }
 
-func (p *studentPager) applyFilter(query *StudentQuery) (*StudentQuery, error) {
-	if p.filter != nil {
-		return p.filter(query)
+func (p *StudentPager) ApplyFilter(query *StudentQuery) (*StudentQuery, error) {
+	if p.Filter != nil {
+		return p.Filter(query)
 	}
 	return query, nil
 }
@@ -129,35 +94,33 @@ type StudentPageList struct {
 func (s *StudentQuery) Page(
 	ctx context.Context, pageNum uint64, pageSize uint64, opts ...StudentPaginateOption,
 ) (*StudentPageList, error) {
-
 	pager, err := newStudentPager(opts)
 	if err != nil {
 		return nil, err
 	}
 
-	if s, err = pager.applyFilter(s); err != nil {
+	if s, err = pager.ApplyFilter(s); err != nil {
 		return nil, err
 	}
 
 	ret := &StudentPageList{}
 
 	ret.PageDetails = &PageDetails{
-		Page:  pageNum,
-		Limit: pageSize,
+		Page: pageNum,
+		Size: pageSize,
 	}
 
 	count, err := s.Clone().Count(ctx)
-
 	if err != nil {
 		return nil, err
 	}
 
 	ret.PageDetails.Total = uint64(count)
 
-	direction := pager.order.Direction
-	s = s.Order(direction.orderFunc(pager.order.Field.field))
-	if pager.order.Field != DefaultStudentOrder.Field {
-		s = s.Order(direction.orderFunc(DefaultStudentOrder.Field.field))
+	if pager.Order != nil {
+		s = s.Order(pager.Order)
+	} else {
+		s = s.Order(DefaultStudentOrder)
 	}
 
 	s = s.Offset(int((pageNum - 1) * pageSize)).Limit(int(pageSize))
@@ -170,53 +133,31 @@ func (s *StudentQuery) Page(
 	return ret, nil
 }
 
-type teacherPager struct {
-	order  *TeacherOrder
-	filter func(*TeacherQuery) (*TeacherQuery, error)
+type TeacherPager struct {
+	Order  OrderFunc
+	Filter func(*TeacherQuery) (*TeacherQuery, error)
 }
 
 // TeacherPaginateOption enables pagination customization.
-type TeacherPaginateOption func(*teacherPager) error
-
-// TeacherOrder defines the ordering of Teacher.
-type TeacherOrder struct {
-	Direction OrderDirection     `json:"direction"`
-	Field     *TeacherOrderField `json:"field"`
-}
-
-// TeacherOrderField defines the ordering field of Teacher.
-type TeacherOrderField struct {
-	field    string
-	toCursor func(*Teacher) Cursor
-}
+type TeacherPaginateOption func(*TeacherPager)
 
 // DefaultTeacherOrder is the default ordering of Teacher.
-var DefaultTeacherOrder = &TeacherOrder{
-	Direction: OrderDirectionAsc,
-	Field: &TeacherOrderField{
-		field: teacher.FieldID,
-		toCursor: func(t *Teacher) Cursor {
-			return Cursor{ID: t.ID}
-		},
-	},
-}
+var DefaultTeacherOrder = Asc(teacher.FieldID)
 
-func newTeacherPager(opts []TeacherPaginateOption) (*teacherPager, error) {
-	pager := &teacherPager{}
+func newTeacherPager(opts []TeacherPaginateOption) (*TeacherPager, error) {
+	pager := &TeacherPager{}
 	for _, opt := range opts {
-		if err := opt(pager); err != nil {
-			return nil, err
-		}
+		opt(pager)
 	}
-	if pager.order == nil {
-		pager.order = DefaultTeacherOrder
+	if pager.Order == nil {
+		pager.Order = DefaultTeacherOrder
 	}
 	return pager, nil
 }
 
-func (p *teacherPager) applyFilter(query *TeacherQuery) (*TeacherQuery, error) {
-	if p.filter != nil {
-		return p.filter(query)
+func (p *TeacherPager) ApplyFilter(query *TeacherQuery) (*TeacherQuery, error) {
+	if p.Filter != nil {
+		return p.Filter(query)
 	}
 	return query, nil
 }
@@ -230,35 +171,33 @@ type TeacherPageList struct {
 func (t *TeacherQuery) Page(
 	ctx context.Context, pageNum uint64, pageSize uint64, opts ...TeacherPaginateOption,
 ) (*TeacherPageList, error) {
-
 	pager, err := newTeacherPager(opts)
 	if err != nil {
 		return nil, err
 	}
 
-	if t, err = pager.applyFilter(t); err != nil {
+	if t, err = pager.ApplyFilter(t); err != nil {
 		return nil, err
 	}
 
 	ret := &TeacherPageList{}
 
 	ret.PageDetails = &PageDetails{
-		Page:  pageNum,
-		Limit: pageSize,
+		Page: pageNum,
+		Size: pageSize,
 	}
 
 	count, err := t.Clone().Count(ctx)
-
 	if err != nil {
 		return nil, err
 	}
 
 	ret.PageDetails.Total = uint64(count)
 
-	direction := pager.order.Direction
-	t = t.Order(direction.orderFunc(pager.order.Field.field))
-	if pager.order.Field != DefaultTeacherOrder.Field {
-		t = t.Order(direction.orderFunc(DefaultTeacherOrder.Field.field))
+	if pager.Order != nil {
+		t = t.Order(pager.Order)
+	} else {
+		t = t.Order(DefaultTeacherOrder)
 	}
 
 	t = t.Offset(int((pageNum - 1) * pageSize)).Limit(int(pageSize))

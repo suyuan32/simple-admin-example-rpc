@@ -10,8 +10,8 @@ docker:
 	@printf $(GREEN)"[SUCCESS] build docker successfully"
 
 publish-docker:
-	echo "${DOCKER_PASSWORD}" | docker login --username ${DOCKER_USERNAME} --password-stdin http://${REPO}
-	docker push ${REPO}/${DOCKER_USERNAME}/example-rpc:${VERSION}
+	echo "${DOCKER_PASSWORD}" | docker login --username ${DOCKER_USERNAME} --password-stdin https://${REPO}
+	docker push ${DOCKER_USERNAME}/example-rpc:${VERSION}
 	@printf $(GREEN)"[SUCCESS] publish docker successfully"
 
 gen-rpc:
@@ -23,6 +23,6 @@ gen-ent:
 	@printf $(GREEN)"[SUCCESS] generate ent successfully"
 
 gen-rpc-ent-logic:
-	goctls rpc ent --schema=./ent/schema  --style=go_zero --multiple=false --serviceName=example --o=./ --searchKeyNum=3 --model=$(model)
+	goctls rpc ent --schema=./ent/schema  --style=go_zero --multiple=false --service_name=example --search_key_num=3 --o=./ --model=$(model) --group=$(group)
 	@printf $(GREEN)"[SUCCESS] generate ent logic codes successfully"
 

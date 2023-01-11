@@ -37,8 +37,8 @@ const (
 	FieldClassID = "class_id"
 	// FieldEnrollAt holds the string denoting the enroll_at field in the database.
 	FieldEnrollAt = "enroll_at"
-	// FieldStatus holds the string denoting the status field in the database.
-	FieldStatus = "status"
+	// FieldStatusBool holds the string denoting the status_bool field in the database.
+	FieldStatusBool = "status_bool"
 	// Table holds the table name of the student in the database.
 	Table = "students"
 )
@@ -59,7 +59,7 @@ var Columns = []string{
 	FieldWeightFloat32,
 	FieldClassID,
 	FieldEnrollAt,
-	FieldStatus,
+	FieldStatusBool,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).

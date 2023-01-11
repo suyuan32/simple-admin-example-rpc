@@ -26,8 +26,8 @@ func (Student) Fields() []ent.Field {
 		field.Float32("weight_float32"),
 		field.UUID("class_id", uuid.UUID{}),
 		field.Time("enroll_at"),
-		field.Bool("status"),
-		//field.JSON("info", Info{}),
+		field.Bool("status_bool"),
+		// field.JSON("info", Info{}),
 	}
 }
 

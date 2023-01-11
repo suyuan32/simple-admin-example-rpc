@@ -6,10 +6,10 @@ DatabaseConf:
   Host: 127.0.0.1
   Port: 3306
   DBName: simple_admin
-  Username: root # set your username
-  Password: "123456" # set your password
+  Username: # set your username
+  Password: # set your password
   MaxOpenConn: 100
-  SSLMode: false
+  SSLMode: disable
   CacheTime: 5
 
 RedisConf:
@@ -19,7 +19,7 @@ RedisConf:
 Log:
   ServiceName: exampleRpcLogger
   Mode: file
-  Path: /home/ryan/data/logs/example/rpc
+  Path: /home/data/logs/example/rpc
   Encoding: json
   Level: info
   Compress: false

@@ -2,12 +2,14 @@ module github.com/suyuan32/simple-admin-example-rpc
 
 go 1.19
 
+replace github.com/zeromicro/go-zero v1.4.3 => github.com/suyuan32/simple-admin-tools v0.1.4
+
 require (
 	entgo.io/ent v0.11.5
 	github.com/gofrs/uuid v4.3.2-0.20230107014446-9363593625d7+incompatible
 	github.com/suyuan32/simple-admin-core v0.2.1
 	github.com/zeromicro/go-zero v1.4.3
-	google.golang.org/grpc v1.51.0
+	google.golang.org/grpc v1.52.0
 	google.golang.org/protobuf v1.28.1
 )
 
@@ -38,7 +40,6 @@ require (
 	github.com/go-redis/redis/v8 v8.11.5 // indirect
 	github.com/go-sql-driver/mysql v1.7.0 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
-	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/mock v1.6.0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
@@ -69,9 +70,7 @@ require (
 	github.com/mitchellh/hashstructure v1.1.0 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
-	github.com/mojocn/base64Captcha v1.3.5 // indirect
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
-	github.com/nicksnyder/go-i18n/v2 v2.2.0 // indirect
 	github.com/openzipkin/zipkin-go v0.4.1 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.6 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
@@ -98,7 +97,6 @@ require (
 	go.uber.org/multierr v1.9.0 // indirect
 	go.uber.org/zap v1.24.0 // indirect
 	golang.org/x/crypto v0.4.0 // indirect
-	golang.org/x/image v0.0.0-20190802002840-cff245a6509b // indirect
 	golang.org/x/mod v0.7.0 // indirect
 	golang.org/x/net v0.4.0 // indirect
 	golang.org/x/oauth2 v0.3.0 // indirect
@@ -121,5 +119,3 @@ require (
 	sigs.k8s.io/structured-merge-diff/v4 v4.2.3 // indirect
 	sigs.k8s.io/yaml v1.3.0 // indirect
 )
-
-replace github.com/zeromicro/go-zero v1.4.2 => github.com/suyuan32/simple-admin-tools v0.0.9
