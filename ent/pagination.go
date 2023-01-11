@@ -7,6 +7,7 @@ import (
 	"fmt"
 
 	"github.com/suyuan32/simple-admin-example-rpc/ent/student"
+	"github.com/suyuan32/simple-admin-example-rpc/ent/teacher"
 )
 
 const errInvalidPage = "INVALID_PAGE"
@@ -161,6 +162,107 @@ func (s *StudentQuery) Page(
 
 	s = s.Offset(int((pageNum - 1) * pageSize)).Limit(int(pageSize))
 	list, err := s.All(ctx)
+	if err != nil {
+		return nil, err
+	}
+	ret.List = list
+
+	return ret, nil
+}
+
+type teacherPager struct {
+	order  *TeacherOrder
+	filter func(*TeacherQuery) (*TeacherQuery, error)
+}
+
+// TeacherPaginateOption enables pagination customization.
+type TeacherPaginateOption func(*teacherPager) error
+
+// TeacherOrder defines the ordering of Teacher.
+type TeacherOrder struct {
+	Direction OrderDirection     `json:"direction"`
+	Field     *TeacherOrderField `json:"field"`
+}
+
+// TeacherOrderField defines the ordering field of Teacher.
+type TeacherOrderField struct {
+	field    string
+	toCursor func(*Teacher) Cursor
+}
+
+// DefaultTeacherOrder is the default ordering of Teacher.
+var DefaultTeacherOrder = &TeacherOrder{
+	Direction: OrderDirectionAsc,
+	Field: &TeacherOrderField{
+		field: teacher.FieldID,
+		toCursor: func(t *Teacher) Cursor {
+			return Cursor{ID: t.ID}
+		},
+	},
+}
+
+func newTeacherPager(opts []TeacherPaginateOption) (*teacherPager, error) {
+	pager := &teacherPager{}
+	for _, opt := range opts {
+		if err := opt(pager); err != nil {
+			return nil, err
+		}
+	}
+	if pager.order == nil {
+		pager.order = DefaultTeacherOrder
+	}
+	return pager, nil
+}
+
+func (p *teacherPager) applyFilter(query *TeacherQuery) (*TeacherQuery, error) {
+	if p.filter != nil {
+		return p.filter(query)
+	}
+	return query, nil
+}
+
+// TeacherPageList is Teacher PageList result.
+type TeacherPageList struct {
+	List        []*Teacher   `json:"list"`
+	PageDetails *PageDetails `json:"pageDetails"`
+}
+
+func (t *TeacherQuery) Page(
+	ctx context.Context, pageNum uint64, pageSize uint64, opts ...TeacherPaginateOption,
+) (*TeacherPageList, error) {
+
+	pager, err := newTeacherPager(opts)
+	if err != nil {
+		return nil, err
+	}
+
+	if t, err = pager.applyFilter(t); err != nil {
+		return nil, err
+	}
+
+	ret := &TeacherPageList{}
+
+	ret.PageDetails = &PageDetails{
+		Page:  pageNum,
+		Limit: pageSize,
+	}
+
+	count, err := t.Clone().Count(ctx)
+
+	if err != nil {
+		return nil, err
+	}
+
+	ret.PageDetails.Total = uint64(count)
+
+	direction := pager.order.Direction
+	t = t.Order(direction.orderFunc(pager.order.Field.field))
+	if pager.order.Field != DefaultTeacherOrder.Field {
+		t = t.Order(direction.orderFunc(DefaultTeacherOrder.Field.field))
+	}
+
+	t = t.Offset(int((pageNum - 1) * pageSize)).Limit(int(pageSize))
+	list, err := t.All(ctx)
 	if err != nil {
 		return nil, err
 	}

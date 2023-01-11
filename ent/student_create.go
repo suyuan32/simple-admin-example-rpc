@@ -10,6 +10,7 @@ import (
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
+	"github.com/gofrs/uuid"
 	"github.com/suyuan32/simple-admin-example-rpc/ent/student"
 )
 
@@ -60,6 +61,66 @@ func (sc *StudentCreate) SetAge(i int) *StudentCreate {
 	return sc
 }
 
+// SetAgeInt32 sets the "age_int32" field.
+func (sc *StudentCreate) SetAgeInt32(i int32) *StudentCreate {
+	sc.mutation.SetAgeInt32(i)
+	return sc
+}
+
+// SetAgeInt64 sets the "age_int64" field.
+func (sc *StudentCreate) SetAgeInt64(i int64) *StudentCreate {
+	sc.mutation.SetAgeInt64(i)
+	return sc
+}
+
+// SetAgeUint sets the "age_uint" field.
+func (sc *StudentCreate) SetAgeUint(u uint) *StudentCreate {
+	sc.mutation.SetAgeUint(u)
+	return sc
+}
+
+// SetAgeUint32 sets the "age_uint32" field.
+func (sc *StudentCreate) SetAgeUint32(u uint32) *StudentCreate {
+	sc.mutation.SetAgeUint32(u)
+	return sc
+}
+
+// SetAgeUint64 sets the "age_uint64" field.
+func (sc *StudentCreate) SetAgeUint64(u uint64) *StudentCreate {
+	sc.mutation.SetAgeUint64(u)
+	return sc
+}
+
+// SetWeightFloat sets the "weight_float" field.
+func (sc *StudentCreate) SetWeightFloat(f float64) *StudentCreate {
+	sc.mutation.SetWeightFloat(f)
+	return sc
+}
+
+// SetWeightFloat32 sets the "weight_float32" field.
+func (sc *StudentCreate) SetWeightFloat32(f float32) *StudentCreate {
+	sc.mutation.SetWeightFloat32(f)
+	return sc
+}
+
+// SetClassID sets the "class_id" field.
+func (sc *StudentCreate) SetClassID(u uuid.UUID) *StudentCreate {
+	sc.mutation.SetClassID(u)
+	return sc
+}
+
+// SetEnrollAt sets the "enroll_at" field.
+func (sc *StudentCreate) SetEnrollAt(t time.Time) *StudentCreate {
+	sc.mutation.SetEnrollAt(t)
+	return sc
+}
+
+// SetStatus sets the "status" field.
+func (sc *StudentCreate) SetStatus(b bool) *StudentCreate {
+	sc.mutation.SetStatus(b)
+	return sc
+}
+
 // SetID sets the "id" field.
 func (sc *StudentCreate) SetID(u uint64) *StudentCreate {
 	sc.mutation.SetID(u)
@@ -73,50 +134,8 @@ func (sc *StudentCreate) Mutation() *StudentMutation {
 
 // Save creates the Student in the database.
 func (sc *StudentCreate) Save(ctx context.Context) (*Student, error) {
-	var (
-		err  error
-		node *Student
-	)
 	sc.defaults()
-	if len(sc.hooks) == 0 {
-		if err = sc.check(); err != nil {
-			return nil, err
-		}
-		node, err = sc.sqlSave(ctx)
-	} else {
-		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
-			mutation, ok := m.(*StudentMutation)
-			if !ok {
-				return nil, fmt.Errorf("unexpected mutation type %T", m)
-			}
-			if err = sc.check(); err != nil {
-				return nil, err
-			}
-			sc.mutation = mutation
-			if node, err = sc.sqlSave(ctx); err != nil {
-				return nil, err
-			}
-			mutation.id = &node.ID
-			mutation.done = true
-			return node, err
-		})
-		for i := len(sc.hooks) - 1; i >= 0; i-- {
-			if sc.hooks[i] == nil {
-				return nil, fmt.Errorf("ent: uninitialized hook (forgotten import ent/runtime?)")
-			}
-			mut = sc.hooks[i](mut)
-		}
-		v, err := mut.Mutate(ctx, sc.mutation)
-		if err != nil {
-			return nil, err
-		}
-		nv, ok := v.(*Student)
-		if !ok {
-			return nil, fmt.Errorf("unexpected node type %T returned from StudentMutation", v)
-		}
-		node = nv
-	}
-	return node, err
+	return withHooks[*Student, StudentMutation](ctx, sc.sqlSave, sc.mutation, sc.hooks)
 }
 
 // SaveX calls Save and panics if Save returns an error.
@@ -167,10 +186,43 @@ func (sc *StudentCreate) check() error {
 	if _, ok := sc.mutation.Age(); !ok {
 		return &ValidationError{Name: "age", err: errors.New(`ent: missing required field "Student.age"`)}
 	}
+	if _, ok := sc.mutation.AgeInt32(); !ok {
+		return &ValidationError{Name: "age_int32", err: errors.New(`ent: missing required field "Student.age_int32"`)}
+	}
+	if _, ok := sc.mutation.AgeInt64(); !ok {
+		return &ValidationError{Name: "age_int64", err: errors.New(`ent: missing required field "Student.age_int64"`)}
+	}
+	if _, ok := sc.mutation.AgeUint(); !ok {
+		return &ValidationError{Name: "age_uint", err: errors.New(`ent: missing required field "Student.age_uint"`)}
+	}
+	if _, ok := sc.mutation.AgeUint32(); !ok {
+		return &ValidationError{Name: "age_uint32", err: errors.New(`ent: missing required field "Student.age_uint32"`)}
+	}
+	if _, ok := sc.mutation.AgeUint64(); !ok {
+		return &ValidationError{Name: "age_uint64", err: errors.New(`ent: missing required field "Student.age_uint64"`)}
+	}
+	if _, ok := sc.mutation.WeightFloat(); !ok {
+		return &ValidationError{Name: "weight_float", err: errors.New(`ent: missing required field "Student.weight_float"`)}
+	}
+	if _, ok := sc.mutation.WeightFloat32(); !ok {
+		return &ValidationError{Name: "weight_float32", err: errors.New(`ent: missing required field "Student.weight_float32"`)}
+	}
+	if _, ok := sc.mutation.ClassID(); !ok {
+		return &ValidationError{Name: "class_id", err: errors.New(`ent: missing required field "Student.class_id"`)}
+	}
+	if _, ok := sc.mutation.EnrollAt(); !ok {
+		return &ValidationError{Name: "enroll_at", err: errors.New(`ent: missing required field "Student.enroll_at"`)}
+	}
+	if _, ok := sc.mutation.Status(); !ok {
+		return &ValidationError{Name: "status", err: errors.New(`ent: missing required field "Student.status"`)}
+	}
 	return nil
 }
 
 func (sc *StudentCreate) sqlSave(ctx context.Context) (*Student, error) {
+	if err := sc.check(); err != nil {
+		return nil, err
+	}
 	_node, _spec := sc.createSpec()
 	if err := sqlgraph.CreateNode(ctx, sc.driver, _spec); err != nil {
 		if sqlgraph.IsConstraintError(err) {
@@ -182,6 +234,8 @@ func (sc *StudentCreate) sqlSave(ctx context.Context) (*Student, error) {
 		id := _spec.ID.Value.(int64)
 		_node.ID = uint64(id)
 	}
+	sc.mutation.id = &_node.ID
+	sc.mutation.done = true
 	return _node, nil
 }
 
@@ -215,6 +269,46 @@ func (sc *StudentCreate) createSpec() (*Student, *sqlgraph.CreateSpec) {
 	if value, ok := sc.mutation.Age(); ok {
 		_spec.SetField(student.FieldAge, field.TypeInt, value)
 		_node.Age = value
+	}
+	if value, ok := sc.mutation.AgeInt32(); ok {
+		_spec.SetField(student.FieldAgeInt32, field.TypeInt32, value)
+		_node.AgeInt32 = value
+	}
+	if value, ok := sc.mutation.AgeInt64(); ok {
+		_spec.SetField(student.FieldAgeInt64, field.TypeInt64, value)
+		_node.AgeInt64 = value
+	}
+	if value, ok := sc.mutation.AgeUint(); ok {
+		_spec.SetField(student.FieldAgeUint, field.TypeUint, value)
+		_node.AgeUint = value
+	}
+	if value, ok := sc.mutation.AgeUint32(); ok {
+		_spec.SetField(student.FieldAgeUint32, field.TypeUint32, value)
+		_node.AgeUint32 = value
+	}
+	if value, ok := sc.mutation.AgeUint64(); ok {
+		_spec.SetField(student.FieldAgeUint64, field.TypeUint64, value)
+		_node.AgeUint64 = value
+	}
+	if value, ok := sc.mutation.WeightFloat(); ok {
+		_spec.SetField(student.FieldWeightFloat, field.TypeFloat64, value)
+		_node.WeightFloat = value
+	}
+	if value, ok := sc.mutation.WeightFloat32(); ok {
+		_spec.SetField(student.FieldWeightFloat32, field.TypeFloat32, value)
+		_node.WeightFloat32 = value
+	}
+	if value, ok := sc.mutation.ClassID(); ok {
+		_spec.SetField(student.FieldClassID, field.TypeUUID, value)
+		_node.ClassID = value
+	}
+	if value, ok := sc.mutation.EnrollAt(); ok {
+		_spec.SetField(student.FieldEnrollAt, field.TypeTime, value)
+		_node.EnrollAt = value
+	}
+	if value, ok := sc.mutation.Status(); ok {
+		_spec.SetField(student.FieldStatus, field.TypeBool, value)
+		_node.Status = value
 	}
 	return _node, _spec
 }

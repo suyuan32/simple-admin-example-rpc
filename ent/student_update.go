@@ -11,6 +11,7 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
+	"github.com/gofrs/uuid"
 	"github.com/suyuan32/simple-admin-example-rpc/ent/predicate"
 	"github.com/suyuan32/simple-admin-example-rpc/ent/student"
 )
@@ -53,6 +54,115 @@ func (su *StudentUpdate) AddAge(i int) *StudentUpdate {
 	return su
 }
 
+// SetAgeInt32 sets the "age_int32" field.
+func (su *StudentUpdate) SetAgeInt32(i int32) *StudentUpdate {
+	su.mutation.ResetAgeInt32()
+	su.mutation.SetAgeInt32(i)
+	return su
+}
+
+// AddAgeInt32 adds i to the "age_int32" field.
+func (su *StudentUpdate) AddAgeInt32(i int32) *StudentUpdate {
+	su.mutation.AddAgeInt32(i)
+	return su
+}
+
+// SetAgeInt64 sets the "age_int64" field.
+func (su *StudentUpdate) SetAgeInt64(i int64) *StudentUpdate {
+	su.mutation.ResetAgeInt64()
+	su.mutation.SetAgeInt64(i)
+	return su
+}
+
+// AddAgeInt64 adds i to the "age_int64" field.
+func (su *StudentUpdate) AddAgeInt64(i int64) *StudentUpdate {
+	su.mutation.AddAgeInt64(i)
+	return su
+}
+
+// SetAgeUint sets the "age_uint" field.
+func (su *StudentUpdate) SetAgeUint(u uint) *StudentUpdate {
+	su.mutation.ResetAgeUint()
+	su.mutation.SetAgeUint(u)
+	return su
+}
+
+// AddAgeUint adds u to the "age_uint" field.
+func (su *StudentUpdate) AddAgeUint(u int) *StudentUpdate {
+	su.mutation.AddAgeUint(u)
+	return su
+}
+
+// SetAgeUint32 sets the "age_uint32" field.
+func (su *StudentUpdate) SetAgeUint32(u uint32) *StudentUpdate {
+	su.mutation.ResetAgeUint32()
+	su.mutation.SetAgeUint32(u)
+	return su
+}
+
+// AddAgeUint32 adds u to the "age_uint32" field.
+func (su *StudentUpdate) AddAgeUint32(u int32) *StudentUpdate {
+	su.mutation.AddAgeUint32(u)
+	return su
+}
+
+// SetAgeUint64 sets the "age_uint64" field.
+func (su *StudentUpdate) SetAgeUint64(u uint64) *StudentUpdate {
+	su.mutation.ResetAgeUint64()
+	su.mutation.SetAgeUint64(u)
+	return su
+}
+
+// AddAgeUint64 adds u to the "age_uint64" field.
+func (su *StudentUpdate) AddAgeUint64(u int64) *StudentUpdate {
+	su.mutation.AddAgeUint64(u)
+	return su
+}
+
+// SetWeightFloat sets the "weight_float" field.
+func (su *StudentUpdate) SetWeightFloat(f float64) *StudentUpdate {
+	su.mutation.ResetWeightFloat()
+	su.mutation.SetWeightFloat(f)
+	return su
+}
+
+// AddWeightFloat adds f to the "weight_float" field.
+func (su *StudentUpdate) AddWeightFloat(f float64) *StudentUpdate {
+	su.mutation.AddWeightFloat(f)
+	return su
+}
+
+// SetWeightFloat32 sets the "weight_float32" field.
+func (su *StudentUpdate) SetWeightFloat32(f float32) *StudentUpdate {
+	su.mutation.ResetWeightFloat32()
+	su.mutation.SetWeightFloat32(f)
+	return su
+}
+
+// AddWeightFloat32 adds f to the "weight_float32" field.
+func (su *StudentUpdate) AddWeightFloat32(f float32) *StudentUpdate {
+	su.mutation.AddWeightFloat32(f)
+	return su
+}
+
+// SetClassID sets the "class_id" field.
+func (su *StudentUpdate) SetClassID(u uuid.UUID) *StudentUpdate {
+	su.mutation.SetClassID(u)
+	return su
+}
+
+// SetEnrollAt sets the "enroll_at" field.
+func (su *StudentUpdate) SetEnrollAt(t time.Time) *StudentUpdate {
+	su.mutation.SetEnrollAt(t)
+	return su
+}
+
+// SetStatus sets the "status" field.
+func (su *StudentUpdate) SetStatus(b bool) *StudentUpdate {
+	su.mutation.SetStatus(b)
+	return su
+}
+
 // Mutation returns the StudentMutation object of the builder.
 func (su *StudentUpdate) Mutation() *StudentMutation {
 	return su.mutation
@@ -60,35 +170,8 @@ func (su *StudentUpdate) Mutation() *StudentMutation {
 
 // Save executes the query and returns the number of nodes affected by the update operation.
 func (su *StudentUpdate) Save(ctx context.Context) (int, error) {
-	var (
-		err      error
-		affected int
-	)
 	su.defaults()
-	if len(su.hooks) == 0 {
-		affected, err = su.sqlSave(ctx)
-	} else {
-		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
-			mutation, ok := m.(*StudentMutation)
-			if !ok {
-				return nil, fmt.Errorf("unexpected mutation type %T", m)
-			}
-			su.mutation = mutation
-			affected, err = su.sqlSave(ctx)
-			mutation.done = true
-			return affected, err
-		})
-		for i := len(su.hooks) - 1; i >= 0; i-- {
-			if su.hooks[i] == nil {
-				return 0, fmt.Errorf("ent: uninitialized hook (forgotten import ent/runtime?)")
-			}
-			mut = su.hooks[i](mut)
-		}
-		if _, err := mut.Mutate(ctx, su.mutation); err != nil {
-			return 0, err
-		}
-	}
-	return affected, err
+	return withHooks[int, StudentMutation](ctx, su.sqlSave, su.mutation, su.hooks)
 }
 
 // SaveX is like Save, but panics if an error occurs.
@@ -151,6 +234,57 @@ func (su *StudentUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := su.mutation.AddedAge(); ok {
 		_spec.AddField(student.FieldAge, field.TypeInt, value)
 	}
+	if value, ok := su.mutation.AgeInt32(); ok {
+		_spec.SetField(student.FieldAgeInt32, field.TypeInt32, value)
+	}
+	if value, ok := su.mutation.AddedAgeInt32(); ok {
+		_spec.AddField(student.FieldAgeInt32, field.TypeInt32, value)
+	}
+	if value, ok := su.mutation.AgeInt64(); ok {
+		_spec.SetField(student.FieldAgeInt64, field.TypeInt64, value)
+	}
+	if value, ok := su.mutation.AddedAgeInt64(); ok {
+		_spec.AddField(student.FieldAgeInt64, field.TypeInt64, value)
+	}
+	if value, ok := su.mutation.AgeUint(); ok {
+		_spec.SetField(student.FieldAgeUint, field.TypeUint, value)
+	}
+	if value, ok := su.mutation.AddedAgeUint(); ok {
+		_spec.AddField(student.FieldAgeUint, field.TypeUint, value)
+	}
+	if value, ok := su.mutation.AgeUint32(); ok {
+		_spec.SetField(student.FieldAgeUint32, field.TypeUint32, value)
+	}
+	if value, ok := su.mutation.AddedAgeUint32(); ok {
+		_spec.AddField(student.FieldAgeUint32, field.TypeUint32, value)
+	}
+	if value, ok := su.mutation.AgeUint64(); ok {
+		_spec.SetField(student.FieldAgeUint64, field.TypeUint64, value)
+	}
+	if value, ok := su.mutation.AddedAgeUint64(); ok {
+		_spec.AddField(student.FieldAgeUint64, field.TypeUint64, value)
+	}
+	if value, ok := su.mutation.WeightFloat(); ok {
+		_spec.SetField(student.FieldWeightFloat, field.TypeFloat64, value)
+	}
+	if value, ok := su.mutation.AddedWeightFloat(); ok {
+		_spec.AddField(student.FieldWeightFloat, field.TypeFloat64, value)
+	}
+	if value, ok := su.mutation.WeightFloat32(); ok {
+		_spec.SetField(student.FieldWeightFloat32, field.TypeFloat32, value)
+	}
+	if value, ok := su.mutation.AddedWeightFloat32(); ok {
+		_spec.AddField(student.FieldWeightFloat32, field.TypeFloat32, value)
+	}
+	if value, ok := su.mutation.ClassID(); ok {
+		_spec.SetField(student.FieldClassID, field.TypeUUID, value)
+	}
+	if value, ok := su.mutation.EnrollAt(); ok {
+		_spec.SetField(student.FieldEnrollAt, field.TypeTime, value)
+	}
+	if value, ok := su.mutation.Status(); ok {
+		_spec.SetField(student.FieldStatus, field.TypeBool, value)
+	}
 	if n, err = sqlgraph.UpdateNodes(ctx, su.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{student.Label}
@@ -159,6 +293,7 @@ func (su *StudentUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		return 0, err
 	}
+	su.mutation.done = true
 	return n, nil
 }
 
@@ -195,6 +330,115 @@ func (suo *StudentUpdateOne) AddAge(i int) *StudentUpdateOne {
 	return suo
 }
 
+// SetAgeInt32 sets the "age_int32" field.
+func (suo *StudentUpdateOne) SetAgeInt32(i int32) *StudentUpdateOne {
+	suo.mutation.ResetAgeInt32()
+	suo.mutation.SetAgeInt32(i)
+	return suo
+}
+
+// AddAgeInt32 adds i to the "age_int32" field.
+func (suo *StudentUpdateOne) AddAgeInt32(i int32) *StudentUpdateOne {
+	suo.mutation.AddAgeInt32(i)
+	return suo
+}
+
+// SetAgeInt64 sets the "age_int64" field.
+func (suo *StudentUpdateOne) SetAgeInt64(i int64) *StudentUpdateOne {
+	suo.mutation.ResetAgeInt64()
+	suo.mutation.SetAgeInt64(i)
+	return suo
+}
+
+// AddAgeInt64 adds i to the "age_int64" field.
+func (suo *StudentUpdateOne) AddAgeInt64(i int64) *StudentUpdateOne {
+	suo.mutation.AddAgeInt64(i)
+	return suo
+}
+
+// SetAgeUint sets the "age_uint" field.
+func (suo *StudentUpdateOne) SetAgeUint(u uint) *StudentUpdateOne {
+	suo.mutation.ResetAgeUint()
+	suo.mutation.SetAgeUint(u)
+	return suo
+}
+
+// AddAgeUint adds u to the "age_uint" field.
+func (suo *StudentUpdateOne) AddAgeUint(u int) *StudentUpdateOne {
+	suo.mutation.AddAgeUint(u)
+	return suo
+}
+
+// SetAgeUint32 sets the "age_uint32" field.
+func (suo *StudentUpdateOne) SetAgeUint32(u uint32) *StudentUpdateOne {
+	suo.mutation.ResetAgeUint32()
+	suo.mutation.SetAgeUint32(u)
+	return suo
+}
+
+// AddAgeUint32 adds u to the "age_uint32" field.
+func (suo *StudentUpdateOne) AddAgeUint32(u int32) *StudentUpdateOne {
+	suo.mutation.AddAgeUint32(u)
+	return suo
+}
+
+// SetAgeUint64 sets the "age_uint64" field.
+func (suo *StudentUpdateOne) SetAgeUint64(u uint64) *StudentUpdateOne {
+	suo.mutation.ResetAgeUint64()
+	suo.mutation.SetAgeUint64(u)
+	return suo
+}
+
+// AddAgeUint64 adds u to the "age_uint64" field.
+func (suo *StudentUpdateOne) AddAgeUint64(u int64) *StudentUpdateOne {
+	suo.mutation.AddAgeUint64(u)
+	return suo
+}
+
+// SetWeightFloat sets the "weight_float" field.
+func (suo *StudentUpdateOne) SetWeightFloat(f float64) *StudentUpdateOne {
+	suo.mutation.ResetWeightFloat()
+	suo.mutation.SetWeightFloat(f)
+	return suo
+}
+
+// AddWeightFloat adds f to the "weight_float" field.
+func (suo *StudentUpdateOne) AddWeightFloat(f float64) *StudentUpdateOne {
+	suo.mutation.AddWeightFloat(f)
+	return suo
+}
+
+// SetWeightFloat32 sets the "weight_float32" field.
+func (suo *StudentUpdateOne) SetWeightFloat32(f float32) *StudentUpdateOne {
+	suo.mutation.ResetWeightFloat32()
+	suo.mutation.SetWeightFloat32(f)
+	return suo
+}
+
+// AddWeightFloat32 adds f to the "weight_float32" field.
+func (suo *StudentUpdateOne) AddWeightFloat32(f float32) *StudentUpdateOne {
+	suo.mutation.AddWeightFloat32(f)
+	return suo
+}
+
+// SetClassID sets the "class_id" field.
+func (suo *StudentUpdateOne) SetClassID(u uuid.UUID) *StudentUpdateOne {
+	suo.mutation.SetClassID(u)
+	return suo
+}
+
+// SetEnrollAt sets the "enroll_at" field.
+func (suo *StudentUpdateOne) SetEnrollAt(t time.Time) *StudentUpdateOne {
+	suo.mutation.SetEnrollAt(t)
+	return suo
+}
+
+// SetStatus sets the "status" field.
+func (suo *StudentUpdateOne) SetStatus(b bool) *StudentUpdateOne {
+	suo.mutation.SetStatus(b)
+	return suo
+}
+
 // Mutation returns the StudentMutation object of the builder.
 func (suo *StudentUpdateOne) Mutation() *StudentMutation {
 	return suo.mutation
@@ -209,41 +453,8 @@ func (suo *StudentUpdateOne) Select(field string, fields ...string) *StudentUpda
 
 // Save executes the query and returns the updated Student entity.
 func (suo *StudentUpdateOne) Save(ctx context.Context) (*Student, error) {
-	var (
-		err  error
-		node *Student
-	)
 	suo.defaults()
-	if len(suo.hooks) == 0 {
-		node, err = suo.sqlSave(ctx)
-	} else {
-		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
-			mutation, ok := m.(*StudentMutation)
-			if !ok {
-				return nil, fmt.Errorf("unexpected mutation type %T", m)
-			}
-			suo.mutation = mutation
-			node, err = suo.sqlSave(ctx)
-			mutation.done = true
-			return node, err
-		})
-		for i := len(suo.hooks) - 1; i >= 0; i-- {
-			if suo.hooks[i] == nil {
-				return nil, fmt.Errorf("ent: uninitialized hook (forgotten import ent/runtime?)")
-			}
-			mut = suo.hooks[i](mut)
-		}
-		v, err := mut.Mutate(ctx, suo.mutation)
-		if err != nil {
-			return nil, err
-		}
-		nv, ok := v.(*Student)
-		if !ok {
-			return nil, fmt.Errorf("unexpected node type %T returned from StudentMutation", v)
-		}
-		node = nv
-	}
-	return node, err
+	return withHooks[*Student, StudentMutation](ctx, suo.sqlSave, suo.mutation, suo.hooks)
 }
 
 // SaveX is like Save, but panics if an error occurs.
@@ -323,6 +534,57 @@ func (suo *StudentUpdateOne) sqlSave(ctx context.Context) (_node *Student, err e
 	if value, ok := suo.mutation.AddedAge(); ok {
 		_spec.AddField(student.FieldAge, field.TypeInt, value)
 	}
+	if value, ok := suo.mutation.AgeInt32(); ok {
+		_spec.SetField(student.FieldAgeInt32, field.TypeInt32, value)
+	}
+	if value, ok := suo.mutation.AddedAgeInt32(); ok {
+		_spec.AddField(student.FieldAgeInt32, field.TypeInt32, value)
+	}
+	if value, ok := suo.mutation.AgeInt64(); ok {
+		_spec.SetField(student.FieldAgeInt64, field.TypeInt64, value)
+	}
+	if value, ok := suo.mutation.AddedAgeInt64(); ok {
+		_spec.AddField(student.FieldAgeInt64, field.TypeInt64, value)
+	}
+	if value, ok := suo.mutation.AgeUint(); ok {
+		_spec.SetField(student.FieldAgeUint, field.TypeUint, value)
+	}
+	if value, ok := suo.mutation.AddedAgeUint(); ok {
+		_spec.AddField(student.FieldAgeUint, field.TypeUint, value)
+	}
+	if value, ok := suo.mutation.AgeUint32(); ok {
+		_spec.SetField(student.FieldAgeUint32, field.TypeUint32, value)
+	}
+	if value, ok := suo.mutation.AddedAgeUint32(); ok {
+		_spec.AddField(student.FieldAgeUint32, field.TypeUint32, value)
+	}
+	if value, ok := suo.mutation.AgeUint64(); ok {
+		_spec.SetField(student.FieldAgeUint64, field.TypeUint64, value)
+	}
+	if value, ok := suo.mutation.AddedAgeUint64(); ok {
+		_spec.AddField(student.FieldAgeUint64, field.TypeUint64, value)
+	}
+	if value, ok := suo.mutation.WeightFloat(); ok {
+		_spec.SetField(student.FieldWeightFloat, field.TypeFloat64, value)
+	}
+	if value, ok := suo.mutation.AddedWeightFloat(); ok {
+		_spec.AddField(student.FieldWeightFloat, field.TypeFloat64, value)
+	}
+	if value, ok := suo.mutation.WeightFloat32(); ok {
+		_spec.SetField(student.FieldWeightFloat32, field.TypeFloat32, value)
+	}
+	if value, ok := suo.mutation.AddedWeightFloat32(); ok {
+		_spec.AddField(student.FieldWeightFloat32, field.TypeFloat32, value)
+	}
+	if value, ok := suo.mutation.ClassID(); ok {
+		_spec.SetField(student.FieldClassID, field.TypeUUID, value)
+	}
+	if value, ok := suo.mutation.EnrollAt(); ok {
+		_spec.SetField(student.FieldEnrollAt, field.TypeTime, value)
+	}
+	if value, ok := suo.mutation.Status(); ok {
+		_spec.SetField(student.FieldStatus, field.TypeBool, value)
+	}
 	_node = &Student{config: suo.config}
 	_spec.Assign = _node.assignValues
 	_spec.ScanValues = _node.scanValues
@@ -334,5 +596,6 @@ func (suo *StudentUpdateOne) sqlSave(ctx context.Context) (_node *Student, err e
 		}
 		return nil, err
 	}
+	suo.mutation.done = true
 	return _node, nil
 }

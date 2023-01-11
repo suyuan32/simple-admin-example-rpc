@@ -7,13 +7,13 @@ import (
 	"github.com/suyuan32/simple-admin-core/pkg/ent/schema/mixins"
 )
 
-// Student holds the schema definition for the Student entity.
-type Student struct {
+// Teacher holds the schema definition for the Teacher entity.
+type Teacher struct {
 	ent.Schema
 }
 
-// Fields of the Student.
-func (Student) Fields() []ent.Field {
+// Fields of the Teacher.
+func (Teacher) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("name"),
 		field.Int("age"),
@@ -36,13 +36,13 @@ func (Student) Fields() []ent.Field {
 //	Address  string
 //}
 
-func (Student) Mixin() []ent.Mixin {
+func (Teacher) Mixin() []ent.Mixin {
 	return []ent.Mixin{
-		mixins.BaseMixin{},
+		mixins.UUIDMixin{},
 	}
 }
 
-// Edges of the Student.
-func (Student) Edges() []ent.Edge {
+// Edges of the Teacher.
+func (Teacher) Edges() []ent.Edge {
 	return nil
 }

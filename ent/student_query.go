@@ -22,6 +22,7 @@ type StudentQuery struct {
 	unique     *bool
 	order      []OrderFunc
 	fields     []string
+	inters     []Interceptor
 	predicates []predicate.Student
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
@@ -34,13 +35,13 @@ func (sq *StudentQuery) Where(ps ...predicate.Student) *StudentQuery {
 	return sq
 }
 
-// Limit adds a limit step to the query.
+// Limit the number of records to be returned by this query.
 func (sq *StudentQuery) Limit(limit int) *StudentQuery {
 	sq.limit = &limit
 	return sq
 }
 
-// Offset adds an offset step to the query.
+// Offset to start from.
 func (sq *StudentQuery) Offset(offset int) *StudentQuery {
 	sq.offset = &offset
 	return sq
@@ -53,7 +54,7 @@ func (sq *StudentQuery) Unique(unique bool) *StudentQuery {
 	return sq
 }
 
-// Order adds an order step to the query.
+// Order specifies how the records should be ordered.
 func (sq *StudentQuery) Order(o ...OrderFunc) *StudentQuery {
 	sq.order = append(sq.order, o...)
 	return sq
@@ -62,7 +63,7 @@ func (sq *StudentQuery) Order(o ...OrderFunc) *StudentQuery {
 // First returns the first Student entity from the query.
 // Returns a *NotFoundError when no Student was found.
 func (sq *StudentQuery) First(ctx context.Context) (*Student, error) {
-	nodes, err := sq.Limit(1).All(ctx)
+	nodes, err := sq.Limit(1).All(newQueryContext(ctx, TypeStudent, "First"))
 	if err != nil {
 		return nil, err
 	}
@@ -85,7 +86,7 @@ func (sq *StudentQuery) FirstX(ctx context.Context) *Student {
 // Returns a *NotFoundError when no Student ID was found.
 func (sq *StudentQuery) FirstID(ctx context.Context) (id uint64, err error) {
 	var ids []uint64
-	if ids, err = sq.Limit(1).IDs(ctx); err != nil {
+	if ids, err = sq.Limit(1).IDs(newQueryContext(ctx, TypeStudent, "FirstID")); err != nil {
 		return
 	}
 	if len(ids) == 0 {
@@ -108,7 +109,7 @@ func (sq *StudentQuery) FirstIDX(ctx context.Context) uint64 {
 // Returns a *NotSingularError when more than one Student entity is found.
 // Returns a *NotFoundError when no Student entities are found.
 func (sq *StudentQuery) Only(ctx context.Context) (*Student, error) {
-	nodes, err := sq.Limit(2).All(ctx)
+	nodes, err := sq.Limit(2).All(newQueryContext(ctx, TypeStudent, "Only"))
 	if err != nil {
 		return nil, err
 	}
@@ -136,7 +137,7 @@ func (sq *StudentQuery) OnlyX(ctx context.Context) *Student {
 // Returns a *NotFoundError when no entities are found.
 func (sq *StudentQuery) OnlyID(ctx context.Context) (id uint64, err error) {
 	var ids []uint64
-	if ids, err = sq.Limit(2).IDs(ctx); err != nil {
+	if ids, err = sq.Limit(2).IDs(newQueryContext(ctx, TypeStudent, "OnlyID")); err != nil {
 		return
 	}
 	switch len(ids) {
@@ -161,10 +162,12 @@ func (sq *StudentQuery) OnlyIDX(ctx context.Context) uint64 {
 
 // All executes the query and returns a list of Students.
 func (sq *StudentQuery) All(ctx context.Context) ([]*Student, error) {
+	ctx = newQueryContext(ctx, TypeStudent, "All")
 	if err := sq.prepareQuery(ctx); err != nil {
 		return nil, err
 	}
-	return sq.sqlAll(ctx)
+	qr := querierAll[[]*Student, *StudentQuery]()
+	return withInterceptors[[]*Student](ctx, sq, qr, sq.inters)
 }
 
 // AllX is like All, but panics if an error occurs.
@@ -179,6 +182,7 @@ func (sq *StudentQuery) AllX(ctx context.Context) []*Student {
 // IDs executes the query and returns a list of Student IDs.
 func (sq *StudentQuery) IDs(ctx context.Context) ([]uint64, error) {
 	var ids []uint64
+	ctx = newQueryContext(ctx, TypeStudent, "IDs")
 	if err := sq.Select(student.FieldID).Scan(ctx, &ids); err != nil {
 		return nil, err
 	}
@@ -196,10 +200,11 @@ func (sq *StudentQuery) IDsX(ctx context.Context) []uint64 {
 
 // Count returns the count of the given query.
 func (sq *StudentQuery) Count(ctx context.Context) (int, error) {
+	ctx = newQueryContext(ctx, TypeStudent, "Count")
 	if err := sq.prepareQuery(ctx); err != nil {
 		return 0, err
 	}
-	return sq.sqlCount(ctx)
+	return withInterceptors[int](ctx, sq, querierCount[*StudentQuery](), sq.inters)
 }
 
 // CountX is like Count, but panics if an error occurs.
@@ -213,10 +218,15 @@ func (sq *StudentQuery) CountX(ctx context.Context) int {
 
 // Exist returns true if the query has elements in the graph.
 func (sq *StudentQuery) Exist(ctx context.Context) (bool, error) {
-	if err := sq.prepareQuery(ctx); err != nil {
-		return false, err
+	ctx = newQueryContext(ctx, TypeStudent, "Exist")
+	switch _, err := sq.FirstID(ctx); {
+	case IsNotFound(err):
+		return false, nil
+	case err != nil:
+		return false, fmt.Errorf("ent: check existence: %w", err)
+	default:
+		return true, nil
 	}
-	return sq.sqlExist(ctx)
 }
 
 // ExistX is like Exist, but panics if an error occurs.
@@ -239,6 +249,7 @@ func (sq *StudentQuery) Clone() *StudentQuery {
 		limit:      sq.limit,
 		offset:     sq.offset,
 		order:      append([]OrderFunc{}, sq.order...),
+		inters:     append([]Interceptor{}, sq.inters...),
 		predicates: append([]predicate.Student{}, sq.predicates...),
 		// clone intermediate query.
 		sql:    sq.sql.Clone(),
@@ -262,16 +273,11 @@ func (sq *StudentQuery) Clone() *StudentQuery {
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 func (sq *StudentQuery) GroupBy(field string, fields ...string) *StudentGroupBy {
-	grbuild := &StudentGroupBy{config: sq.config}
-	grbuild.fields = append([]string{field}, fields...)
-	grbuild.path = func(ctx context.Context) (prev *sql.Selector, err error) {
-		if err := sq.prepareQuery(ctx); err != nil {
-			return nil, err
-		}
-		return sq.sqlQuery(ctx), nil
-	}
+	sq.fields = append([]string{field}, fields...)
+	grbuild := &StudentGroupBy{build: sq}
+	grbuild.flds = &sq.fields
 	grbuild.label = student.Label
-	grbuild.flds, grbuild.scan = &grbuild.fields, grbuild.Scan
+	grbuild.scan = grbuild.Scan
 	return grbuild
 }
 
@@ -289,10 +295,10 @@ func (sq *StudentQuery) GroupBy(field string, fields ...string) *StudentGroupBy 
 //		Scan(ctx, &v)
 func (sq *StudentQuery) Select(fields ...string) *StudentSelect {
 	sq.fields = append(sq.fields, fields...)
-	selbuild := &StudentSelect{StudentQuery: sq}
-	selbuild.label = student.Label
-	selbuild.flds, selbuild.scan = &sq.fields, selbuild.Scan
-	return selbuild
+	sbuild := &StudentSelect{StudentQuery: sq}
+	sbuild.label = student.Label
+	sbuild.flds, sbuild.scan = &sq.fields, sbuild.Scan
+	return sbuild
 }
 
 // Aggregate returns a StudentSelect configured with the given aggregations.
@@ -301,6 +307,16 @@ func (sq *StudentQuery) Aggregate(fns ...AggregateFunc) *StudentSelect {
 }
 
 func (sq *StudentQuery) prepareQuery(ctx context.Context) error {
+	for _, inter := range sq.inters {
+		if inter == nil {
+			return fmt.Errorf("ent: uninitialized interceptor (forgotten import ent/runtime?)")
+		}
+		if trv, ok := inter.(Traverser); ok {
+			if err := trv.Traverse(ctx, sq); err != nil {
+				return err
+			}
+		}
+	}
 	for _, f := range sq.fields {
 		if !student.ValidColumn(f) {
 			return &ValidationError{Name: f, err: fmt.Errorf("ent: invalid field %q for query", f)}
@@ -348,17 +364,6 @@ func (sq *StudentQuery) sqlCount(ctx context.Context) (int, error) {
 		_spec.Unique = sq.unique != nil && *sq.unique
 	}
 	return sqlgraph.CountNodes(ctx, sq.driver, _spec)
-}
-
-func (sq *StudentQuery) sqlExist(ctx context.Context) (bool, error) {
-	switch _, err := sq.FirstID(ctx); {
-	case IsNotFound(err):
-		return false, nil
-	case err != nil:
-		return false, fmt.Errorf("ent: check existence: %w", err)
-	default:
-		return true, nil
-	}
 }
 
 func (sq *StudentQuery) querySpec() *sqlgraph.QuerySpec {
@@ -443,13 +448,8 @@ func (sq *StudentQuery) sqlQuery(ctx context.Context) *sql.Selector {
 
 // StudentGroupBy is the group-by builder for Student entities.
 type StudentGroupBy struct {
-	config
 	selector
-	fields []string
-	fns    []AggregateFunc
-	// intermediate query (i.e. traversal path).
-	sql  *sql.Selector
-	path func(context.Context) (*sql.Selector, error)
+	build *StudentQuery
 }
 
 // Aggregate adds the given aggregation functions to the group-by query.
@@ -458,58 +458,46 @@ func (sgb *StudentGroupBy) Aggregate(fns ...AggregateFunc) *StudentGroupBy {
 	return sgb
 }
 
-// Scan applies the group-by query and scans the result into the given value.
+// Scan applies the selector query and scans the result into the given value.
 func (sgb *StudentGroupBy) Scan(ctx context.Context, v any) error {
-	query, err := sgb.path(ctx)
-	if err != nil {
+	ctx = newQueryContext(ctx, TypeStudent, "GroupBy")
+	if err := sgb.build.prepareQuery(ctx); err != nil {
 		return err
 	}
-	sgb.sql = query
-	return sgb.sqlScan(ctx, v)
+	return scanWithInterceptors[*StudentQuery, *StudentGroupBy](ctx, sgb.build, sgb, sgb.build.inters, v)
 }
 
-func (sgb *StudentGroupBy) sqlScan(ctx context.Context, v any) error {
-	for _, f := range sgb.fields {
-		if !student.ValidColumn(f) {
-			return &ValidationError{Name: f, err: fmt.Errorf("invalid field %q for group-by", f)}
-		}
+func (sgb *StudentGroupBy) sqlScan(ctx context.Context, root *StudentQuery, v any) error {
+	selector := root.sqlQuery(ctx).Select()
+	aggregation := make([]string, 0, len(sgb.fns))
+	for _, fn := range sgb.fns {
+		aggregation = append(aggregation, fn(selector))
 	}
-	selector := sgb.sqlQuery()
+	if len(selector.SelectedColumns()) == 0 {
+		columns := make([]string, 0, len(*sgb.flds)+len(sgb.fns))
+		for _, f := range *sgb.flds {
+			columns = append(columns, selector.C(f))
+		}
+		columns = append(columns, aggregation...)
+		selector.Select(columns...)
+	}
+	selector.GroupBy(selector.Columns(*sgb.flds...)...)
 	if err := selector.Err(); err != nil {
 		return err
 	}
 	rows := &sql.Rows{}
 	query, args := selector.Query()
-	if err := sgb.driver.Query(ctx, query, args, rows); err != nil {
+	if err := sgb.build.driver.Query(ctx, query, args, rows); err != nil {
 		return err
 	}
 	defer rows.Close()
 	return sql.ScanSlice(rows, v)
 }
 
-func (sgb *StudentGroupBy) sqlQuery() *sql.Selector {
-	selector := sgb.sql.Select()
-	aggregation := make([]string, 0, len(sgb.fns))
-	for _, fn := range sgb.fns {
-		aggregation = append(aggregation, fn(selector))
-	}
-	if len(selector.SelectedColumns()) == 0 {
-		columns := make([]string, 0, len(sgb.fields)+len(sgb.fns))
-		for _, f := range sgb.fields {
-			columns = append(columns, selector.C(f))
-		}
-		columns = append(columns, aggregation...)
-		selector.Select(columns...)
-	}
-	return selector.GroupBy(selector.Columns(sgb.fields...)...)
-}
-
 // StudentSelect is the builder for selecting fields of Student entities.
 type StudentSelect struct {
 	*StudentQuery
 	selector
-	// intermediate query (i.e. traversal path).
-	sql *sql.Selector
 }
 
 // Aggregate adds the given aggregation functions to the selector query.
@@ -520,26 +508,27 @@ func (ss *StudentSelect) Aggregate(fns ...AggregateFunc) *StudentSelect {
 
 // Scan applies the selector query and scans the result into the given value.
 func (ss *StudentSelect) Scan(ctx context.Context, v any) error {
+	ctx = newQueryContext(ctx, TypeStudent, "Select")
 	if err := ss.prepareQuery(ctx); err != nil {
 		return err
 	}
-	ss.sql = ss.StudentQuery.sqlQuery(ctx)
-	return ss.sqlScan(ctx, v)
+	return scanWithInterceptors[*StudentQuery, *StudentSelect](ctx, ss.StudentQuery, ss, ss.inters, v)
 }
 
-func (ss *StudentSelect) sqlScan(ctx context.Context, v any) error {
+func (ss *StudentSelect) sqlScan(ctx context.Context, root *StudentQuery, v any) error {
+	selector := root.sqlQuery(ctx)
 	aggregation := make([]string, 0, len(ss.fns))
 	for _, fn := range ss.fns {
-		aggregation = append(aggregation, fn(ss.sql))
+		aggregation = append(aggregation, fn(selector))
 	}
 	switch n := len(*ss.selector.flds); {
 	case n == 0 && len(aggregation) > 0:
-		ss.sql.Select(aggregation...)
+		selector.Select(aggregation...)
 	case n != 0 && len(aggregation) > 0:
-		ss.sql.AppendSelect(aggregation...)
+		selector.AppendSelect(aggregation...)
 	}
 	rows := &sql.Rows{}
-	query, args := ss.sql.Query()
+	query, args := selector.Query()
 	if err := ss.driver.Query(ctx, query, args, rows); err != nil {
 		return err
 	}

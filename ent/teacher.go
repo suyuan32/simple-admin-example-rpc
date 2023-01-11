@@ -9,14 +9,15 @@ import (
 
 	"entgo.io/ent/dialect/sql"
 	"github.com/gofrs/uuid"
-	"github.com/suyuan32/simple-admin-example-rpc/ent/student"
+	"github.com/suyuan32/simple-admin-example-rpc/ent/teacher"
 )
 
-// Student is the model entity for the Student schema.
-type Student struct {
+// Teacher is the model entity for the Teacher schema.
+type Teacher struct {
 	config `json:"-"`
 	// ID of the ent.
-	ID uint64 `json:"id,omitempty"`
+	// UUID
+	ID uuid.UUID `json:"id,omitempty"`
 	// CreatedAt holds the value of the "created_at" field.
 	CreatedAt time.Time `json:"created_at,omitempty"`
 	// UpdatedAt holds the value of the "updated_at" field.
@@ -48,205 +49,205 @@ type Student struct {
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
-func (*Student) scanValues(columns []string) ([]any, error) {
+func (*Teacher) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case student.FieldStatus:
+		case teacher.FieldStatus:
 			values[i] = new(sql.NullBool)
-		case student.FieldWeightFloat, student.FieldWeightFloat32:
+		case teacher.FieldWeightFloat, teacher.FieldWeightFloat32:
 			values[i] = new(sql.NullFloat64)
-		case student.FieldID, student.FieldAge, student.FieldAgeInt32, student.FieldAgeInt64, student.FieldAgeUint, student.FieldAgeUint32, student.FieldAgeUint64:
+		case teacher.FieldAge, teacher.FieldAgeInt32, teacher.FieldAgeInt64, teacher.FieldAgeUint, teacher.FieldAgeUint32, teacher.FieldAgeUint64:
 			values[i] = new(sql.NullInt64)
-		case student.FieldName:
+		case teacher.FieldName:
 			values[i] = new(sql.NullString)
-		case student.FieldCreatedAt, student.FieldUpdatedAt, student.FieldEnrollAt:
+		case teacher.FieldCreatedAt, teacher.FieldUpdatedAt, teacher.FieldEnrollAt:
 			values[i] = new(sql.NullTime)
-		case student.FieldClassID:
+		case teacher.FieldID, teacher.FieldClassID:
 			values[i] = new(uuid.UUID)
 		default:
-			return nil, fmt.Errorf("unexpected column %q for type Student", columns[i])
+			return nil, fmt.Errorf("unexpected column %q for type Teacher", columns[i])
 		}
 	}
 	return values, nil
 }
 
 // assignValues assigns the values that were returned from sql.Rows (after scanning)
-// to the Student fields.
-func (s *Student) assignValues(columns []string, values []any) error {
+// to the Teacher fields.
+func (t *Teacher) assignValues(columns []string, values []any) error {
 	if m, n := len(values), len(columns); m < n {
 		return fmt.Errorf("mismatch number of scan values: %d != %d", m, n)
 	}
 	for i := range columns {
 		switch columns[i] {
-		case student.FieldID:
-			value, ok := values[i].(*sql.NullInt64)
-			if !ok {
-				return fmt.Errorf("unexpected type %T for field id", value)
+		case teacher.FieldID:
+			if value, ok := values[i].(*uuid.UUID); !ok {
+				return fmt.Errorf("unexpected type %T for field id", values[i])
+			} else if value != nil {
+				t.ID = *value
 			}
-			s.ID = uint64(value.Int64)
-		case student.FieldCreatedAt:
+		case teacher.FieldCreatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field created_at", values[i])
 			} else if value.Valid {
-				s.CreatedAt = value.Time
+				t.CreatedAt = value.Time
 			}
-		case student.FieldUpdatedAt:
+		case teacher.FieldUpdatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
 			} else if value.Valid {
-				s.UpdatedAt = value.Time
+				t.UpdatedAt = value.Time
 			}
-		case student.FieldName:
+		case teacher.FieldName:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field name", values[i])
 			} else if value.Valid {
-				s.Name = value.String
+				t.Name = value.String
 			}
-		case student.FieldAge:
+		case teacher.FieldAge:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field age", values[i])
 			} else if value.Valid {
-				s.Age = int(value.Int64)
+				t.Age = int(value.Int64)
 			}
-		case student.FieldAgeInt32:
+		case teacher.FieldAgeInt32:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field age_int32", values[i])
 			} else if value.Valid {
-				s.AgeInt32 = int32(value.Int64)
+				t.AgeInt32 = int32(value.Int64)
 			}
-		case student.FieldAgeInt64:
+		case teacher.FieldAgeInt64:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field age_int64", values[i])
 			} else if value.Valid {
-				s.AgeInt64 = value.Int64
+				t.AgeInt64 = value.Int64
 			}
-		case student.FieldAgeUint:
+		case teacher.FieldAgeUint:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field age_uint", values[i])
 			} else if value.Valid {
-				s.AgeUint = uint(value.Int64)
+				t.AgeUint = uint(value.Int64)
 			}
-		case student.FieldAgeUint32:
+		case teacher.FieldAgeUint32:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field age_uint32", values[i])
 			} else if value.Valid {
-				s.AgeUint32 = uint32(value.Int64)
+				t.AgeUint32 = uint32(value.Int64)
 			}
-		case student.FieldAgeUint64:
+		case teacher.FieldAgeUint64:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field age_uint64", values[i])
 			} else if value.Valid {
-				s.AgeUint64 = uint64(value.Int64)
+				t.AgeUint64 = uint64(value.Int64)
 			}
-		case student.FieldWeightFloat:
+		case teacher.FieldWeightFloat:
 			if value, ok := values[i].(*sql.NullFloat64); !ok {
 				return fmt.Errorf("unexpected type %T for field weight_float", values[i])
 			} else if value.Valid {
-				s.WeightFloat = value.Float64
+				t.WeightFloat = value.Float64
 			}
-		case student.FieldWeightFloat32:
+		case teacher.FieldWeightFloat32:
 			if value, ok := values[i].(*sql.NullFloat64); !ok {
 				return fmt.Errorf("unexpected type %T for field weight_float32", values[i])
 			} else if value.Valid {
-				s.WeightFloat32 = float32(value.Float64)
+				t.WeightFloat32 = float32(value.Float64)
 			}
-		case student.FieldClassID:
+		case teacher.FieldClassID:
 			if value, ok := values[i].(*uuid.UUID); !ok {
 				return fmt.Errorf("unexpected type %T for field class_id", values[i])
 			} else if value != nil {
-				s.ClassID = *value
+				t.ClassID = *value
 			}
-		case student.FieldEnrollAt:
+		case teacher.FieldEnrollAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field enroll_at", values[i])
 			} else if value.Valid {
-				s.EnrollAt = value.Time
+				t.EnrollAt = value.Time
 			}
-		case student.FieldStatus:
+		case teacher.FieldStatus:
 			if value, ok := values[i].(*sql.NullBool); !ok {
 				return fmt.Errorf("unexpected type %T for field status", values[i])
 			} else if value.Valid {
-				s.Status = value.Bool
+				t.Status = value.Bool
 			}
 		}
 	}
 	return nil
 }
 
-// Update returns a builder for updating this Student.
-// Note that you need to call Student.Unwrap() before calling this method if this Student
+// Update returns a builder for updating this Teacher.
+// Note that you need to call Teacher.Unwrap() before calling this method if this Teacher
 // was returned from a transaction, and the transaction was committed or rolled back.
-func (s *Student) Update() *StudentUpdateOne {
-	return (&StudentClient{config: s.config}).UpdateOne(s)
+func (t *Teacher) Update() *TeacherUpdateOne {
+	return (&TeacherClient{config: t.config}).UpdateOne(t)
 }
 
-// Unwrap unwraps the Student entity that was returned from a transaction after it was closed,
+// Unwrap unwraps the Teacher entity that was returned from a transaction after it was closed,
 // so that all future queries will be executed through the driver which created the transaction.
-func (s *Student) Unwrap() *Student {
-	_tx, ok := s.config.driver.(*txDriver)
+func (t *Teacher) Unwrap() *Teacher {
+	_tx, ok := t.config.driver.(*txDriver)
 	if !ok {
-		panic("ent: Student is not a transactional entity")
+		panic("ent: Teacher is not a transactional entity")
 	}
-	s.config.driver = _tx.drv
-	return s
+	t.config.driver = _tx.drv
+	return t
 }
 
 // String implements the fmt.Stringer.
-func (s *Student) String() string {
+func (t *Teacher) String() string {
 	var builder strings.Builder
-	builder.WriteString("Student(")
-	builder.WriteString(fmt.Sprintf("id=%v, ", s.ID))
+	builder.WriteString("Teacher(")
+	builder.WriteString(fmt.Sprintf("id=%v, ", t.ID))
 	builder.WriteString("created_at=")
-	builder.WriteString(s.CreatedAt.Format(time.ANSIC))
+	builder.WriteString(t.CreatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
 	builder.WriteString("updated_at=")
-	builder.WriteString(s.UpdatedAt.Format(time.ANSIC))
+	builder.WriteString(t.UpdatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
 	builder.WriteString("name=")
-	builder.WriteString(s.Name)
+	builder.WriteString(t.Name)
 	builder.WriteString(", ")
 	builder.WriteString("age=")
-	builder.WriteString(fmt.Sprintf("%v", s.Age))
+	builder.WriteString(fmt.Sprintf("%v", t.Age))
 	builder.WriteString(", ")
 	builder.WriteString("age_int32=")
-	builder.WriteString(fmt.Sprintf("%v", s.AgeInt32))
+	builder.WriteString(fmt.Sprintf("%v", t.AgeInt32))
 	builder.WriteString(", ")
 	builder.WriteString("age_int64=")
-	builder.WriteString(fmt.Sprintf("%v", s.AgeInt64))
+	builder.WriteString(fmt.Sprintf("%v", t.AgeInt64))
 	builder.WriteString(", ")
 	builder.WriteString("age_uint=")
-	builder.WriteString(fmt.Sprintf("%v", s.AgeUint))
+	builder.WriteString(fmt.Sprintf("%v", t.AgeUint))
 	builder.WriteString(", ")
 	builder.WriteString("age_uint32=")
-	builder.WriteString(fmt.Sprintf("%v", s.AgeUint32))
+	builder.WriteString(fmt.Sprintf("%v", t.AgeUint32))
 	builder.WriteString(", ")
 	builder.WriteString("age_uint64=")
-	builder.WriteString(fmt.Sprintf("%v", s.AgeUint64))
+	builder.WriteString(fmt.Sprintf("%v", t.AgeUint64))
 	builder.WriteString(", ")
 	builder.WriteString("weight_float=")
-	builder.WriteString(fmt.Sprintf("%v", s.WeightFloat))
+	builder.WriteString(fmt.Sprintf("%v", t.WeightFloat))
 	builder.WriteString(", ")
 	builder.WriteString("weight_float32=")
-	builder.WriteString(fmt.Sprintf("%v", s.WeightFloat32))
+	builder.WriteString(fmt.Sprintf("%v", t.WeightFloat32))
 	builder.WriteString(", ")
 	builder.WriteString("class_id=")
-	builder.WriteString(fmt.Sprintf("%v", s.ClassID))
+	builder.WriteString(fmt.Sprintf("%v", t.ClassID))
 	builder.WriteString(", ")
 	builder.WriteString("enroll_at=")
-	builder.WriteString(s.EnrollAt.Format(time.ANSIC))
+	builder.WriteString(t.EnrollAt.Format(time.ANSIC))
 	builder.WriteString(", ")
 	builder.WriteString("status=")
-	builder.WriteString(fmt.Sprintf("%v", s.Status))
+	builder.WriteString(fmt.Sprintf("%v", t.Status))
 	builder.WriteByte(')')
 	return builder.String()
 }
 
-// Students is a parsable slice of Student.
-type Students []*Student
+// Teachers is a parsable slice of Teacher.
+type Teachers []*Teacher
 
-func (s Students) config(cfg config) {
-	for _i := range s {
-		s[_i].config = cfg
+func (t Teachers) config(cfg config) {
+	for _i := range t {
+		t[_i].config = cfg
 	}
 }
