@@ -120,9 +120,9 @@ func EnrollAt(v time.Time) predicate.Teacher {
 	return predicate.Teacher(sql.FieldEQ(FieldEnrollAt, v))
 }
 
-// Status applies equality check predicate on the "status" field. It's identical to StatusEQ.
-func Status(v bool) predicate.Teacher {
-	return predicate.Teacher(sql.FieldEQ(FieldStatus, v))
+// StatusBool applies equality check predicate on the "status_bool" field. It's identical to StatusBoolEQ.
+func StatusBool(v bool) predicate.Teacher {
+	return predicate.Teacher(sql.FieldEQ(FieldStatusBool, v))
 }
 
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
@@ -670,14 +670,14 @@ func EnrollAtLTE(v time.Time) predicate.Teacher {
 	return predicate.Teacher(sql.FieldLTE(FieldEnrollAt, v))
 }
 
-// StatusEQ applies the EQ predicate on the "status" field.
-func StatusEQ(v bool) predicate.Teacher {
-	return predicate.Teacher(sql.FieldEQ(FieldStatus, v))
+// StatusBoolEQ applies the EQ predicate on the "status_bool" field.
+func StatusBoolEQ(v bool) predicate.Teacher {
+	return predicate.Teacher(sql.FieldEQ(FieldStatusBool, v))
 }
 
-// StatusNEQ applies the NEQ predicate on the "status" field.
-func StatusNEQ(v bool) predicate.Teacher {
-	return predicate.Teacher(sql.FieldNEQ(FieldStatus, v))
+// StatusBoolNEQ applies the NEQ predicate on the "status_bool" field.
+func StatusBoolNEQ(v bool) predicate.Teacher {
+	return predicate.Teacher(sql.FieldNEQ(FieldStatusBool, v))
 }
 
 // And groups predicates with the AND operator between them.

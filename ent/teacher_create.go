@@ -115,9 +115,9 @@ func (tc *TeacherCreate) SetEnrollAt(t time.Time) *TeacherCreate {
 	return tc
 }
 
-// SetStatus sets the "status" field.
-func (tc *TeacherCreate) SetStatus(b bool) *TeacherCreate {
-	tc.mutation.SetStatus(b)
+// SetStatusBool sets the "status_bool" field.
+func (tc *TeacherCreate) SetStatusBool(b bool) *TeacherCreate {
+	tc.mutation.SetStatusBool(b)
 	return tc
 }
 
@@ -225,8 +225,8 @@ func (tc *TeacherCreate) check() error {
 	if _, ok := tc.mutation.EnrollAt(); !ok {
 		return &ValidationError{Name: "enroll_at", err: errors.New(`ent: missing required field "Teacher.enroll_at"`)}
 	}
-	if _, ok := tc.mutation.Status(); !ok {
-		return &ValidationError{Name: "status", err: errors.New(`ent: missing required field "Teacher.status"`)}
+	if _, ok := tc.mutation.StatusBool(); !ok {
+		return &ValidationError{Name: "status_bool", err: errors.New(`ent: missing required field "Teacher.status_bool"`)}
 	}
 	return nil
 }
@@ -321,9 +321,9 @@ func (tc *TeacherCreate) createSpec() (*Teacher, *sqlgraph.CreateSpec) {
 		_spec.SetField(teacher.FieldEnrollAt, field.TypeTime, value)
 		_node.EnrollAt = value
 	}
-	if value, ok := tc.mutation.Status(); ok {
-		_spec.SetField(teacher.FieldStatus, field.TypeBool, value)
-		_node.Status = value
+	if value, ok := tc.mutation.StatusBool(); ok {
+		_spec.SetField(teacher.FieldStatusBool, field.TypeBool, value)
+		_node.StatusBool = value
 	}
 	return _node, _spec
 }

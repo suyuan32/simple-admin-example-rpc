@@ -44,8 +44,8 @@ type Teacher struct {
 	ClassID uuid.UUID `json:"class_id,omitempty"`
 	// EnrollAt holds the value of the "enroll_at" field.
 	EnrollAt time.Time `json:"enroll_at,omitempty"`
-	// Status holds the value of the "status" field.
-	Status bool `json:"status,omitempty"`
+	// StatusBool holds the value of the "status_bool" field.
+	StatusBool bool `json:"status_bool,omitempty"`
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -53,7 +53,7 @@ func (*Teacher) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case teacher.FieldStatus:
+		case teacher.FieldStatusBool:
 			values[i] = new(sql.NullBool)
 		case teacher.FieldWeightFloat, teacher.FieldWeightFloat32:
 			values[i] = new(sql.NullFloat64)
@@ -164,11 +164,11 @@ func (t *Teacher) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				t.EnrollAt = value.Time
 			}
-		case teacher.FieldStatus:
+		case teacher.FieldStatusBool:
 			if value, ok := values[i].(*sql.NullBool); !ok {
-				return fmt.Errorf("unexpected type %T for field status", values[i])
+				return fmt.Errorf("unexpected type %T for field status_bool", values[i])
 			} else if value.Valid {
-				t.Status = value.Bool
+				t.StatusBool = value.Bool
 			}
 		}
 	}
@@ -237,8 +237,8 @@ func (t *Teacher) String() string {
 	builder.WriteString("enroll_at=")
 	builder.WriteString(t.EnrollAt.Format(time.ANSIC))
 	builder.WriteString(", ")
-	builder.WriteString("status=")
-	builder.WriteString(fmt.Sprintf("%v", t.Status))
+	builder.WriteString("status_bool=")
+	builder.WriteString(fmt.Sprintf("%v", t.StatusBool))
 	builder.WriteByte(')')
 	return builder.String()
 }

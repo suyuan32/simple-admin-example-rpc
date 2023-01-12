@@ -23,6 +23,9 @@ type (
 	StudentInfo       = example.StudentInfo
 	StudentListResp   = example.StudentListResp
 	StudentPageReq    = example.StudentPageReq
+	TeacherInfo       = example.TeacherInfo
+	TeacherListResp   = example.TeacherListResp
+	TeacherPageReq    = example.TeacherPageReq
 	UUIDReq           = example.UUIDReq
 	UUIDsReq          = example.UUIDsReq
 
@@ -33,6 +36,11 @@ type (
 		GetStudentList(ctx context.Context, in *StudentPageReq, opts ...grpc.CallOption) (*StudentListResp, error)
 		DeleteStudent(ctx context.Context, in *IDReq, opts ...grpc.CallOption) (*BaseResp, error)
 		BatchDeleteStudent(ctx context.Context, in *IDsReq, opts ...grpc.CallOption) (*BaseResp, error)
+		// Teacher management
+		CreateOrUpdateTeacher(ctx context.Context, in *TeacherInfo, opts ...grpc.CallOption) (*BaseResp, error)
+		GetTeacherList(ctx context.Context, in *TeacherPageReq, opts ...grpc.CallOption) (*TeacherListResp, error)
+		DeleteTeacher(ctx context.Context, in *UUIDReq, opts ...grpc.CallOption) (*BaseResp, error)
+		BatchDeleteTeacher(ctx context.Context, in *UUIDsReq, opts ...grpc.CallOption) (*BaseResp, error)
 	}
 
 	defaultExample struct {
@@ -70,4 +78,25 @@ func (m *defaultExample) DeleteStudent(ctx context.Context, in *IDReq, opts ...g
 func (m *defaultExample) BatchDeleteStudent(ctx context.Context, in *IDsReq, opts ...grpc.CallOption) (*BaseResp, error) {
 	client := example.NewExampleClient(m.cli.Conn())
 	return client.BatchDeleteStudent(ctx, in, opts...)
+}
+
+// Teacher management
+func (m *defaultExample) CreateOrUpdateTeacher(ctx context.Context, in *TeacherInfo, opts ...grpc.CallOption) (*BaseResp, error) {
+	client := example.NewExampleClient(m.cli.Conn())
+	return client.CreateOrUpdateTeacher(ctx, in, opts...)
+}
+
+func (m *defaultExample) GetTeacherList(ctx context.Context, in *TeacherPageReq, opts ...grpc.CallOption) (*TeacherListResp, error) {
+	client := example.NewExampleClient(m.cli.Conn())
+	return client.GetTeacherList(ctx, in, opts...)
+}
+
+func (m *defaultExample) DeleteTeacher(ctx context.Context, in *UUIDReq, opts ...grpc.CallOption) (*BaseResp, error) {
+	client := example.NewExampleClient(m.cli.Conn())
+	return client.DeleteTeacher(ctx, in, opts...)
+}
+
+func (m *defaultExample) BatchDeleteTeacher(ctx context.Context, in *UUIDsReq, opts ...grpc.CallOption) (*BaseResp, error) {
+	client := example.NewExampleClient(m.cli.Conn())
+	return client.BatchDeleteTeacher(ctx, in, opts...)
 }

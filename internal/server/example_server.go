@@ -48,3 +48,24 @@ func (s *ExampleServer) BatchDeleteStudent(ctx context.Context, in *example.IDsR
 	l := student.NewBatchDeleteStudentLogic(ctx, s.svcCtx)
 	return l.BatchDeleteStudent(in)
 }
+
+// Teacher management
+func (s *ExampleServer) CreateOrUpdateTeacher(ctx context.Context, in *example.TeacherInfo) (*example.BaseResp, error) {
+	l := logic.NewCreateOrUpdateTeacherLogic(ctx, s.svcCtx)
+	return l.CreateOrUpdateTeacher(in)
+}
+
+func (s *ExampleServer) GetTeacherList(ctx context.Context, in *example.TeacherPageReq) (*example.TeacherListResp, error) {
+	l := logic.NewGetTeacherListLogic(ctx, s.svcCtx)
+	return l.GetTeacherList(in)
+}
+
+func (s *ExampleServer) DeleteTeacher(ctx context.Context, in *example.UUIDReq) (*example.BaseResp, error) {
+	l := logic.NewDeleteTeacherLogic(ctx, s.svcCtx)
+	return l.DeleteTeacher(in)
+}
+
+func (s *ExampleServer) BatchDeleteTeacher(ctx context.Context, in *example.UUIDsReq) (*example.BaseResp, error) {
+	l := logic.NewBatchDeleteTeacherLogic(ctx, s.svcCtx)
+	return l.BatchDeleteTeacher(in)
+}

@@ -48,7 +48,7 @@ var (
 		{Name: "weight_float32", Type: field.TypeFloat32},
 		{Name: "class_id", Type: field.TypeUUID},
 		{Name: "enroll_at", Type: field.TypeTime},
-		{Name: "status", Type: field.TypeBool},
+		{Name: "status_bool", Type: field.TypeBool},
 	}
 	// TeachersTable holds the schema information for the "teachers" table.
 	TeachersTable = &schema.Table{

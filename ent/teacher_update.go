@@ -157,9 +157,9 @@ func (tu *TeacherUpdate) SetEnrollAt(t time.Time) *TeacherUpdate {
 	return tu
 }
 
-// SetStatus sets the "status" field.
-func (tu *TeacherUpdate) SetStatus(b bool) *TeacherUpdate {
-	tu.mutation.SetStatus(b)
+// SetStatusBool sets the "status_bool" field.
+func (tu *TeacherUpdate) SetStatusBool(b bool) *TeacherUpdate {
+	tu.mutation.SetStatusBool(b)
 	return tu
 }
 
@@ -282,8 +282,8 @@ func (tu *TeacherUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := tu.mutation.EnrollAt(); ok {
 		_spec.SetField(teacher.FieldEnrollAt, field.TypeTime, value)
 	}
-	if value, ok := tu.mutation.Status(); ok {
-		_spec.SetField(teacher.FieldStatus, field.TypeBool, value)
+	if value, ok := tu.mutation.StatusBool(); ok {
+		_spec.SetField(teacher.FieldStatusBool, field.TypeBool, value)
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, tu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -433,9 +433,9 @@ func (tuo *TeacherUpdateOne) SetEnrollAt(t time.Time) *TeacherUpdateOne {
 	return tuo
 }
 
-// SetStatus sets the "status" field.
-func (tuo *TeacherUpdateOne) SetStatus(b bool) *TeacherUpdateOne {
-	tuo.mutation.SetStatus(b)
+// SetStatusBool sets the "status_bool" field.
+func (tuo *TeacherUpdateOne) SetStatusBool(b bool) *TeacherUpdateOne {
+	tuo.mutation.SetStatusBool(b)
 	return tuo
 }
 
@@ -582,8 +582,8 @@ func (tuo *TeacherUpdateOne) sqlSave(ctx context.Context) (_node *Teacher, err e
 	if value, ok := tuo.mutation.EnrollAt(); ok {
 		_spec.SetField(teacher.FieldEnrollAt, field.TypeTime, value)
 	}
-	if value, ok := tuo.mutation.Status(); ok {
-		_spec.SetField(teacher.FieldStatus, field.TypeBool, value)
+	if value, ok := tuo.mutation.StatusBool(); ok {
+		_spec.SetField(teacher.FieldStatusBool, field.TypeBool, value)
 	}
 	_node = &Teacher{config: tuo.config}
 	_spec.Assign = _node.assignValues

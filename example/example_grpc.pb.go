@@ -34,6 +34,15 @@ type ExampleClient interface {
 	DeleteStudent(ctx context.Context, in *IDReq, opts ...grpc.CallOption) (*BaseResp, error)
 	// group: student
 	BatchDeleteStudent(ctx context.Context, in *IDsReq, opts ...grpc.CallOption) (*BaseResp, error)
+	// Teacher management
+	// group:
+	CreateOrUpdateTeacher(ctx context.Context, in *TeacherInfo, opts ...grpc.CallOption) (*BaseResp, error)
+	// group:
+	GetTeacherList(ctx context.Context, in *TeacherPageReq, opts ...grpc.CallOption) (*TeacherListResp, error)
+	// group:
+	DeleteTeacher(ctx context.Context, in *UUIDReq, opts ...grpc.CallOption) (*BaseResp, error)
+	// group:
+	BatchDeleteTeacher(ctx context.Context, in *UUIDsReq, opts ...grpc.CallOption) (*BaseResp, error)
 }
 
 type exampleClient struct {
@@ -89,6 +98,42 @@ func (c *exampleClient) BatchDeleteStudent(ctx context.Context, in *IDsReq, opts
 	return out, nil
 }
 
+func (c *exampleClient) CreateOrUpdateTeacher(ctx context.Context, in *TeacherInfo, opts ...grpc.CallOption) (*BaseResp, error) {
+	out := new(BaseResp)
+	err := c.cc.Invoke(ctx, "/example.Example/createOrUpdateTeacher", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *exampleClient) GetTeacherList(ctx context.Context, in *TeacherPageReq, opts ...grpc.CallOption) (*TeacherListResp, error) {
+	out := new(TeacherListResp)
+	err := c.cc.Invoke(ctx, "/example.Example/getTeacherList", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *exampleClient) DeleteTeacher(ctx context.Context, in *UUIDReq, opts ...grpc.CallOption) (*BaseResp, error) {
+	out := new(BaseResp)
+	err := c.cc.Invoke(ctx, "/example.Example/deleteTeacher", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *exampleClient) BatchDeleteTeacher(ctx context.Context, in *UUIDsReq, opts ...grpc.CallOption) (*BaseResp, error) {
+	out := new(BaseResp)
+	err := c.cc.Invoke(ctx, "/example.Example/batchDeleteTeacher", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ExampleServer is the server API for Example service.
 // All implementations must embed UnimplementedExampleServer
 // for forward compatibility
@@ -104,6 +149,15 @@ type ExampleServer interface {
 	DeleteStudent(context.Context, *IDReq) (*BaseResp, error)
 	// group: student
 	BatchDeleteStudent(context.Context, *IDsReq) (*BaseResp, error)
+	// Teacher management
+	// group:
+	CreateOrUpdateTeacher(context.Context, *TeacherInfo) (*BaseResp, error)
+	// group:
+	GetTeacherList(context.Context, *TeacherPageReq) (*TeacherListResp, error)
+	// group:
+	DeleteTeacher(context.Context, *UUIDReq) (*BaseResp, error)
+	// group:
+	BatchDeleteTeacher(context.Context, *UUIDsReq) (*BaseResp, error)
 	mustEmbedUnimplementedExampleServer()
 }
 
@@ -128,6 +182,22 @@ func (UnimplementedExampleServer) DeleteStudent(context.Context, *IDReq) (*BaseR
 
 func (UnimplementedExampleServer) BatchDeleteStudent(context.Context, *IDsReq) (*BaseResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method BatchDeleteStudent not implemented")
+}
+
+func (UnimplementedExampleServer) CreateOrUpdateTeacher(context.Context, *TeacherInfo) (*BaseResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateOrUpdateTeacher not implemented")
+}
+
+func (UnimplementedExampleServer) GetTeacherList(context.Context, *TeacherPageReq) (*TeacherListResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetTeacherList not implemented")
+}
+
+func (UnimplementedExampleServer) DeleteTeacher(context.Context, *UUIDReq) (*BaseResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteTeacher not implemented")
+}
+
+func (UnimplementedExampleServer) BatchDeleteTeacher(context.Context, *UUIDsReq) (*BaseResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method BatchDeleteTeacher not implemented")
 }
 func (UnimplementedExampleServer) mustEmbedUnimplementedExampleServer() {}
 
@@ -232,6 +302,78 @@ func _Example_BatchDeleteStudent_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Example_CreateOrUpdateTeacher_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TeacherInfo)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ExampleServer).CreateOrUpdateTeacher(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/example.Example/createOrUpdateTeacher",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ExampleServer).CreateOrUpdateTeacher(ctx, req.(*TeacherInfo))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Example_GetTeacherList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TeacherPageReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ExampleServer).GetTeacherList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/example.Example/getTeacherList",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ExampleServer).GetTeacherList(ctx, req.(*TeacherPageReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Example_DeleteTeacher_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UUIDReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ExampleServer).DeleteTeacher(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/example.Example/deleteTeacher",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ExampleServer).DeleteTeacher(ctx, req.(*UUIDReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Example_BatchDeleteTeacher_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UUIDsReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ExampleServer).BatchDeleteTeacher(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/example.Example/batchDeleteTeacher",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ExampleServer).BatchDeleteTeacher(ctx, req.(*UUIDsReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Example_ServiceDesc is the grpc.ServiceDesc for Example service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -258,6 +400,22 @@ var Example_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "batchDeleteStudent",
 			Handler:    _Example_BatchDeleteStudent_Handler,
+		},
+		{
+			MethodName: "createOrUpdateTeacher",
+			Handler:    _Example_CreateOrUpdateTeacher_Handler,
+		},
+		{
+			MethodName: "getTeacherList",
+			Handler:    _Example_GetTeacherList_Handler,
+		},
+		{
+			MethodName: "deleteTeacher",
+			Handler:    _Example_DeleteTeacher_Handler,
+		},
+		{
+			MethodName: "batchDeleteTeacher",
+			Handler:    _Example_BatchDeleteTeacher_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

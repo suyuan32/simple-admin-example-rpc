@@ -1359,7 +1359,7 @@ type TeacherMutation struct {
 	addweight_float32 *float32
 	class_id          *uuid.UUID
 	enroll_at         *time.Time
-	status            *bool
+	status_bool       *bool
 	clearedFields     map[string]struct{}
 	done              bool
 	oldValue          func(context.Context) (*Teacher, error)
@@ -2098,40 +2098,40 @@ func (m *TeacherMutation) ResetEnrollAt() {
 	m.enroll_at = nil
 }
 
-// SetStatus sets the "status" field.
-func (m *TeacherMutation) SetStatus(b bool) {
-	m.status = &b
+// SetStatusBool sets the "status_bool" field.
+func (m *TeacherMutation) SetStatusBool(b bool) {
+	m.status_bool = &b
 }
 
-// Status returns the value of the "status" field in the mutation.
-func (m *TeacherMutation) Status() (r bool, exists bool) {
-	v := m.status
+// StatusBool returns the value of the "status_bool" field in the mutation.
+func (m *TeacherMutation) StatusBool() (r bool, exists bool) {
+	v := m.status_bool
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldStatus returns the old "status" field's value of the Teacher entity.
+// OldStatusBool returns the old "status_bool" field's value of the Teacher entity.
 // If the Teacher object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *TeacherMutation) OldStatus(ctx context.Context) (v bool, err error) {
+func (m *TeacherMutation) OldStatusBool(ctx context.Context) (v bool, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldStatus is only allowed on UpdateOne operations")
+		return v, errors.New("OldStatusBool is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldStatus requires an ID field in the mutation")
+		return v, errors.New("OldStatusBool requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldStatus: %w", err)
+		return v, fmt.Errorf("querying old value for OldStatusBool: %w", err)
 	}
-	return oldValue.Status, nil
+	return oldValue.StatusBool, nil
 }
 
-// ResetStatus resets all changes to the "status" field.
-func (m *TeacherMutation) ResetStatus() {
-	m.status = nil
+// ResetStatusBool resets all changes to the "status_bool" field.
+func (m *TeacherMutation) ResetStatusBool() {
+	m.status_bool = nil
 }
 
 // Where appends a list predicates to the TeacherMutation builder.
@@ -2208,8 +2208,8 @@ func (m *TeacherMutation) Fields() []string {
 	if m.enroll_at != nil {
 		fields = append(fields, teacher.FieldEnrollAt)
 	}
-	if m.status != nil {
-		fields = append(fields, teacher.FieldStatus)
+	if m.status_bool != nil {
+		fields = append(fields, teacher.FieldStatusBool)
 	}
 	return fields
 }
@@ -2245,8 +2245,8 @@ func (m *TeacherMutation) Field(name string) (ent.Value, bool) {
 		return m.ClassID()
 	case teacher.FieldEnrollAt:
 		return m.EnrollAt()
-	case teacher.FieldStatus:
-		return m.Status()
+	case teacher.FieldStatusBool:
+		return m.StatusBool()
 	}
 	return nil, false
 }
@@ -2282,8 +2282,8 @@ func (m *TeacherMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldClassID(ctx)
 	case teacher.FieldEnrollAt:
 		return m.OldEnrollAt(ctx)
-	case teacher.FieldStatus:
-		return m.OldStatus(ctx)
+	case teacher.FieldStatusBool:
+		return m.OldStatusBool(ctx)
 	}
 	return nil, fmt.Errorf("unknown Teacher field %s", name)
 }
@@ -2384,12 +2384,12 @@ func (m *TeacherMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetEnrollAt(v)
 		return nil
-	case teacher.FieldStatus:
+	case teacher.FieldStatusBool:
 		v, ok := value.(bool)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetStatus(v)
+		m.SetStatusBool(v)
 		return nil
 	}
 	return fmt.Errorf("unknown Teacher field %s", name)
@@ -2578,8 +2578,8 @@ func (m *TeacherMutation) ResetField(name string) error {
 	case teacher.FieldEnrollAt:
 		m.ResetEnrollAt()
 		return nil
-	case teacher.FieldStatus:
-		m.ResetStatus()
+	case teacher.FieldStatusBool:
+		m.ResetStatusBool()
 		return nil
 	}
 	return fmt.Errorf("unknown Teacher field %s", name)
