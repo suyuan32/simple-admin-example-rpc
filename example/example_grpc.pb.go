@@ -35,13 +35,13 @@ type ExampleClient interface {
 	// group: student
 	BatchDeleteStudent(ctx context.Context, in *IDsReq, opts ...grpc.CallOption) (*BaseResp, error)
 	// Teacher management
-	// group:
+	// group: teacher
 	CreateOrUpdateTeacher(ctx context.Context, in *TeacherInfo, opts ...grpc.CallOption) (*BaseResp, error)
-	// group:
+	// group: teacher
 	GetTeacherList(ctx context.Context, in *TeacherPageReq, opts ...grpc.CallOption) (*TeacherListResp, error)
-	// group:
+	// group: teacher
 	DeleteTeacher(ctx context.Context, in *UUIDReq, opts ...grpc.CallOption) (*BaseResp, error)
-	// group:
+	// group: teacher
 	BatchDeleteTeacher(ctx context.Context, in *UUIDsReq, opts ...grpc.CallOption) (*BaseResp, error)
 }
 
@@ -150,13 +150,13 @@ type ExampleServer interface {
 	// group: student
 	BatchDeleteStudent(context.Context, *IDsReq) (*BaseResp, error)
 	// Teacher management
-	// group:
+	// group: teacher
 	CreateOrUpdateTeacher(context.Context, *TeacherInfo) (*BaseResp, error)
-	// group:
+	// group: teacher
 	GetTeacherList(context.Context, *TeacherPageReq) (*TeacherListResp, error)
-	// group:
+	// group: teacher
 	DeleteTeacher(context.Context, *UUIDReq) (*BaseResp, error)
-	// group:
+	// group: teacher
 	BatchDeleteTeacher(context.Context, *UUIDsReq) (*BaseResp, error)
 	mustEmbedUnimplementedExampleServer()
 }

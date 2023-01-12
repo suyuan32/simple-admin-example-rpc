@@ -9,6 +9,7 @@ import (
 	"github.com/suyuan32/simple-admin-example-rpc/example"
 	"github.com/suyuan32/simple-admin-example-rpc/internal/logic/base"
 	"github.com/suyuan32/simple-admin-example-rpc/internal/logic/student"
+	"github.com/suyuan32/simple-admin-example-rpc/internal/logic/teacher"
 	"github.com/suyuan32/simple-admin-example-rpc/internal/svc"
 )
 
@@ -51,21 +52,21 @@ func (s *ExampleServer) BatchDeleteStudent(ctx context.Context, in *example.IDsR
 
 // Teacher management
 func (s *ExampleServer) CreateOrUpdateTeacher(ctx context.Context, in *example.TeacherInfo) (*example.BaseResp, error) {
-	l := logic.NewCreateOrUpdateTeacherLogic(ctx, s.svcCtx)
+	l := teacher.NewCreateOrUpdateTeacherLogic(ctx, s.svcCtx)
 	return l.CreateOrUpdateTeacher(in)
 }
 
 func (s *ExampleServer) GetTeacherList(ctx context.Context, in *example.TeacherPageReq) (*example.TeacherListResp, error) {
-	l := logic.NewGetTeacherListLogic(ctx, s.svcCtx)
+	l := teacher.NewGetTeacherListLogic(ctx, s.svcCtx)
 	return l.GetTeacherList(in)
 }
 
 func (s *ExampleServer) DeleteTeacher(ctx context.Context, in *example.UUIDReq) (*example.BaseResp, error) {
-	l := logic.NewDeleteTeacherLogic(ctx, s.svcCtx)
+	l := teacher.NewDeleteTeacherLogic(ctx, s.svcCtx)
 	return l.DeleteTeacher(in)
 }
 
 func (s *ExampleServer) BatchDeleteTeacher(ctx context.Context, in *example.UUIDsReq) (*example.BaseResp, error) {
-	l := logic.NewBatchDeleteTeacherLogic(ctx, s.svcCtx)
+	l := teacher.NewBatchDeleteTeacherLogic(ctx, s.svcCtx)
 	return l.BatchDeleteTeacher(in)
 }
