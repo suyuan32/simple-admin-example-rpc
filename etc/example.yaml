@@ -1,12 +1,12 @@
 Name: example.rpc
-ListenOn: 0.0.0.0:8080
+ListenOn: 0.0.0.0:9200
 
 DatabaseConf:
-  Type: mysql
+  Type: postgres
   Host: 127.0.0.1
-  Port: 3306
+  Port: 5432
   DBName: simple_admin
-  Username: # set your username
+  Username: postgres # set your username
   Password: # set your password
   MaxOpenConn: 100
   SSLMode: disable
@@ -19,7 +19,7 @@ RedisConf:
 Log:
   ServiceName: exampleRpcLogger
   Mode: file
-  Path: /home/data/logs/example/rpc
+  Path: /home/ryan/logs/example/rpc
   Encoding: json
   Level: info
   Compress: false
@@ -28,5 +28,5 @@ Log:
 
 Prometheus:
   Host: 0.0.0.0
-  Port: 4001
+  Port: 4005
   Path: /metrics
