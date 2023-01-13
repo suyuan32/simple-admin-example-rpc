@@ -26,5 +26,5 @@ func NewInitDatabaseLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Init
 func (l *InitDatabaseLogic) InitDatabase(in *example.Empty) (*example.BaseResp, error) {
 	// todo: add your logic here and delete this line
 
-	return &example.BaseResp{}, nil
+	return &example.BaseResp{Msg: "hello"}, nil
 }
