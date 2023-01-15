@@ -6,7 +6,8 @@ import (
 
 	"github.com/suyuan32/simple-admin-example-rpc/example"
 	"github.com/suyuan32/simple-admin-example-rpc/internal/config"
-	"github.com/suyuan32/simple-admin-example-rpc/internal/server"
+	exampleServer "github.com/suyuan32/simple-admin-example-rpc/internal/server/example"
+	schoolServer "github.com/suyuan32/simple-admin-example-rpc/internal/server/school"
 	"github.com/suyuan32/simple-admin-example-rpc/internal/svc"
 
 	"github.com/zeromicro/go-zero/core/conf"
@@ -26,7 +27,8 @@ func main() {
 	ctx := svc.NewServiceContext(c)
 
 	s := zrpc.MustNewServer(c.RpcServerConf, func(grpcServer *grpc.Server) {
-		example.RegisterExampleServer(grpcServer, server.NewExampleServer(ctx))
+		example.RegisterExampleServer(grpcServer, exampleServer.NewExampleServer(ctx))
+		example.RegisterSchoolServer(grpcServer, schoolServer.NewSchoolServer(ctx))
 
 		if c.Mode == service.DevMode || c.Mode == service.TestMode {
 			reflection.Register(grpcServer)

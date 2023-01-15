@@ -1,4 +1,4 @@
-package student
+package teacher
 
 import (
 	"context"
@@ -15,23 +15,23 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type CreateOrUpdateStudentLogic struct {
+type CreateOrUpdateTeacherLogic struct {
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 	logx.Logger
 }
 
-func NewCreateOrUpdateStudentLogic(ctx context.Context, svcCtx *svc.ServiceContext) *CreateOrUpdateStudentLogic {
-	return &CreateOrUpdateStudentLogic{
+func NewCreateOrUpdateTeacherLogic(ctx context.Context, svcCtx *svc.ServiceContext) *CreateOrUpdateTeacherLogic {
+	return &CreateOrUpdateTeacherLogic{
 		ctx:    ctx,
 		svcCtx: svcCtx,
 		Logger: logx.WithContext(ctx),
 	}
 }
 
-func (l *CreateOrUpdateStudentLogic) CreateOrUpdateStudent(in *example.StudentInfo) (*example.BaseResp, error) {
-	if in.Id == 0 {
-		err := l.svcCtx.DB.Student.Create().
+func (l *CreateOrUpdateTeacherLogic) CreateOrUpdateTeacher(in *example.TeacherInfo) (*example.BaseResp, error) {
+	if in.Id == "" {
+		err := l.svcCtx.DB.Teacher.Create().
 			SetName(in.Name).
 			SetAge(int(in.Age)).
 			SetAgeInt32(in.AgeInt32).
@@ -45,6 +45,7 @@ func (l *CreateOrUpdateStudentLogic) CreateOrUpdateStudent(in *example.StudentIn
 			SetEnrollAt(time.Unix(in.EnrollAt, 0)).
 			SetStatusBool(in.StatusBool).
 			Exec(l.ctx)
+
 		if err != nil {
 			switch {
 			case ent.IsConstraintError(err):
@@ -58,7 +59,7 @@ func (l *CreateOrUpdateStudentLogic) CreateOrUpdateStudent(in *example.StudentIn
 
 		return &example.BaseResp{Msg: i18n.CreateSuccess}, nil
 	} else {
-		err := l.svcCtx.DB.Student.UpdateOneID(in.Id).
+		err := l.svcCtx.DB.Teacher.UpdateOneID(uuidx.ParseUUIDString(in.Id)).
 			SetName(in.Name).
 			SetAge(int(in.Age)).
 			SetAgeInt32(in.AgeInt32).
@@ -72,6 +73,7 @@ func (l *CreateOrUpdateStudentLogic) CreateOrUpdateStudent(in *example.StudentIn
 			SetEnrollAt(time.Unix(in.EnrollAt, 0)).
 			SetStatusBool(in.StatusBool).
 			Exec(l.ctx)
+
 		if err != nil {
 			switch {
 			case ent.IsNotFound(err):

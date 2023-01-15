@@ -40,7 +40,6 @@ message StatusCodeUUIDReq {
   string id = 1;
   uint64 status = 2;
 }
-
 // Student message
 
 message StudentInfo {
@@ -73,6 +72,22 @@ message StudentPageReq {
 }
 
 
+
+service Example {
+  // group: base
+  rpc initDatabase (Empty) returns (BaseResp);
+  // Student management
+  // group: student
+  rpc createOrUpdateStudent (StudentInfo) returns (BaseResp);
+  // group: student
+  rpc getStudentList (StudentPageReq) returns (StudentListResp);
+  // group: student
+  rpc deleteStudent (IDReq) returns (BaseResp);
+  // group: student
+  rpc batchDeleteStudent (IDsReq) returns (BaseResp);
+
+
+}
 // Teacher message
 
 message TeacherInfo {
@@ -104,19 +119,9 @@ message TeacherPageReq {
   string name = 3;
 }
 
-service Example {
-  // group: base
-  rpc initDatabase (Empty) returns (BaseResp);
-  
-  // Student management
-  // group: student
-  rpc createOrUpdateStudent (StudentInfo) returns (BaseResp);
-  // group: student
-  rpc getStudentList (StudentPageReq) returns (StudentListResp);
-  // group: student
-  rpc deleteStudent (IDReq) returns (BaseResp);
-  // group: student
-  rpc batchDeleteStudent (IDsReq) returns (BaseResp);
+
+
+service School {
   // Teacher management
   // group: teacher
   rpc createOrUpdateTeacher (TeacherInfo) returns (BaseResp);
@@ -126,4 +131,6 @@ service Example {
   rpc deleteTeacher (UUIDReq) returns (BaseResp);
   // group: teacher
   rpc batchDeleteTeacher (UUIDsReq) returns (BaseResp);
+
+
 }

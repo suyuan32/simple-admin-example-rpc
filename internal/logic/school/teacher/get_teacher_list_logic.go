@@ -33,6 +33,7 @@ func (l *GetTeacherListLogic) GetTeacherList(in *example.TeacherPageReq) (*examp
 		predicates = append(predicates, teacher.NameContains(in.Name))
 	}
 	result, err := l.svcCtx.DB.Teacher.Query().Where(predicates...).Page(l.ctx, in.Page, in.PageSize)
+
 	if err != nil {
 		logx.Error(err.Error())
 		return nil, statuserr.NewInternalError(i18n.DatabaseError)
