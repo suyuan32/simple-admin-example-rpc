@@ -71,8 +71,6 @@ message StudentPageReq {
   uint64 page_size = 2;
   string name = 3;
 }
-
-
 // Teacher message
 
 message TeacherInfo {
@@ -104,6 +102,8 @@ message TeacherPageReq {
   string name = 3;
 }
 
+
+
 service Example {
   // group: base
   rpc initDatabase (Empty) returns (BaseResp);
@@ -126,4 +126,6 @@ service Example {
   rpc deleteTeacher (UUIDReq) returns (BaseResp);
   // group: teacher
   rpc batchDeleteTeacher (UUIDsReq) returns (BaseResp);
+
+
 }
