@@ -88,6 +88,8 @@ service Example {
 
 
 }
+
+
 // Teacher message
 
 message TeacherInfo {
@@ -120,8 +122,9 @@ message TeacherPageReq {
 }
 
 
-
 service School {
+
+
   // Teacher management
   // group: teacher
   rpc createOrUpdateTeacher (TeacherInfo) returns (BaseResp);
