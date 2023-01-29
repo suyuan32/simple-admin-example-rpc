@@ -30,6 +30,7 @@ func NewBatchDeleteStudentLogic(ctx context.Context, svcCtx *svc.ServiceContext)
 
 func (l *BatchDeleteStudentLogic) BatchDeleteStudent(in *example.IDsReq) (*example.BaseResp, error) {
 	_, err := l.svcCtx.DB.Student.Delete().Where(student.IDIn(in.Ids...)).Exec(l.ctx)
+
 	if err != nil {
 		switch {
 		case ent.IsNotFound(err):

@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+// Teacher message
+
+message TeacherInfo {
+  string id = 1;
+  int64 created_at = 2;
+  int64 updated_at = 3;
+  string name = 4;
+  int64 age = 5;
+  int32 age_int32 = 6;
+  int64 age_int64 = 7;
+  uint64 age_uint = 8;
+  uint32 age_uint32 = 9;
+  uint64 age_uint64 = 10;
+  double weight_float = 11;
+  float weight_float32 = 12;
+  string class_id = 13;
+  int64  enroll_at = 14;
+  bool status_bool = 15;
+}
+
+message TeacherListResp {
+  uint64 total = 1;
+  repeated TeacherInfo data = 2;
+}
+
+message TeacherPageReq {
+  uint64 page = 1;
+  uint64 page_size = 2;
+  string name = 3;
+}
+
+
+service Example {
+
+  // Teacher management
+  // group: teacher
+  rpc createOrUpdateTeacher (TeacherInfo) returns (BaseResp);
+  // group: teacher
+  rpc getTeacherList (TeacherPageReq) returns (TeacherListResp);
+  // group: teacher
+  rpc deleteTeacher (UUIDReq) returns (BaseResp);
+  // group: teacher
+  rpc batchDeleteTeacher (UUIDsReq) returns (BaseResp);
+
+
+}

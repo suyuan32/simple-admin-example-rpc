@@ -33,6 +33,7 @@ func (l *GetStudentListLogic) GetStudentList(in *example.StudentPageReq) (*examp
 		predicates = append(predicates, student.NameContains(in.Name))
 	}
 	result, err := l.svcCtx.DB.Student.Query().Where(predicates...).Page(l.ctx, in.Page, in.PageSize)
+
 	if err != nil {
 		logx.Error(err.Error())
 		return nil, statuserr.NewInternalError(i18n.DatabaseError)

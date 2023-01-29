@@ -29,6 +29,7 @@ func NewDeleteStudentLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Del
 
 func (l *DeleteStudentLogic) DeleteStudent(in *example.IDReq) (*example.BaseResp, error) {
 	err := l.svcCtx.DB.Student.DeleteOneID(in.Id).Exec(l.ctx)
+
 	if err != nil {
 		switch {
 		case ent.IsNotFound(err):

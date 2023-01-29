@@ -45,6 +45,7 @@ func (l *CreateOrUpdateStudentLogic) CreateOrUpdateStudent(in *example.StudentIn
 			SetEnrollAt(time.Unix(in.EnrollAt, 0)).
 			SetStatusBool(in.StatusBool).
 			Exec(l.ctx)
+
 		if err != nil {
 			switch {
 			case ent.IsConstraintError(err):
@@ -72,6 +73,7 @@ func (l *CreateOrUpdateStudentLogic) CreateOrUpdateStudent(in *example.StudentIn
 			SetEnrollAt(time.Unix(in.EnrollAt, 0)).
 			SetStatusBool(in.StatusBool).
 			Exec(l.ctx)
+
 		if err != nil {
 			switch {
 			case ent.IsNotFound(err):
