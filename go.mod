@@ -2,7 +2,7 @@ module github.com/suyuan32/simple-admin-example-rpc
 
 go 1.19
 
-replace github.com/zeromicro/go-zero v1.4.3 => github.com/suyuan32/simple-admin-tools v0.1.6
+replace github.com/zeromicro/go-zero v1.4.3 => github.com/suyuan32/simple-admin-tools v0.1.8
 
 require (
 	entgo.io/ent v0.11.5

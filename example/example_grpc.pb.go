@@ -8,7 +8,6 @@ package example
 
 import (
 	context "context"
-
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -162,40 +161,33 @@ type ExampleServer interface {
 }
 
 // UnimplementedExampleServer must be embedded to have forward compatible implementations.
-type UnimplementedExampleServer struct{}
+type UnimplementedExampleServer struct {
+}
 
 func (UnimplementedExampleServer) InitDatabase(context.Context, *Empty) (*BaseResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method InitDatabase not implemented")
 }
-
 func (UnimplementedExampleServer) CreateOrUpdateStudent(context.Context, *StudentInfo) (*BaseResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateOrUpdateStudent not implemented")
 }
-
 func (UnimplementedExampleServer) GetStudentList(context.Context, *StudentPageReq) (*StudentListResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetStudentList not implemented")
 }
-
 func (UnimplementedExampleServer) DeleteStudent(context.Context, *IDReq) (*BaseResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteStudent not implemented")
 }
-
 func (UnimplementedExampleServer) BatchDeleteStudent(context.Context, *IDsReq) (*BaseResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method BatchDeleteStudent not implemented")
 }
-
 func (UnimplementedExampleServer) CreateOrUpdateTeacher(context.Context, *TeacherInfo) (*BaseResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateOrUpdateTeacher not implemented")
 }
-
 func (UnimplementedExampleServer) GetTeacherList(context.Context, *TeacherPageReq) (*TeacherListResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetTeacherList not implemented")
 }
-
 func (UnimplementedExampleServer) DeleteTeacher(context.Context, *UUIDReq) (*BaseResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteTeacher not implemented")
 }
-
 func (UnimplementedExampleServer) BatchDeleteTeacher(context.Context, *UUIDsReq) (*BaseResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method BatchDeleteTeacher not implemented")
 }
