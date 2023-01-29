@@ -3,13 +3,9 @@ package student
 import (
 	"context"
 
-	"github.com/suyuan32/simple-admin-example-rpc/ent/predicate"
-	"github.com/suyuan32/simple-admin-example-rpc/ent/student"
 	"github.com/suyuan32/simple-admin-example-rpc/example"
 	"github.com/suyuan32/simple-admin-example-rpc/internal/svc"
 
-	"github.com/suyuan32/simple-admin-core/pkg/i18n"
-	"github.com/suyuan32/simple-admin-core/pkg/statuserr"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -28,38 +24,7 @@ func NewGetStudentListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Ge
 }
 
 func (l *GetStudentListLogic) GetStudentList(in *example.StudentPageReq) (*example.StudentListResp, error) {
-	var predicates []predicate.Student
-	if in.Name != "" {
-		predicates = append(predicates, student.NameContains(in.Name))
-	}
-	result, err := l.svcCtx.DB.Student.Query().Where(predicates...).Page(l.ctx, in.Page, in.PageSize)
+	// todo: add your logic here and delete this line
 
-	if err != nil {
-		logx.Error(err.Error())
-		return nil, statuserr.NewInternalError(i18n.DatabaseError)
-	}
-
-	resp := &example.StudentListResp{}
-	resp.Total = result.PageDetails.Total
-
-	for _, v := range result.List {
-		resp.Data = append(resp.Data, &example.StudentInfo{
-			Id:            v.ID,
-			CreatedAt:     v.CreatedAt.UnixMilli(),
-			Name:          v.Name,
-			Age:           int64(v.Age),
-			AgeInt32:      v.AgeInt32,
-			AgeInt64:      v.AgeInt64,
-			AgeUint:       uint64(v.AgeUint),
-			AgeUint32:     v.AgeUint32,
-			AgeUint64:     v.AgeUint64,
-			WeightFloat:   v.WeightFloat,
-			WeightFloat32: v.WeightFloat32,
-			ClassId:       v.ClassID.String(),
-			EnrollAt:      v.EnrollAt.UnixMilli(),
-			StatusBool:    v.StatusBool,
-		})
-	}
-
-	return resp, nil
+	return &example.StudentListResp{}, nil
 }

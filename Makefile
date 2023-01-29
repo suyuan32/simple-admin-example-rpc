@@ -15,7 +15,7 @@ publish-docker:
 	@printf $(GREEN)"[SUCCESS] publish docker successfully"
 
 gen-rpc:
-	goctls rpc protoc ./example.proto --go_out=. --go-grpc_out=. --zrpc_out=.
+	goctls rpc protoc ./example.proto --go_out=. --go-grpc_out=. --zrpc_out=. --multiple=true
 	@printf $(GREEN)"[SUCCESS] generate rpc successfully"
 
 gen-ent:

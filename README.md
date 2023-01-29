@@ -5,7 +5,7 @@
 > You just need to run the command below to generate this project
 
 ```shell
-goctls rpc new example --ent=true --moduleName=github.com/suyuan32/simple-admin-example-rpc --goZeroVersion=v1.4.2 --toolVersion=v0.1.6 --port=8080
+goctls rpc new example --ent=true --module_name=github.com/suyuan32/simple-admin-example-rpc --go_zero_version=v1.4.3 --tool_version=v0.1.7 --port=8080
 ```
 
 > 修改 ent/schema/examle.go, 添加 student 和 teacher schema
@@ -52,6 +52,6 @@ func (Student) Edges() []ent.Edge {
 ```shell
 make gen-ent
 
-goctls rpc ent --schema=./ent/schema  --style=go_zero --multiple=true --service_name=example --search_key_num=3 --o=./ --model=Student --group=student --project_name=example 
-goctls rpc ent --schema=./ent/schema  --style=go_zero --multiple=true --service_name=school --search_key_num=3 --o=./ --model=Teacher --group=teacher --project_name=example
+goctls rpc ent --schema=./ent/schema  --style=go_zero --multiple=true --service_name=example --search_key_num=3 --o=./ --model=Student --group=student --project_name=example --proto_out=./desc/student.proto
+goctls rpc ent --schema=./ent/schema  --style=go_zero --multiple=true --service_name=school --search_key_num=3 --o=./ --model=Teacher --group=teacher --project_name=example --proto_out=./desc/teacher.proto
 ```
