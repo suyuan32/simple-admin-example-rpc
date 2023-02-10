@@ -94,6 +94,7 @@ type StudentPageList struct {
 func (s *StudentQuery) Page(
 	ctx context.Context, pageNum uint64, pageSize uint64, opts ...StudentPaginateOption,
 ) (*StudentPageList, error) {
+
 	pager, err := newStudentPager(opts)
 	if err != nil {
 		return nil, err
@@ -111,6 +112,7 @@ func (s *StudentQuery) Page(
 	}
 
 	count, err := s.Clone().Count(ctx)
+
 	if err != nil {
 		return nil, err
 	}
@@ -171,6 +173,7 @@ type TeacherPageList struct {
 func (t *TeacherQuery) Page(
 	ctx context.Context, pageNum uint64, pageSize uint64, opts ...TeacherPaginateOption,
 ) (*TeacherPageList, error) {
+
 	pager, err := newTeacherPager(opts)
 	if err != nil {
 		return nil, err
@@ -188,6 +191,7 @@ func (t *TeacherQuery) Page(
 	}
 
 	count, err := t.Clone().Count(ctx)
+
 	if err != nil {
 		return nil, err
 	}

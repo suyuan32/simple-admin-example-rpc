@@ -3,10 +3,22 @@ syntax = "proto3";
 package example;
 option go_package="./example";
 
-message StudentPageReq {
-  uint64 page = 1;
-  uint64 page_size = 2;
-  string name = 3;
+message UUIDReq {
+  string id = 1;
+}
+
+message StudentListResp {
+  uint64 total = 1;
+  repeated StudentInfo data = 2;
+}
+
+message TeacherListResp {
+  uint64 total = 1;
+  repeated TeacherInfo data = 2;
+}
+
+message IDsReq {
+  repeated uint64 ids = 1;
 }
 
 message BaseResp {
@@ -18,12 +30,13 @@ message PageInfoReq {
   uint64 page_size = 2;
 }
 
-message IDsReq {
-  repeated uint64 ids = 1;
-}
-
 message UUIDsReq {
   repeated string ids = 1;
+}
+
+message StatusCodeReq {
+  uint64 id = 1;
+  uint64 status = 2;
 }
 
 message TeacherInfo {
@@ -44,11 +57,6 @@ message TeacherInfo {
   bool status_bool = 15;
 }
 
-message TeacherListResp {
-  uint64 total = 1;
-  repeated TeacherInfo data = 2;
-}
-
 //  base message
 message Empty {}
 
@@ -56,10 +64,9 @@ message IDReq {
   uint64 id = 1;
 }
 
-message TeacherPageReq {
-  uint64 page = 1;
-  uint64 page_size = 2;
-  string name = 3;
+message StatusCodeUUIDReq {
+  string id = 1;
+  uint64 status = 2;
 }
 
 message StudentInfo {
@@ -80,23 +87,16 @@ message StudentInfo {
   bool status_bool = 15;
 }
 
-message StudentListResp {
-  uint64 total = 1;
-  repeated StudentInfo data = 2;
+message StudentListReq {
+  uint64 page = 1;
+  uint64 page_size = 2;
+  string name = 3;
 }
 
-message StatusCodeUUIDReq {
-  string id = 1;
-  uint64 status = 2;
-}
-
-message UUIDReq {
-  string id = 1;
-}
-
-message StatusCodeReq {
-  uint64 id = 1;
-  uint64 status = 2;
+message TeacherListReq {
+  uint64 page = 1;
+  uint64 page_size = 2;
+  string name = 3;
 }
 
 service Example {
@@ -104,21 +104,25 @@ service Example {
   rpc initDatabase(Empty) returns (BaseResp);
   //  Student management
   //  group: student
-  rpc createOrUpdateStudent(StudentInfo) returns (BaseResp);
+  rpc createStudent(StudentInfo) returns (BaseResp);
   //  group: student
-  rpc getStudentList(StudentPageReq) returns (StudentListResp);
+  rpc updateStudent(StudentInfo) returns (BaseResp);
   //  group: student
-  rpc deleteStudent(IDReq) returns (BaseResp);
+  rpc getStudentList(StudentListReq) returns (StudentListResp);
   //  group: student
-  rpc batchDeleteStudent(IDsReq) returns (BaseResp);
+  rpc getStudentById(IDReq) returns (StudentInfo);
+  //  group: student
+  rpc deleteStudent(IDsReq) returns (BaseResp);
   //  Teacher management
   //  group: teacher
-  rpc createOrUpdateTeacher(TeacherInfo) returns (BaseResp);
+  rpc createTeacher(TeacherInfo) returns (BaseResp);
   //  group: teacher
-  rpc getTeacherList(TeacherPageReq) returns (TeacherListResp);
+  rpc updateTeacher(TeacherInfo) returns (BaseResp);
   //  group: teacher
-  rpc deleteTeacher(UUIDReq) returns (BaseResp);
+  rpc getTeacherList(TeacherListReq) returns (TeacherListResp);
   //  group: teacher
-  rpc batchDeleteTeacher(UUIDsReq) returns (BaseResp);
+  rpc getTeacherById(UUIDReq) returns (TeacherInfo);
+  //  group: teacher
+  rpc deleteTeacher(UUIDsReq) returns (BaseResp);
 }
 

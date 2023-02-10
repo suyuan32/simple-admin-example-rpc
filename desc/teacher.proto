@@ -25,7 +25,7 @@ message TeacherListResp {
   repeated TeacherInfo data = 2;
 }
 
-message TeacherPageReq {
+message TeacherListReq {
   uint64 page = 1;
   uint64 page_size = 2;
   string name = 3;
@@ -36,13 +36,15 @@ service Example {
 
   // Teacher management
   // group: teacher
-  rpc createOrUpdateTeacher (TeacherInfo) returns (BaseResp);
+  rpc createTeacher (TeacherInfo) returns (BaseResp);
   // group: teacher
-  rpc getTeacherList (TeacherPageReq) returns (TeacherListResp);
+  rpc updateTeacher (TeacherInfo) returns (BaseResp);
   // group: teacher
-  rpc deleteTeacher (UUIDReq) returns (BaseResp);
+  rpc getTeacherList (TeacherListReq) returns (TeacherListResp);
   // group: teacher
-  rpc batchDeleteTeacher (UUIDsReq) returns (BaseResp);
+  rpc getTeacherById (UUIDReq) returns (TeacherInfo);
+  // group: teacher
+  rpc deleteTeacher (UUIDsReq) returns (BaseResp);
 
 
 }

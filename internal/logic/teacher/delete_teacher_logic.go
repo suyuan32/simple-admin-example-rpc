@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/suyuan32/simple-admin-example-rpc/ent"
+	"github.com/suyuan32/simple-admin-example-rpc/ent/teacher"
 	"github.com/suyuan32/simple-admin-example-rpc/example"
 	"github.com/suyuan32/simple-admin-example-rpc/internal/svc"
 
@@ -28,8 +29,8 @@ func NewDeleteTeacherLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Del
 	}
 }
 
-func (l *DeleteTeacherLogic) DeleteTeacher(in *example.UUIDReq) (*example.BaseResp, error) {
-	err := l.svcCtx.DB.Teacher.DeleteOneID(uuidx.ParseUUIDString(in.Id)).Exec(l.ctx)
+func (l *DeleteTeacherLogic) DeleteTeacher(in *example.UUIDsReq) (*example.BaseResp, error) {
+	_, err := l.svcCtx.DB.Teacher.Delete().Where(teacher.IDIn(uuidx.ParseUUIDSlice(in.Ids)...)).Exec(l.ctx)
 
 	if err != nil {
 		switch {

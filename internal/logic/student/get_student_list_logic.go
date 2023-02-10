@@ -27,7 +27,7 @@ func NewGetStudentListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Ge
 	}
 }
 
-func (l *GetStudentListLogic) GetStudentList(in *example.StudentPageReq) (*example.StudentListResp, error) {
+func (l *GetStudentListLogic) GetStudentList(in *example.StudentListReq) (*example.StudentListResp, error) {
 	var predicates []predicate.Student
 	if in.Name != "" {
 		predicates = append(predicates, student.NameContains(in.Name))
@@ -46,6 +46,7 @@ func (l *GetStudentListLogic) GetStudentList(in *example.StudentPageReq) (*examp
 		resp.Data = append(resp.Data, &example.StudentInfo{
 			Id:            v.ID,
 			CreatedAt:     v.CreatedAt.UnixMilli(),
+			UpdatedAt:     v.UpdatedAt.UnixMilli(),
 			Name:          v.Name,
 			Age:           int64(v.Age),
 			AgeInt32:      v.AgeInt32,

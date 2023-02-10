@@ -25,7 +25,7 @@ message StudentListResp {
   repeated StudentInfo data = 2;
 }
 
-message StudentPageReq {
+message StudentListReq {
   uint64 page = 1;
   uint64 page_size = 2;
   string name = 3;
@@ -36,13 +36,15 @@ service Example {
 
   // Student management
   // group: student
-  rpc createOrUpdateStudent (StudentInfo) returns (BaseResp);
+  rpc createStudent (StudentInfo) returns (BaseResp);
   // group: student
-  rpc getStudentList (StudentPageReq) returns (StudentListResp);
+  rpc updateStudent (StudentInfo) returns (BaseResp);
   // group: student
-  rpc deleteStudent (IDReq) returns (BaseResp);
+  rpc getStudentList (StudentListReq) returns (StudentListResp);
   // group: student
-  rpc batchDeleteStudent (IDsReq) returns (BaseResp);
+  rpc getStudentById (IDReq) returns (StudentInfo);
+  // group: student
+  rpc deleteStudent (IDsReq) returns (BaseResp);
 
 
 }

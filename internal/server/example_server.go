@@ -30,43 +30,53 @@ func (s *ExampleServer) InitDatabase(ctx context.Context, in *example.Empty) (*e
 }
 
 // Student management
-func (s *ExampleServer) CreateOrUpdateStudent(ctx context.Context, in *example.StudentInfo) (*example.BaseResp, error) {
-	l := student.NewCreateOrUpdateStudentLogic(ctx, s.svcCtx)
-	return l.CreateOrUpdateStudent(in)
+func (s *ExampleServer) CreateStudent(ctx context.Context, in *example.StudentInfo) (*example.BaseResp, error) {
+	l := student.NewCreateStudentLogic(ctx, s.svcCtx)
+	return l.CreateStudent(in)
 }
 
-func (s *ExampleServer) GetStudentList(ctx context.Context, in *example.StudentPageReq) (*example.StudentListResp, error) {
+func (s *ExampleServer) UpdateStudent(ctx context.Context, in *example.StudentInfo) (*example.BaseResp, error) {
+	l := student.NewUpdateStudentLogic(ctx, s.svcCtx)
+	return l.UpdateStudent(in)
+}
+
+func (s *ExampleServer) GetStudentList(ctx context.Context, in *example.StudentListReq) (*example.StudentListResp, error) {
 	l := student.NewGetStudentListLogic(ctx, s.svcCtx)
 	return l.GetStudentList(in)
 }
 
-func (s *ExampleServer) DeleteStudent(ctx context.Context, in *example.IDReq) (*example.BaseResp, error) {
+func (s *ExampleServer) GetStudentById(ctx context.Context, in *example.IDReq) (*example.StudentInfo, error) {
+	l := student.NewGetStudentByIdLogic(ctx, s.svcCtx)
+	return l.GetStudentById(in)
+}
+
+func (s *ExampleServer) DeleteStudent(ctx context.Context, in *example.IDsReq) (*example.BaseResp, error) {
 	l := student.NewDeleteStudentLogic(ctx, s.svcCtx)
 	return l.DeleteStudent(in)
 }
 
-func (s *ExampleServer) BatchDeleteStudent(ctx context.Context, in *example.IDsReq) (*example.BaseResp, error) {
-	l := student.NewBatchDeleteStudentLogic(ctx, s.svcCtx)
-	return l.BatchDeleteStudent(in)
-}
-
 // Teacher management
-func (s *ExampleServer) CreateOrUpdateTeacher(ctx context.Context, in *example.TeacherInfo) (*example.BaseResp, error) {
-	l := teacher.NewCreateOrUpdateTeacherLogic(ctx, s.svcCtx)
-	return l.CreateOrUpdateTeacher(in)
+func (s *ExampleServer) CreateTeacher(ctx context.Context, in *example.TeacherInfo) (*example.BaseResp, error) {
+	l := teacher.NewCreateTeacherLogic(ctx, s.svcCtx)
+	return l.CreateTeacher(in)
 }
 
-func (s *ExampleServer) GetTeacherList(ctx context.Context, in *example.TeacherPageReq) (*example.TeacherListResp, error) {
+func (s *ExampleServer) UpdateTeacher(ctx context.Context, in *example.TeacherInfo) (*example.BaseResp, error) {
+	l := teacher.NewUpdateTeacherLogic(ctx, s.svcCtx)
+	return l.UpdateTeacher(in)
+}
+
+func (s *ExampleServer) GetTeacherList(ctx context.Context, in *example.TeacherListReq) (*example.TeacherListResp, error) {
 	l := teacher.NewGetTeacherListLogic(ctx, s.svcCtx)
 	return l.GetTeacherList(in)
 }
 
-func (s *ExampleServer) DeleteTeacher(ctx context.Context, in *example.UUIDReq) (*example.BaseResp, error) {
-	l := teacher.NewDeleteTeacherLogic(ctx, s.svcCtx)
-	return l.DeleteTeacher(in)
+func (s *ExampleServer) GetTeacherById(ctx context.Context, in *example.UUIDReq) (*example.TeacherInfo, error) {
+	l := teacher.NewGetTeacherByIdLogic(ctx, s.svcCtx)
+	return l.GetTeacherById(in)
 }
 
-func (s *ExampleServer) BatchDeleteTeacher(ctx context.Context, in *example.UUIDsReq) (*example.BaseResp, error) {
-	l := teacher.NewBatchDeleteTeacherLogic(ctx, s.svcCtx)
-	return l.BatchDeleteTeacher(in)
+func (s *ExampleServer) DeleteTeacher(ctx context.Context, in *example.UUIDsReq) (*example.BaseResp, error) {
+	l := teacher.NewDeleteTeacherLogic(ctx, s.svcCtx)
+	return l.DeleteTeacher(in)
 }

@@ -27,7 +27,7 @@ func NewGetTeacherListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Ge
 	}
 }
 
-func (l *GetTeacherListLogic) GetTeacherList(in *example.TeacherPageReq) (*example.TeacherListResp, error) {
+func (l *GetTeacherListLogic) GetTeacherList(in *example.TeacherListReq) (*example.TeacherListResp, error) {
 	var predicates []predicate.Teacher
 	if in.Name != "" {
 		predicates = append(predicates, teacher.NameContains(in.Name))
@@ -46,6 +46,7 @@ func (l *GetTeacherListLogic) GetTeacherList(in *example.TeacherPageReq) (*examp
 		resp.Data = append(resp.Data, &example.TeacherInfo{
 			Id:            v.ID.String(),
 			CreatedAt:     v.CreatedAt.UnixMilli(),
+			UpdatedAt:     v.UpdatedAt.UnixMilli(),
 			Name:          v.Name,
 			Age:           int64(v.Age),
 			AgeInt32:      v.AgeInt32,
