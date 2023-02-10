@@ -23,22 +23,27 @@ func NewSchoolServer(svcCtx *svc.ServiceContext) *SchoolServer {
 }
 
 // Teacher management
-func (s *SchoolServer) CreateOrUpdateTeacher(ctx context.Context, in *example.TeacherInfo) (*example.BaseResp, error) {
-	l := teacher.NewCreateOrUpdateTeacherLogic(ctx, s.svcCtx)
-	return l.CreateOrUpdateTeacher(in)
+func (s *SchoolServer) CreateTeacher(ctx context.Context, in *example.TeacherInfo) (*example.BaseResp, error) {
+	l := teacher.NewCreateTeacherLogic(ctx, s.svcCtx)
+	return l.CreateTeacher(in)
 }
 
-func (s *SchoolServer) GetTeacherList(ctx context.Context, in *example.TeacherPageReq) (*example.TeacherListResp, error) {
+func (s *SchoolServer) UpdateTeacher(ctx context.Context, in *example.TeacherInfo) (*example.BaseResp, error) {
+	l := teacher.NewUpdateTeacherLogic(ctx, s.svcCtx)
+	return l.UpdateTeacher(in)
+}
+
+func (s *SchoolServer) GetTeacherList(ctx context.Context, in *example.TeacherListReq) (*example.TeacherListResp, error) {
 	l := teacher.NewGetTeacherListLogic(ctx, s.svcCtx)
 	return l.GetTeacherList(in)
 }
 
-func (s *SchoolServer) DeleteTeacher(ctx context.Context, in *example.UUIDReq) (*example.BaseResp, error) {
-	l := teacher.NewDeleteTeacherLogic(ctx, s.svcCtx)
-	return l.DeleteTeacher(in)
+func (s *SchoolServer) GetTeacherById(ctx context.Context, in *example.UUIDReq) (*example.TeacherInfo, error) {
+	l := teacher.NewGetTeacherByIdLogic(ctx, s.svcCtx)
+	return l.GetTeacherById(in)
 }
 
-func (s *SchoolServer) BatchDeleteTeacher(ctx context.Context, in *example.UUIDsReq) (*example.BaseResp, error) {
-	l := teacher.NewBatchDeleteTeacherLogic(ctx, s.svcCtx)
-	return l.BatchDeleteTeacher(in)
+func (s *SchoolServer) DeleteTeacher(ctx context.Context, in *example.UUIDsReq) (*example.BaseResp, error) {
+	l := teacher.NewDeleteTeacherLogic(ctx, s.svcCtx)
+	return l.DeleteTeacher(in)
 }

@@ -475,8 +475,7 @@ func (s *selector) BoolX(ctx context.Context) bool {
 func withHooks[V Value, M any, PM interface {
 	*M
 	Mutation
-}](ctx context.Context, exec func(context.Context) (V, error), mutation PM, hooks []Hook,
-) (value V, err error) {
+}](ctx context.Context, exec func(context.Context) (V, error), mutation PM, hooks []Hook) (value V, err error) {
 	if len(hooks) == 0 {
 		return exec(ctx)
 	}
@@ -555,8 +554,7 @@ func withInterceptors[V Value](ctx context.Context, q Query, qr Querier, inters 
 
 func scanWithInterceptors[Q1 ent.Query, Q2 interface {
 	sqlScan(context.Context, Q1, any) error
-}](ctx context.Context, rootQuery Q1, selectOrGroup Q2, inters []Interceptor, v any,
-) error {
+}](ctx context.Context, rootQuery Q1, selectOrGroup Q2, inters []Interceptor, v any) error {
 	rv := reflect.ValueOf(v)
 	var qr Querier = QuerierFunc(func(ctx context.Context, q Query) (Value, error) {
 		query, ok := q.(Q1)
