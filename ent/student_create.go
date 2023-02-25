@@ -10,7 +10,7 @@ import (
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/gofrs/uuid"
+	uuid "github.com/gofrs/uuid/v5"
 	"github.com/suyuan32/simple-admin-example-rpc/ent/student"
 )
 
@@ -242,13 +242,7 @@ func (sc *StudentCreate) sqlSave(ctx context.Context) (*Student, error) {
 func (sc *StudentCreate) createSpec() (*Student, *sqlgraph.CreateSpec) {
 	var (
 		_node = &Student{config: sc.config}
-		_spec = &sqlgraph.CreateSpec{
-			Table: student.Table,
-			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUint64,
-				Column: student.FieldID,
-			},
-		}
+		_spec = sqlgraph.NewCreateSpec(student.Table, sqlgraph.NewFieldSpec(student.FieldID, field.TypeUint64))
 	)
 	if id, ok := sc.mutation.ID(); ok {
 		_node.ID = id

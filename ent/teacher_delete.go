@@ -40,15 +40,7 @@ func (td *TeacherDelete) ExecX(ctx context.Context) int {
 }
 
 func (td *TeacherDelete) sqlExec(ctx context.Context) (int, error) {
-	_spec := &sqlgraph.DeleteSpec{
-		Node: &sqlgraph.NodeSpec{
-			Table: teacher.Table,
-			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
-				Column: teacher.FieldID,
-			},
-		},
-	}
+	_spec := sqlgraph.NewDeleteSpec(teacher.Table, sqlgraph.NewFieldSpec(teacher.FieldID, field.TypeUUID))
 	if ps := td.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {
@@ -69,6 +61,12 @@ type TeacherDeleteOne struct {
 	td *TeacherDelete
 }
 
+// Where appends a list predicates to the TeacherDelete builder.
+func (tdo *TeacherDeleteOne) Where(ps ...predicate.Teacher) *TeacherDeleteOne {
+	tdo.td.mutation.Where(ps...)
+	return tdo
+}
+
 // Exec executes the deletion query.
 func (tdo *TeacherDeleteOne) Exec(ctx context.Context) error {
 	n, err := tdo.td.Exec(ctx)
@@ -84,5 +82,7 @@ func (tdo *TeacherDeleteOne) Exec(ctx context.Context) error {
 
 // ExecX is like Exec, but panics if an error occurs.
 func (tdo *TeacherDeleteOne) ExecX(ctx context.Context) {
-	tdo.td.ExecX(ctx)
+	if err := tdo.Exec(ctx); err != nil {
+		panic(err)
+	}
 }

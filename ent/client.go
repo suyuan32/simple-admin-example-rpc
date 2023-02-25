@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/gofrs/uuid"
+	uuid "github.com/gofrs/uuid/v5"
 	"github.com/suyuan32/simple-admin-example-rpc/ent/migrate"
 
 	"github.com/suyuan32/simple-admin-example-rpc/ent/student"
@@ -165,7 +165,7 @@ func (c *StudentClient) Use(hooks ...Hook) {
 	c.hooks.Student = append(c.hooks.Student, hooks...)
 }
 
-// Use adds a list of query interceptors to the interceptors stack.
+// Intercept adds a list of query interceptors to the interceptors stack.
 // A call to `Intercept(f, g, h)` equals to `student.Intercept(f(g(h())))`.
 func (c *StudentClient) Intercept(interceptors ...Interceptor) {
 	c.inters.Student = append(c.inters.Student, interceptors...)
@@ -223,6 +223,7 @@ func (c *StudentClient) DeleteOneID(id uint64) *StudentDeleteOne {
 func (c *StudentClient) Query() *StudentQuery {
 	return &StudentQuery{
 		config: c.config,
+		ctx:    &QueryContext{Type: TypeStudent},
 		inters: c.Interceptors(),
 	}
 }
@@ -282,7 +283,7 @@ func (c *TeacherClient) Use(hooks ...Hook) {
 	c.hooks.Teacher = append(c.hooks.Teacher, hooks...)
 }
 
-// Use adds a list of query interceptors to the interceptors stack.
+// Intercept adds a list of query interceptors to the interceptors stack.
 // A call to `Intercept(f, g, h)` equals to `teacher.Intercept(f(g(h())))`.
 func (c *TeacherClient) Intercept(interceptors ...Interceptor) {
 	c.inters.Teacher = append(c.inters.Teacher, interceptors...)
@@ -340,6 +341,7 @@ func (c *TeacherClient) DeleteOneID(id uuid.UUID) *TeacherDeleteOne {
 func (c *TeacherClient) Query() *TeacherQuery {
 	return &TeacherQuery{
 		config: c.config,
+		ctx:    &QueryContext{Type: TypeTeacher},
 		inters: c.Interceptors(),
 	}
 }

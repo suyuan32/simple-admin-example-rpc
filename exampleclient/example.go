@@ -13,7 +13,9 @@ import (
 )
 
 type (
+	BaseIDResp        = example.BaseIDResp
 	BaseResp          = example.BaseResp
+	BaseUUIDResp      = example.BaseUUIDResp
 	Empty             = example.Empty
 	IDReq             = example.IDReq
 	IDsReq            = example.IDsReq
@@ -32,13 +34,13 @@ type (
 	Example interface {
 		InitDatabase(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*BaseResp, error)
 		// Student management
-		CreateStudent(ctx context.Context, in *StudentInfo, opts ...grpc.CallOption) (*BaseResp, error)
+		CreateStudent(ctx context.Context, in *StudentInfo, opts ...grpc.CallOption) (*BaseIDResp, error)
 		UpdateStudent(ctx context.Context, in *StudentInfo, opts ...grpc.CallOption) (*BaseResp, error)
 		GetStudentList(ctx context.Context, in *StudentListReq, opts ...grpc.CallOption) (*StudentListResp, error)
 		GetStudentById(ctx context.Context, in *IDReq, opts ...grpc.CallOption) (*StudentInfo, error)
 		DeleteStudent(ctx context.Context, in *IDsReq, opts ...grpc.CallOption) (*BaseResp, error)
 		// Teacher management
-		CreateTeacher(ctx context.Context, in *TeacherInfo, opts ...grpc.CallOption) (*BaseResp, error)
+		CreateTeacher(ctx context.Context, in *TeacherInfo, opts ...grpc.CallOption) (*BaseUUIDResp, error)
 		UpdateTeacher(ctx context.Context, in *TeacherInfo, opts ...grpc.CallOption) (*BaseResp, error)
 		GetTeacherList(ctx context.Context, in *TeacherListReq, opts ...grpc.CallOption) (*TeacherListResp, error)
 		GetTeacherById(ctx context.Context, in *UUIDReq, opts ...grpc.CallOption) (*TeacherInfo, error)
@@ -62,7 +64,7 @@ func (m *defaultExample) InitDatabase(ctx context.Context, in *Empty, opts ...gr
 }
 
 // Student management
-func (m *defaultExample) CreateStudent(ctx context.Context, in *StudentInfo, opts ...grpc.CallOption) (*BaseResp, error) {
+func (m *defaultExample) CreateStudent(ctx context.Context, in *StudentInfo, opts ...grpc.CallOption) (*BaseIDResp, error) {
 	client := example.NewExampleClient(m.cli.Conn())
 	return client.CreateStudent(ctx, in, opts...)
 }
@@ -88,7 +90,7 @@ func (m *defaultExample) DeleteStudent(ctx context.Context, in *IDsReq, opts ...
 }
 
 // Teacher management
-func (m *defaultExample) CreateTeacher(ctx context.Context, in *TeacherInfo, opts ...grpc.CallOption) (*BaseResp, error) {
+func (m *defaultExample) CreateTeacher(ctx context.Context, in *TeacherInfo, opts ...grpc.CallOption) (*BaseUUIDResp, error) {
 	client := example.NewExampleClient(m.cli.Conn())
 	return client.CreateTeacher(ctx, in, opts...)
 }

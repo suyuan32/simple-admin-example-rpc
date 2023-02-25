@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"entgo.io/ent/dialect/sql"
-	"github.com/gofrs/uuid"
+	uuid "github.com/gofrs/uuid/v5"
 	"github.com/suyuan32/simple-admin-example-rpc/ent/student"
 )
 
@@ -178,7 +178,7 @@ func (s *Student) assignValues(columns []string, values []any) error {
 // Note that you need to call Student.Unwrap() before calling this method if this Student
 // was returned from a transaction, and the transaction was committed or rolled back.
 func (s *Student) Update() *StudentUpdateOne {
-	return (&StudentClient{config: s.config}).UpdateOne(s)
+	return NewStudentClient(s.config).UpdateOne(s)
 }
 
 // Unwrap unwraps the Student entity that was returned from a transaction after it was closed,
@@ -244,9 +244,3 @@ func (s *Student) String() string {
 
 // Students is a parsable slice of Student.
 type Students []*Student
-
-func (s Students) config(cfg config) {
-	for _i := range s {
-		s[_i].config = cfg
-	}
-}

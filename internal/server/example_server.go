@@ -30,7 +30,7 @@ func (s *ExampleServer) InitDatabase(ctx context.Context, in *example.Empty) (*e
 }
 
 // Student management
-func (s *ExampleServer) CreateStudent(ctx context.Context, in *example.StudentInfo) (*example.BaseResp, error) {
+func (s *ExampleServer) CreateStudent(ctx context.Context, in *example.StudentInfo) (*example.BaseIDResp, error) {
 	l := student.NewCreateStudentLogic(ctx, s.svcCtx)
 	return l.CreateStudent(in)
 }
@@ -56,7 +56,7 @@ func (s *ExampleServer) DeleteStudent(ctx context.Context, in *example.IDsReq) (
 }
 
 // Teacher management
-func (s *ExampleServer) CreateTeacher(ctx context.Context, in *example.TeacherInfo) (*example.BaseResp, error) {
+func (s *ExampleServer) CreateTeacher(ctx context.Context, in *example.TeacherInfo) (*example.BaseUUIDResp, error) {
 	l := teacher.NewCreateTeacherLogic(ctx, s.svcCtx)
 	return l.CreateTeacher(in)
 }

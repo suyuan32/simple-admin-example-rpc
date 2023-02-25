@@ -40,9 +40,9 @@ func (l *UpdateStudentLogic) UpdateStudent(in *example.StudentInfo) (*example.Ba
 		SetNotEmptyAgeUint64(in.AgeUint64).
 		SetNotEmptyWeightFloat(in.WeightFloat).
 		SetNotEmptyWeightFloat32(in.WeightFloat32).
-		SetClassID(uuidx.ParseUUIDString(in.ClassId)).
-		SetEnrollAt(time.Unix(in.EnrollAt, 0)).
-		SetStatusBool(in.StatusBool).
+		SetNotEmptyClassID(uuidx.ParseUUIDString(in.ClassId)).
+		SetNotEmptyEnrollAt(time.Unix(in.EnrollAt, 0)).
+		SetNotEmptyStatusBool(in.StatusBool).
 		Exec(l.ctx)
 
 	if err != nil {

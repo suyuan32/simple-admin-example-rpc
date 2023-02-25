@@ -26,7 +26,7 @@ type ExampleClient interface {
 	InitDatabase(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*BaseResp, error)
 	// Student management
 	// group: student
-	CreateStudent(ctx context.Context, in *StudentInfo, opts ...grpc.CallOption) (*BaseResp, error)
+	CreateStudent(ctx context.Context, in *StudentInfo, opts ...grpc.CallOption) (*BaseIDResp, error)
 	// group: student
 	UpdateStudent(ctx context.Context, in *StudentInfo, opts ...grpc.CallOption) (*BaseResp, error)
 	// group: student
@@ -37,7 +37,7 @@ type ExampleClient interface {
 	DeleteStudent(ctx context.Context, in *IDsReq, opts ...grpc.CallOption) (*BaseResp, error)
 	// Teacher management
 	// group: teacher
-	CreateTeacher(ctx context.Context, in *TeacherInfo, opts ...grpc.CallOption) (*BaseResp, error)
+	CreateTeacher(ctx context.Context, in *TeacherInfo, opts ...grpc.CallOption) (*BaseUUIDResp, error)
 	// group: teacher
 	UpdateTeacher(ctx context.Context, in *TeacherInfo, opts ...grpc.CallOption) (*BaseResp, error)
 	// group: teacher
@@ -65,8 +65,8 @@ func (c *exampleClient) InitDatabase(ctx context.Context, in *Empty, opts ...grp
 	return out, nil
 }
 
-func (c *exampleClient) CreateStudent(ctx context.Context, in *StudentInfo, opts ...grpc.CallOption) (*BaseResp, error) {
-	out := new(BaseResp)
+func (c *exampleClient) CreateStudent(ctx context.Context, in *StudentInfo, opts ...grpc.CallOption) (*BaseIDResp, error) {
+	out := new(BaseIDResp)
 	err := c.cc.Invoke(ctx, "/example.Example/createStudent", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -110,8 +110,8 @@ func (c *exampleClient) DeleteStudent(ctx context.Context, in *IDsReq, opts ...g
 	return out, nil
 }
 
-func (c *exampleClient) CreateTeacher(ctx context.Context, in *TeacherInfo, opts ...grpc.CallOption) (*BaseResp, error) {
-	out := new(BaseResp)
+func (c *exampleClient) CreateTeacher(ctx context.Context, in *TeacherInfo, opts ...grpc.CallOption) (*BaseUUIDResp, error) {
+	out := new(BaseUUIDResp)
 	err := c.cc.Invoke(ctx, "/example.Example/createTeacher", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -163,7 +163,7 @@ type ExampleServer interface {
 	InitDatabase(context.Context, *Empty) (*BaseResp, error)
 	// Student management
 	// group: student
-	CreateStudent(context.Context, *StudentInfo) (*BaseResp, error)
+	CreateStudent(context.Context, *StudentInfo) (*BaseIDResp, error)
 	// group: student
 	UpdateStudent(context.Context, *StudentInfo) (*BaseResp, error)
 	// group: student
@@ -174,7 +174,7 @@ type ExampleServer interface {
 	DeleteStudent(context.Context, *IDsReq) (*BaseResp, error)
 	// Teacher management
 	// group: teacher
-	CreateTeacher(context.Context, *TeacherInfo) (*BaseResp, error)
+	CreateTeacher(context.Context, *TeacherInfo) (*BaseUUIDResp, error)
 	// group: teacher
 	UpdateTeacher(context.Context, *TeacherInfo) (*BaseResp, error)
 	// group: teacher
@@ -193,7 +193,7 @@ type UnimplementedExampleServer struct {
 func (UnimplementedExampleServer) InitDatabase(context.Context, *Empty) (*BaseResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method InitDatabase not implemented")
 }
-func (UnimplementedExampleServer) CreateStudent(context.Context, *StudentInfo) (*BaseResp, error) {
+func (UnimplementedExampleServer) CreateStudent(context.Context, *StudentInfo) (*BaseIDResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateStudent not implemented")
 }
 func (UnimplementedExampleServer) UpdateStudent(context.Context, *StudentInfo) (*BaseResp, error) {
@@ -208,7 +208,7 @@ func (UnimplementedExampleServer) GetStudentById(context.Context, *IDReq) (*Stud
 func (UnimplementedExampleServer) DeleteStudent(context.Context, *IDsReq) (*BaseResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteStudent not implemented")
 }
-func (UnimplementedExampleServer) CreateTeacher(context.Context, *TeacherInfo) (*BaseResp, error) {
+func (UnimplementedExampleServer) CreateTeacher(context.Context, *TeacherInfo) (*BaseUUIDResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateTeacher not implemented")
 }
 func (UnimplementedExampleServer) UpdateTeacher(context.Context, *TeacherInfo) (*BaseResp, error) {
