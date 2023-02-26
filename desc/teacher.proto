@@ -36,7 +36,7 @@ service School {
 
   // Teacher management
   // group: teacher
-  rpc createTeacher (TeacherInfo) returns (BaseResp);
+  rpc createTeacher (TeacherInfo) returns (BaseUUIDResp);
   // group: teacher
   rpc updateTeacher (TeacherInfo) returns (BaseResp);
   // group: teacher

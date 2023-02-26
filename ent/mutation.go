@@ -9,7 +9,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/gofrs/uuid"
+	uuid "github.com/gofrs/uuid/v5"
 	"github.com/suyuan32/simple-admin-example-rpc/ent/predicate"
 	"github.com/suyuan32/simple-admin-example-rpc/ent/student"
 	"github.com/suyuan32/simple-admin-example-rpc/ent/teacher"

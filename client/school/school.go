@@ -13,7 +13,9 @@ import (
 )
 
 type (
+	BaseIDResp        = example.BaseIDResp
 	BaseResp          = example.BaseResp
+	BaseUUIDResp      = example.BaseUUIDResp
 	Empty             = example.Empty
 	IDReq             = example.IDReq
 	IDsReq            = example.IDsReq
@@ -31,7 +33,7 @@ type (
 
 	School interface {
 		// Teacher management
-		CreateTeacher(ctx context.Context, in *TeacherInfo, opts ...grpc.CallOption) (*BaseResp, error)
+		CreateTeacher(ctx context.Context, in *TeacherInfo, opts ...grpc.CallOption) (*BaseUUIDResp, error)
 		UpdateTeacher(ctx context.Context, in *TeacherInfo, opts ...grpc.CallOption) (*BaseResp, error)
 		GetTeacherList(ctx context.Context, in *TeacherListReq, opts ...grpc.CallOption) (*TeacherListResp, error)
 		GetTeacherById(ctx context.Context, in *UUIDReq, opts ...grpc.CallOption) (*TeacherInfo, error)
@@ -50,7 +52,7 @@ func NewSchool(cli zrpc.Client) School {
 }
 
 // Teacher management
-func (m *defaultSchool) CreateTeacher(ctx context.Context, in *TeacherInfo, opts ...grpc.CallOption) (*BaseResp, error) {
+func (m *defaultSchool) CreateTeacher(ctx context.Context, in *TeacherInfo, opts ...grpc.CallOption) (*BaseUUIDResp, error) {
 	client := example.NewSchoolClient(m.cli.Conn())
 	return client.CreateTeacher(ctx, in, opts...)
 }

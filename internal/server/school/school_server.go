@@ -23,7 +23,7 @@ func NewSchoolServer(svcCtx *svc.ServiceContext) *SchoolServer {
 }
 
 // Teacher management
-func (s *SchoolServer) CreateTeacher(ctx context.Context, in *example.TeacherInfo) (*example.BaseResp, error) {
+func (s *SchoolServer) CreateTeacher(ctx context.Context, in *example.TeacherInfo) (*example.BaseUUIDResp, error) {
 	l := teacher.NewCreateTeacherLogic(ctx, s.svcCtx)
 	return l.CreateTeacher(in)
 }

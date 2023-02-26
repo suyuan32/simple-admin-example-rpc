@@ -30,8 +30,8 @@ func NewCreateTeacherLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Cre
 	}
 }
 
-func (l *CreateTeacherLogic) CreateTeacher(in *example.TeacherInfo) (*example.BaseResp, error) {
-	err := l.svcCtx.DB.Teacher.Create().
+func (l *CreateTeacherLogic) CreateTeacher(in *example.TeacherInfo) (*example.BaseUUIDResp, error) {
+	result, err := l.svcCtx.DB.Teacher.Create().
 		SetName(in.Name).
 		SetAge(int(in.Age)).
 		SetAgeInt32(in.AgeInt32).
@@ -44,7 +44,7 @@ func (l *CreateTeacherLogic) CreateTeacher(in *example.TeacherInfo) (*example.Ba
 		SetClassID(uuidx.ParseUUIDString(in.ClassId)).
 		SetEnrollAt(time.Unix(in.EnrollAt, 0)).
 		SetStatusBool(in.StatusBool).
-		Exec(l.ctx)
+		Save(l.ctx)
 
 	if err != nil {
 		switch {
@@ -57,5 +57,5 @@ func (l *CreateTeacherLogic) CreateTeacher(in *example.TeacherInfo) (*example.Ba
 		}
 	}
 
-	return &example.BaseResp{Msg: i18n.CreateSuccess}, nil
+	return &example.BaseUUIDResp{Id: result.ID.String(), Msg: i18n.CreateSuccess}, nil
 }

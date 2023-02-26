@@ -11,7 +11,7 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/gofrs/uuid"
+	uuid "github.com/gofrs/uuid/v5"
 	"github.com/suyuan32/simple-admin-example-rpc/ent/predicate"
 	"github.com/suyuan32/simple-admin-example-rpc/ent/teacher"
 )
@@ -205,16 +205,7 @@ func (tu *TeacherUpdate) defaults() {
 }
 
 func (tu *TeacherUpdate) sqlSave(ctx context.Context) (n int, err error) {
-	_spec := &sqlgraph.UpdateSpec{
-		Node: &sqlgraph.NodeSpec{
-			Table:   teacher.Table,
-			Columns: teacher.Columns,
-			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
-				Column: teacher.FieldID,
-			},
-		},
-	}
+	_spec := sqlgraph.NewUpdateSpec(teacher.Table, teacher.Columns, sqlgraph.NewFieldSpec(teacher.FieldID, field.TypeUUID))
 	if ps := tu.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {
@@ -444,6 +435,12 @@ func (tuo *TeacherUpdateOne) Mutation() *TeacherMutation {
 	return tuo.mutation
 }
 
+// Where appends a list predicates to the TeacherUpdate builder.
+func (tuo *TeacherUpdateOne) Where(ps ...predicate.Teacher) *TeacherUpdateOne {
+	tuo.mutation.Where(ps...)
+	return tuo
+}
+
 // Select allows selecting one or more fields (columns) of the returned entity.
 // The default is selecting all fields defined in the entity schema.
 func (tuo *TeacherUpdateOne) Select(field string, fields ...string) *TeacherUpdateOne {
@@ -488,16 +485,7 @@ func (tuo *TeacherUpdateOne) defaults() {
 }
 
 func (tuo *TeacherUpdateOne) sqlSave(ctx context.Context) (_node *Teacher, err error) {
-	_spec := &sqlgraph.UpdateSpec{
-		Node: &sqlgraph.NodeSpec{
-			Table:   teacher.Table,
-			Columns: teacher.Columns,
-			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
-				Column: teacher.FieldID,
-			},
-		},
-	}
+	_spec := sqlgraph.NewUpdateSpec(teacher.Table, teacher.Columns, sqlgraph.NewFieldSpec(teacher.FieldID, field.TypeUUID))
 	id, ok := tuo.mutation.ID()
 	if !ok {
 		return nil, &ValidationError{Name: "id", err: errors.New(`ent: missing "Teacher.id" for update`)}

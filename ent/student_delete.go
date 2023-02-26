@@ -40,15 +40,7 @@ func (sd *StudentDelete) ExecX(ctx context.Context) int {
 }
 
 func (sd *StudentDelete) sqlExec(ctx context.Context) (int, error) {
-	_spec := &sqlgraph.DeleteSpec{
-		Node: &sqlgraph.NodeSpec{
-			Table: student.Table,
-			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUint64,
-				Column: student.FieldID,
-			},
-		},
-	}
+	_spec := sqlgraph.NewDeleteSpec(student.Table, sqlgraph.NewFieldSpec(student.FieldID, field.TypeUint64))
 	if ps := sd.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {
@@ -69,6 +61,12 @@ type StudentDeleteOne struct {
 	sd *StudentDelete
 }
 
+// Where appends a list predicates to the StudentDelete builder.
+func (sdo *StudentDeleteOne) Where(ps ...predicate.Student) *StudentDeleteOne {
+	sdo.sd.mutation.Where(ps...)
+	return sdo
+}
+
 // Exec executes the deletion query.
 func (sdo *StudentDeleteOne) Exec(ctx context.Context) error {
 	n, err := sdo.sd.Exec(ctx)
@@ -84,5 +82,7 @@ func (sdo *StudentDeleteOne) Exec(ctx context.Context) error {
 
 // ExecX is like Exec, but panics if an error occurs.
 func (sdo *StudentDeleteOne) ExecX(ctx context.Context) {
-	sdo.sd.ExecX(ctx)
+	if err := sdo.Exec(ctx); err != nil {
+		panic(err)
+	}
 }

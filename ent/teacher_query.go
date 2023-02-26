@@ -10,7 +10,7 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/gofrs/uuid"
+	uuid "github.com/gofrs/uuid/v5"
 	"github.com/suyuan32/simple-admin-example-rpc/ent/predicate"
 	"github.com/suyuan32/simple-admin-example-rpc/ent/teacher"
 )
@@ -18,11 +18,8 @@ import (
 // TeacherQuery is the builder for querying Teacher entities.
 type TeacherQuery struct {
 	config
-	limit      *int
-	offset     *int
-	unique     *bool
+	ctx        *QueryContext
 	order      []OrderFunc
-	fields     []string
 	inters     []Interceptor
 	predicates []predicate.Teacher
 	// intermediate query (i.e. traversal path).
@@ -38,20 +35,20 @@ func (tq *TeacherQuery) Where(ps ...predicate.Teacher) *TeacherQuery {
 
 // Limit the number of records to be returned by this query.
 func (tq *TeacherQuery) Limit(limit int) *TeacherQuery {
-	tq.limit = &limit
+	tq.ctx.Limit = &limit
 	return tq
 }
 
 // Offset to start from.
 func (tq *TeacherQuery) Offset(offset int) *TeacherQuery {
-	tq.offset = &offset
+	tq.ctx.Offset = &offset
 	return tq
 }
 
 // Unique configures the query builder to filter duplicate records on query.
 // By default, unique is set to true, and can be disabled using this method.
 func (tq *TeacherQuery) Unique(unique bool) *TeacherQuery {
-	tq.unique = &unique
+	tq.ctx.Unique = &unique
 	return tq
 }
 
@@ -64,7 +61,7 @@ func (tq *TeacherQuery) Order(o ...OrderFunc) *TeacherQuery {
 // First returns the first Teacher entity from the query.
 // Returns a *NotFoundError when no Teacher was found.
 func (tq *TeacherQuery) First(ctx context.Context) (*Teacher, error) {
-	nodes, err := tq.Limit(1).All(newQueryContext(ctx, TypeTeacher, "First"))
+	nodes, err := tq.Limit(1).All(setContextOp(ctx, tq.ctx, "First"))
 	if err != nil {
 		return nil, err
 	}
@@ -87,7 +84,7 @@ func (tq *TeacherQuery) FirstX(ctx context.Context) *Teacher {
 // Returns a *NotFoundError when no Teacher ID was found.
 func (tq *TeacherQuery) FirstID(ctx context.Context) (id uuid.UUID, err error) {
 	var ids []uuid.UUID
-	if ids, err = tq.Limit(1).IDs(newQueryContext(ctx, TypeTeacher, "FirstID")); err != nil {
+	if ids, err = tq.Limit(1).IDs(setContextOp(ctx, tq.ctx, "FirstID")); err != nil {
 		return
 	}
 	if len(ids) == 0 {
@@ -110,7 +107,7 @@ func (tq *TeacherQuery) FirstIDX(ctx context.Context) uuid.UUID {
 // Returns a *NotSingularError when more than one Teacher entity is found.
 // Returns a *NotFoundError when no Teacher entities are found.
 func (tq *TeacherQuery) Only(ctx context.Context) (*Teacher, error) {
-	nodes, err := tq.Limit(2).All(newQueryContext(ctx, TypeTeacher, "Only"))
+	nodes, err := tq.Limit(2).All(setContextOp(ctx, tq.ctx, "Only"))
 	if err != nil {
 		return nil, err
 	}
@@ -138,7 +135,7 @@ func (tq *TeacherQuery) OnlyX(ctx context.Context) *Teacher {
 // Returns a *NotFoundError when no entities are found.
 func (tq *TeacherQuery) OnlyID(ctx context.Context) (id uuid.UUID, err error) {
 	var ids []uuid.UUID
-	if ids, err = tq.Limit(2).IDs(newQueryContext(ctx, TypeTeacher, "OnlyID")); err != nil {
+	if ids, err = tq.Limit(2).IDs(setContextOp(ctx, tq.ctx, "OnlyID")); err != nil {
 		return
 	}
 	switch len(ids) {
@@ -163,7 +160,7 @@ func (tq *TeacherQuery) OnlyIDX(ctx context.Context) uuid.UUID {
 
 // All executes the query and returns a list of Teachers.
 func (tq *TeacherQuery) All(ctx context.Context) ([]*Teacher, error) {
-	ctx = newQueryContext(ctx, TypeTeacher, "All")
+	ctx = setContextOp(ctx, tq.ctx, "All")
 	if err := tq.prepareQuery(ctx); err != nil {
 		return nil, err
 	}
@@ -181,10 +178,12 @@ func (tq *TeacherQuery) AllX(ctx context.Context) []*Teacher {
 }
 
 // IDs executes the query and returns a list of Teacher IDs.
-func (tq *TeacherQuery) IDs(ctx context.Context) ([]uuid.UUID, error) {
-	var ids []uuid.UUID
-	ctx = newQueryContext(ctx, TypeTeacher, "IDs")
-	if err := tq.Select(teacher.FieldID).Scan(ctx, &ids); err != nil {
+func (tq *TeacherQuery) IDs(ctx context.Context) (ids []uuid.UUID, err error) {
+	if tq.ctx.Unique == nil && tq.path != nil {
+		tq.Unique(true)
+	}
+	ctx = setContextOp(ctx, tq.ctx, "IDs")
+	if err = tq.Select(teacher.FieldID).Scan(ctx, &ids); err != nil {
 		return nil, err
 	}
 	return ids, nil
@@ -201,7 +200,7 @@ func (tq *TeacherQuery) IDsX(ctx context.Context) []uuid.UUID {
 
 // Count returns the count of the given query.
 func (tq *TeacherQuery) Count(ctx context.Context) (int, error) {
-	ctx = newQueryContext(ctx, TypeTeacher, "Count")
+	ctx = setContextOp(ctx, tq.ctx, "Count")
 	if err := tq.prepareQuery(ctx); err != nil {
 		return 0, err
 	}
@@ -219,7 +218,7 @@ func (tq *TeacherQuery) CountX(ctx context.Context) int {
 
 // Exist returns true if the query has elements in the graph.
 func (tq *TeacherQuery) Exist(ctx context.Context) (bool, error) {
-	ctx = newQueryContext(ctx, TypeTeacher, "Exist")
+	ctx = setContextOp(ctx, tq.ctx, "Exist")
 	switch _, err := tq.FirstID(ctx); {
 	case IsNotFound(err):
 		return false, nil
@@ -247,15 +246,13 @@ func (tq *TeacherQuery) Clone() *TeacherQuery {
 	}
 	return &TeacherQuery{
 		config:     tq.config,
-		limit:      tq.limit,
-		offset:     tq.offset,
+		ctx:        tq.ctx.Clone(),
 		order:      append([]OrderFunc{}, tq.order...),
 		inters:     append([]Interceptor{}, tq.inters...),
 		predicates: append([]predicate.Teacher{}, tq.predicates...),
 		// clone intermediate query.
-		sql:    tq.sql.Clone(),
-		path:   tq.path,
-		unique: tq.unique,
+		sql:  tq.sql.Clone(),
+		path: tq.path,
 	}
 }
 
@@ -274,9 +271,9 @@ func (tq *TeacherQuery) Clone() *TeacherQuery {
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 func (tq *TeacherQuery) GroupBy(field string, fields ...string) *TeacherGroupBy {
-	tq.fields = append([]string{field}, fields...)
+	tq.ctx.Fields = append([]string{field}, fields...)
 	grbuild := &TeacherGroupBy{build: tq}
-	grbuild.flds = &tq.fields
+	grbuild.flds = &tq.ctx.Fields
 	grbuild.label = teacher.Label
 	grbuild.scan = grbuild.Scan
 	return grbuild
@@ -295,10 +292,10 @@ func (tq *TeacherQuery) GroupBy(field string, fields ...string) *TeacherGroupBy 
 //		Select(teacher.FieldCreatedAt).
 //		Scan(ctx, &v)
 func (tq *TeacherQuery) Select(fields ...string) *TeacherSelect {
-	tq.fields = append(tq.fields, fields...)
+	tq.ctx.Fields = append(tq.ctx.Fields, fields...)
 	sbuild := &TeacherSelect{TeacherQuery: tq}
 	sbuild.label = teacher.Label
-	sbuild.flds, sbuild.scan = &tq.fields, sbuild.Scan
+	sbuild.flds, sbuild.scan = &tq.ctx.Fields, sbuild.Scan
 	return sbuild
 }
 
@@ -318,7 +315,7 @@ func (tq *TeacherQuery) prepareQuery(ctx context.Context) error {
 			}
 		}
 	}
-	for _, f := range tq.fields {
+	for _, f := range tq.ctx.Fields {
 		if !teacher.ValidColumn(f) {
 			return &ValidationError{Name: f, err: fmt.Errorf("ent: invalid field %q for query", f)}
 		}
@@ -360,30 +357,22 @@ func (tq *TeacherQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Teac
 
 func (tq *TeacherQuery) sqlCount(ctx context.Context) (int, error) {
 	_spec := tq.querySpec()
-	_spec.Node.Columns = tq.fields
-	if len(tq.fields) > 0 {
-		_spec.Unique = tq.unique != nil && *tq.unique
+	_spec.Node.Columns = tq.ctx.Fields
+	if len(tq.ctx.Fields) > 0 {
+		_spec.Unique = tq.ctx.Unique != nil && *tq.ctx.Unique
 	}
 	return sqlgraph.CountNodes(ctx, tq.driver, _spec)
 }
 
 func (tq *TeacherQuery) querySpec() *sqlgraph.QuerySpec {
-	_spec := &sqlgraph.QuerySpec{
-		Node: &sqlgraph.NodeSpec{
-			Table:   teacher.Table,
-			Columns: teacher.Columns,
-			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
-				Column: teacher.FieldID,
-			},
-		},
-		From:   tq.sql,
-		Unique: true,
-	}
-	if unique := tq.unique; unique != nil {
+	_spec := sqlgraph.NewQuerySpec(teacher.Table, teacher.Columns, sqlgraph.NewFieldSpec(teacher.FieldID, field.TypeUUID))
+	_spec.From = tq.sql
+	if unique := tq.ctx.Unique; unique != nil {
 		_spec.Unique = *unique
+	} else if tq.path != nil {
+		_spec.Unique = true
 	}
-	if fields := tq.fields; len(fields) > 0 {
+	if fields := tq.ctx.Fields; len(fields) > 0 {
 		_spec.Node.Columns = make([]string, 0, len(fields))
 		_spec.Node.Columns = append(_spec.Node.Columns, teacher.FieldID)
 		for i := range fields {
@@ -399,10 +388,10 @@ func (tq *TeacherQuery) querySpec() *sqlgraph.QuerySpec {
 			}
 		}
 	}
-	if limit := tq.limit; limit != nil {
+	if limit := tq.ctx.Limit; limit != nil {
 		_spec.Limit = *limit
 	}
-	if offset := tq.offset; offset != nil {
+	if offset := tq.ctx.Offset; offset != nil {
 		_spec.Offset = *offset
 	}
 	if ps := tq.order; len(ps) > 0 {
@@ -418,7 +407,7 @@ func (tq *TeacherQuery) querySpec() *sqlgraph.QuerySpec {
 func (tq *TeacherQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	builder := sql.Dialect(tq.driver.Dialect())
 	t1 := builder.Table(teacher.Table)
-	columns := tq.fields
+	columns := tq.ctx.Fields
 	if len(columns) == 0 {
 		columns = teacher.Columns
 	}
@@ -427,7 +416,7 @@ func (tq *TeacherQuery) sqlQuery(ctx context.Context) *sql.Selector {
 		selector = tq.sql
 		selector.Select(selector.Columns(columns...)...)
 	}
-	if tq.unique != nil && *tq.unique {
+	if tq.ctx.Unique != nil && *tq.ctx.Unique {
 		selector.Distinct()
 	}
 	for _, p := range tq.predicates {
@@ -436,12 +425,12 @@ func (tq *TeacherQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	for _, p := range tq.order {
 		p(selector)
 	}
-	if offset := tq.offset; offset != nil {
+	if offset := tq.ctx.Offset; offset != nil {
 		// limit is mandatory for offset clause. We start
 		// with default value, and override it below if needed.
 		selector.Offset(*offset).Limit(math.MaxInt32)
 	}
-	if limit := tq.limit; limit != nil {
+	if limit := tq.ctx.Limit; limit != nil {
 		selector.Limit(*limit)
 	}
 	return selector
@@ -461,7 +450,7 @@ func (tgb *TeacherGroupBy) Aggregate(fns ...AggregateFunc) *TeacherGroupBy {
 
 // Scan applies the selector query and scans the result into the given value.
 func (tgb *TeacherGroupBy) Scan(ctx context.Context, v any) error {
-	ctx = newQueryContext(ctx, TypeTeacher, "GroupBy")
+	ctx = setContextOp(ctx, tgb.build.ctx, "GroupBy")
 	if err := tgb.build.prepareQuery(ctx); err != nil {
 		return err
 	}
@@ -509,7 +498,7 @@ func (ts *TeacherSelect) Aggregate(fns ...AggregateFunc) *TeacherSelect {
 
 // Scan applies the selector query and scans the result into the given value.
 func (ts *TeacherSelect) Scan(ctx context.Context, v any) error {
-	ctx = newQueryContext(ctx, TypeTeacher, "Select")
+	ctx = setContextOp(ctx, ts.ctx, "Select")
 	if err := ts.prepareQuery(ctx); err != nil {
 		return err
 	}

@@ -17,11 +17,8 @@ import (
 // StudentQuery is the builder for querying Student entities.
 type StudentQuery struct {
 	config
-	limit      *int
-	offset     *int
-	unique     *bool
+	ctx        *QueryContext
 	order      []OrderFunc
-	fields     []string
 	inters     []Interceptor
 	predicates []predicate.Student
 	// intermediate query (i.e. traversal path).
@@ -37,20 +34,20 @@ func (sq *StudentQuery) Where(ps ...predicate.Student) *StudentQuery {
 
 // Limit the number of records to be returned by this query.
 func (sq *StudentQuery) Limit(limit int) *StudentQuery {
-	sq.limit = &limit
+	sq.ctx.Limit = &limit
 	return sq
 }
 
 // Offset to start from.
 func (sq *StudentQuery) Offset(offset int) *StudentQuery {
-	sq.offset = &offset
+	sq.ctx.Offset = &offset
 	return sq
 }
 
 // Unique configures the query builder to filter duplicate records on query.
 // By default, unique is set to true, and can be disabled using this method.
 func (sq *StudentQuery) Unique(unique bool) *StudentQuery {
-	sq.unique = &unique
+	sq.ctx.Unique = &unique
 	return sq
 }
 
@@ -63,7 +60,7 @@ func (sq *StudentQuery) Order(o ...OrderFunc) *StudentQuery {
 // First returns the first Student entity from the query.
 // Returns a *NotFoundError when no Student was found.
 func (sq *StudentQuery) First(ctx context.Context) (*Student, error) {
-	nodes, err := sq.Limit(1).All(newQueryContext(ctx, TypeStudent, "First"))
+	nodes, err := sq.Limit(1).All(setContextOp(ctx, sq.ctx, "First"))
 	if err != nil {
 		return nil, err
 	}
@@ -86,7 +83,7 @@ func (sq *StudentQuery) FirstX(ctx context.Context) *Student {
 // Returns a *NotFoundError when no Student ID was found.
 func (sq *StudentQuery) FirstID(ctx context.Context) (id uint64, err error) {
 	var ids []uint64
-	if ids, err = sq.Limit(1).IDs(newQueryContext(ctx, TypeStudent, "FirstID")); err != nil {
+	if ids, err = sq.Limit(1).IDs(setContextOp(ctx, sq.ctx, "FirstID")); err != nil {
 		return
 	}
 	if len(ids) == 0 {
@@ -109,7 +106,7 @@ func (sq *StudentQuery) FirstIDX(ctx context.Context) uint64 {
 // Returns a *NotSingularError when more than one Student entity is found.
 // Returns a *NotFoundError when no Student entities are found.
 func (sq *StudentQuery) Only(ctx context.Context) (*Student, error) {
-	nodes, err := sq.Limit(2).All(newQueryContext(ctx, TypeStudent, "Only"))
+	nodes, err := sq.Limit(2).All(setContextOp(ctx, sq.ctx, "Only"))
 	if err != nil {
 		return nil, err
 	}
@@ -137,7 +134,7 @@ func (sq *StudentQuery) OnlyX(ctx context.Context) *Student {
 // Returns a *NotFoundError when no entities are found.
 func (sq *StudentQuery) OnlyID(ctx context.Context) (id uint64, err error) {
 	var ids []uint64
-	if ids, err = sq.Limit(2).IDs(newQueryContext(ctx, TypeStudent, "OnlyID")); err != nil {
+	if ids, err = sq.Limit(2).IDs(setContextOp(ctx, sq.ctx, "OnlyID")); err != nil {
 		return
 	}
 	switch len(ids) {
@@ -162,7 +159,7 @@ func (sq *StudentQuery) OnlyIDX(ctx context.Context) uint64 {
 
 // All executes the query and returns a list of Students.
 func (sq *StudentQuery) All(ctx context.Context) ([]*Student, error) {
-	ctx = newQueryContext(ctx, TypeStudent, "All")
+	ctx = setContextOp(ctx, sq.ctx, "All")
 	if err := sq.prepareQuery(ctx); err != nil {
 		return nil, err
 	}
@@ -180,10 +177,12 @@ func (sq *StudentQuery) AllX(ctx context.Context) []*Student {
 }
 
 // IDs executes the query and returns a list of Student IDs.
-func (sq *StudentQuery) IDs(ctx context.Context) ([]uint64, error) {
-	var ids []uint64
-	ctx = newQueryContext(ctx, TypeStudent, "IDs")
-	if err := sq.Select(student.FieldID).Scan(ctx, &ids); err != nil {
+func (sq *StudentQuery) IDs(ctx context.Context) (ids []uint64, err error) {
+	if sq.ctx.Unique == nil && sq.path != nil {
+		sq.Unique(true)
+	}
+	ctx = setContextOp(ctx, sq.ctx, "IDs")
+	if err = sq.Select(student.FieldID).Scan(ctx, &ids); err != nil {
 		return nil, err
 	}
 	return ids, nil
@@ -200,7 +199,7 @@ func (sq *StudentQuery) IDsX(ctx context.Context) []uint64 {
 
 // Count returns the count of the given query.
 func (sq *StudentQuery) Count(ctx context.Context) (int, error) {
-	ctx = newQueryContext(ctx, TypeStudent, "Count")
+	ctx = setContextOp(ctx, sq.ctx, "Count")
 	if err := sq.prepareQuery(ctx); err != nil {
 		return 0, err
 	}
@@ -218,7 +217,7 @@ func (sq *StudentQuery) CountX(ctx context.Context) int {
 
 // Exist returns true if the query has elements in the graph.
 func (sq *StudentQuery) Exist(ctx context.Context) (bool, error) {
-	ctx = newQueryContext(ctx, TypeStudent, "Exist")
+	ctx = setContextOp(ctx, sq.ctx, "Exist")
 	switch _, err := sq.FirstID(ctx); {
 	case IsNotFound(err):
 		return false, nil
@@ -246,15 +245,13 @@ func (sq *StudentQuery) Clone() *StudentQuery {
 	}
 	return &StudentQuery{
 		config:     sq.config,
-		limit:      sq.limit,
-		offset:     sq.offset,
+		ctx:        sq.ctx.Clone(),
 		order:      append([]OrderFunc{}, sq.order...),
 		inters:     append([]Interceptor{}, sq.inters...),
 		predicates: append([]predicate.Student{}, sq.predicates...),
 		// clone intermediate query.
-		sql:    sq.sql.Clone(),
-		path:   sq.path,
-		unique: sq.unique,
+		sql:  sq.sql.Clone(),
+		path: sq.path,
 	}
 }
 
@@ -273,9 +270,9 @@ func (sq *StudentQuery) Clone() *StudentQuery {
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 func (sq *StudentQuery) GroupBy(field string, fields ...string) *StudentGroupBy {
-	sq.fields = append([]string{field}, fields...)
+	sq.ctx.Fields = append([]string{field}, fields...)
 	grbuild := &StudentGroupBy{build: sq}
-	grbuild.flds = &sq.fields
+	grbuild.flds = &sq.ctx.Fields
 	grbuild.label = student.Label
 	grbuild.scan = grbuild.Scan
 	return grbuild
@@ -294,10 +291,10 @@ func (sq *StudentQuery) GroupBy(field string, fields ...string) *StudentGroupBy 
 //		Select(student.FieldCreatedAt).
 //		Scan(ctx, &v)
 func (sq *StudentQuery) Select(fields ...string) *StudentSelect {
-	sq.fields = append(sq.fields, fields...)
+	sq.ctx.Fields = append(sq.ctx.Fields, fields...)
 	sbuild := &StudentSelect{StudentQuery: sq}
 	sbuild.label = student.Label
-	sbuild.flds, sbuild.scan = &sq.fields, sbuild.Scan
+	sbuild.flds, sbuild.scan = &sq.ctx.Fields, sbuild.Scan
 	return sbuild
 }
 
@@ -317,7 +314,7 @@ func (sq *StudentQuery) prepareQuery(ctx context.Context) error {
 			}
 		}
 	}
-	for _, f := range sq.fields {
+	for _, f := range sq.ctx.Fields {
 		if !student.ValidColumn(f) {
 			return &ValidationError{Name: f, err: fmt.Errorf("ent: invalid field %q for query", f)}
 		}
@@ -359,30 +356,22 @@ func (sq *StudentQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Stud
 
 func (sq *StudentQuery) sqlCount(ctx context.Context) (int, error) {
 	_spec := sq.querySpec()
-	_spec.Node.Columns = sq.fields
-	if len(sq.fields) > 0 {
-		_spec.Unique = sq.unique != nil && *sq.unique
+	_spec.Node.Columns = sq.ctx.Fields
+	if len(sq.ctx.Fields) > 0 {
+		_spec.Unique = sq.ctx.Unique != nil && *sq.ctx.Unique
 	}
 	return sqlgraph.CountNodes(ctx, sq.driver, _spec)
 }
 
 func (sq *StudentQuery) querySpec() *sqlgraph.QuerySpec {
-	_spec := &sqlgraph.QuerySpec{
-		Node: &sqlgraph.NodeSpec{
-			Table:   student.Table,
-			Columns: student.Columns,
-			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUint64,
-				Column: student.FieldID,
-			},
-		},
-		From:   sq.sql,
-		Unique: true,
-	}
-	if unique := sq.unique; unique != nil {
+	_spec := sqlgraph.NewQuerySpec(student.Table, student.Columns, sqlgraph.NewFieldSpec(student.FieldID, field.TypeUint64))
+	_spec.From = sq.sql
+	if unique := sq.ctx.Unique; unique != nil {
 		_spec.Unique = *unique
+	} else if sq.path != nil {
+		_spec.Unique = true
 	}
-	if fields := sq.fields; len(fields) > 0 {
+	if fields := sq.ctx.Fields; len(fields) > 0 {
 		_spec.Node.Columns = make([]string, 0, len(fields))
 		_spec.Node.Columns = append(_spec.Node.Columns, student.FieldID)
 		for i := range fields {
@@ -398,10 +387,10 @@ func (sq *StudentQuery) querySpec() *sqlgraph.QuerySpec {
 			}
 		}
 	}
-	if limit := sq.limit; limit != nil {
+	if limit := sq.ctx.Limit; limit != nil {
 		_spec.Limit = *limit
 	}
-	if offset := sq.offset; offset != nil {
+	if offset := sq.ctx.Offset; offset != nil {
 		_spec.Offset = *offset
 	}
 	if ps := sq.order; len(ps) > 0 {
@@ -417,7 +406,7 @@ func (sq *StudentQuery) querySpec() *sqlgraph.QuerySpec {
 func (sq *StudentQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	builder := sql.Dialect(sq.driver.Dialect())
 	t1 := builder.Table(student.Table)
-	columns := sq.fields
+	columns := sq.ctx.Fields
 	if len(columns) == 0 {
 		columns = student.Columns
 	}
@@ -426,7 +415,7 @@ func (sq *StudentQuery) sqlQuery(ctx context.Context) *sql.Selector {
 		selector = sq.sql
 		selector.Select(selector.Columns(columns...)...)
 	}
-	if sq.unique != nil && *sq.unique {
+	if sq.ctx.Unique != nil && *sq.ctx.Unique {
 		selector.Distinct()
 	}
 	for _, p := range sq.predicates {
@@ -435,12 +424,12 @@ func (sq *StudentQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	for _, p := range sq.order {
 		p(selector)
 	}
-	if offset := sq.offset; offset != nil {
+	if offset := sq.ctx.Offset; offset != nil {
 		// limit is mandatory for offset clause. We start
 		// with default value, and override it below if needed.
 		selector.Offset(*offset).Limit(math.MaxInt32)
 	}
-	if limit := sq.limit; limit != nil {
+	if limit := sq.ctx.Limit; limit != nil {
 		selector.Limit(*limit)
 	}
 	return selector
@@ -460,7 +449,7 @@ func (sgb *StudentGroupBy) Aggregate(fns ...AggregateFunc) *StudentGroupBy {
 
 // Scan applies the selector query and scans the result into the given value.
 func (sgb *StudentGroupBy) Scan(ctx context.Context, v any) error {
-	ctx = newQueryContext(ctx, TypeStudent, "GroupBy")
+	ctx = setContextOp(ctx, sgb.build.ctx, "GroupBy")
 	if err := sgb.build.prepareQuery(ctx); err != nil {
 		return err
 	}
@@ -508,7 +497,7 @@ func (ss *StudentSelect) Aggregate(fns ...AggregateFunc) *StudentSelect {
 
 // Scan applies the selector query and scans the result into the given value.
 func (ss *StudentSelect) Scan(ctx context.Context, v any) error {
-	ctx = newQueryContext(ctx, TypeStudent, "Select")
+	ctx = setContextOp(ctx, ss.ctx, "Select")
 	if err := ss.prepareQuery(ctx); err != nil {
 		return err
 	}

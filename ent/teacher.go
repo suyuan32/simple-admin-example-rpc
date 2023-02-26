@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"entgo.io/ent/dialect/sql"
-	"github.com/gofrs/uuid"
+	uuid "github.com/gofrs/uuid/v5"
 	"github.com/suyuan32/simple-admin-example-rpc/ent/teacher"
 )
 
@@ -179,7 +179,7 @@ func (t *Teacher) assignValues(columns []string, values []any) error {
 // Note that you need to call Teacher.Unwrap() before calling this method if this Teacher
 // was returned from a transaction, and the transaction was committed or rolled back.
 func (t *Teacher) Update() *TeacherUpdateOne {
-	return (&TeacherClient{config: t.config}).UpdateOne(t)
+	return NewTeacherClient(t.config).UpdateOne(t)
 }
 
 // Unwrap unwraps the Teacher entity that was returned from a transaction after it was closed,
@@ -245,9 +245,3 @@ func (t *Teacher) String() string {
 
 // Teachers is a parsable slice of Teacher.
 type Teachers []*Teacher
-
-func (t Teachers) config(cfg config) {
-	for _i := range t {
-		t[_i].config = cfg
-	}
-}
