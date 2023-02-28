@@ -7,9 +7,8 @@ import (
 	"github.com/suyuan32/simple-admin-example-rpc/ent/student"
 	"github.com/suyuan32/simple-admin-example-rpc/example"
 	"github.com/suyuan32/simple-admin-example-rpc/internal/svc"
+	"github.com/suyuan32/simple-admin-example-rpc/internal/utils/dberrorhandler"
 
-	"github.com/suyuan32/simple-admin-core/pkg/i18n"
-	"github.com/suyuan32/simple-admin-core/pkg/statuserr"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -35,8 +34,7 @@ func (l *GetStudentListLogic) GetStudentList(in *example.StudentListReq) (*examp
 	result, err := l.svcCtx.DB.Student.Query().Where(predicates...).Page(l.ctx, in.Page, in.PageSize)
 
 	if err != nil {
-		logx.Error(err.Error())
-		return nil, statuserr.NewInternalError(i18n.DatabaseError)
+		return nil, dberrorhandler.DefaultEntError(err, in)
 	}
 
 	resp := &example.StudentListResp{}

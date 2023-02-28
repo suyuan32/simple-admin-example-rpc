@@ -6,8 +6,8 @@ replace github.com/zeromicro/go-zero v1.4.4 => github.com/suyuan32/simple-admin-
 
 require (
 	entgo.io/ent v0.11.8
-	github.com/gofrs/uuid v4.3.2-0.20230107014446-9363593625d7+incompatible
-	github.com/suyuan32/simple-admin-core v0.2.5
+	github.com/gofrs/uuid/v5 v5.0.0
+	github.com/suyuan32/simple-admin-core v0.2.6-0.20230227233820-f19bbf2a8fc4
 	github.com/zeromicro/go-zero v1.4.4
 	google.golang.org/grpc v1.53.0
 	google.golang.org/protobuf v1.28.1
@@ -22,6 +22,7 @@ require (
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/casbin/casbin/v2 v2.63.0 // indirect
 	github.com/casbin/ent-adapter v0.2.3 // indirect
+	github.com/casbin/redis-watcher/v2 v2.3.0 // indirect
 	github.com/cenkalti/backoff/v4 v4.2.0 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/coreos/go-semver v0.3.1 // indirect
@@ -39,7 +40,7 @@ require (
 	github.com/go-openapi/swag v0.22.3 // indirect
 	github.com/go-redis/redis/v8 v8.11.5 // indirect
 	github.com/go-sql-driver/mysql v1.7.0 // indirect
-	github.com/gofrs/uuid/v5 v5.0.0 // indirect
+	github.com/gofrs/uuid v4.3.2-0.20230107014446-9363593625d7+incompatible // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang-jwt/jwt/v4 v4.5.0 // indirect
 	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0 // indirect
