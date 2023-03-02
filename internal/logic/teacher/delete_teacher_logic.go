@@ -31,7 +31,7 @@ func (l *DeleteTeacherLogic) DeleteTeacher(in *example.UUIDsReq) (*example.BaseR
 	_, err := l.svcCtx.DB.Teacher.Delete().Where(teacher.IDIn(uuidx.ParseUUIDSlice(in.Ids)...)).Exec(l.ctx)
 
 	if err != nil {
-		return nil, dberrorhandler.DefaultEntError(err, in)
+		return nil, dberrorhandler.DefaultEntError(l.Logger, err, in)
 	}
 
 	return &example.BaseResp{Msg: i18n.DeleteSuccess}, nil

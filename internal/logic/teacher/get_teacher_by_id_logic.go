@@ -28,7 +28,7 @@ func NewGetTeacherByIdLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Ge
 func (l *GetTeacherByIdLogic) GetTeacherById(in *example.UUIDReq) (*example.TeacherInfo, error) {
 	result, err := l.svcCtx.DB.Teacher.Get(l.ctx, uuidx.ParseUUIDString(in.Id))
 	if err != nil {
-		return nil, dberrorhandler.DefaultEntError(err, in)
+		return nil, dberrorhandler.DefaultEntError(l.Logger, err, in)
 	}
 
 	return &example.TeacherInfo{

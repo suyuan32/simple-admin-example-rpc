@@ -34,7 +34,7 @@ func (l *GetTeacherListLogic) GetTeacherList(in *example.TeacherListReq) (*examp
 	result, err := l.svcCtx.DB.Teacher.Query().Where(predicates...).Page(l.ctx, in.Page, in.PageSize)
 
 	if err != nil {
-		return nil, dberrorhandler.DefaultEntError(err, in)
+		return nil, dberrorhandler.DefaultEntError(l.Logger, err, in)
 	}
 
 	resp := &example.TeacherListResp{}

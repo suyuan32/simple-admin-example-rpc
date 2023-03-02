@@ -27,7 +27,7 @@ func NewGetStudentByIdLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Ge
 func (l *GetStudentByIdLogic) GetStudentById(in *example.IDReq) (*example.StudentInfo, error) {
 	result, err := l.svcCtx.DB.Student.Get(l.ctx, in.Id)
 	if err != nil {
-		return nil, dberrorhandler.DefaultEntError(err, in)
+		return nil, dberrorhandler.DefaultEntError(l.Logger, err, in)
 	}
 
 	return &example.StudentInfo{

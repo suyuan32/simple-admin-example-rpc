@@ -45,7 +45,7 @@ func (l *CreateTeacherLogic) CreateTeacher(in *example.TeacherInfo) (*example.Ba
 		Save(l.ctx)
 
 	if err != nil {
-		return nil, dberrorhandler.DefaultEntError(err, in)
+		return nil, dberrorhandler.DefaultEntError(l.Logger, err, in)
 	}
 
 	return &example.BaseUUIDResp{Id: result.ID.String(), Msg: i18n.CreateSuccess}, nil
