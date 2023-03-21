@@ -25,16 +25,26 @@ type Student struct {
 	Name string `json:"name,omitempty"`
 	// Age holds the value of the "age" field.
 	Age int `json:"age,omitempty"`
+	// AgeInt8 holds the value of the "age_int8" field.
+	AgeInt8 int8 `json:"age_int8,omitempty"`
+	// AgeUint8 holds the value of the "age_uint8" field.
+	AgeUint8 uint8 `json:"age_uint8,omitempty"`
+	// AgeInt16 holds the value of the "age_int16" field.
+	AgeInt16 int16 `json:"age_int16,omitempty"`
+	// AgeUint16 holds the value of the "age_uint16" field.
+	AgeUint16 uint16 `json:"age_uint16,omitempty"`
 	// AgeInt32 holds the value of the "age_int32" field.
 	AgeInt32 int32 `json:"age_int32,omitempty"`
-	// AgeInt64 holds the value of the "age_int64" field.
-	AgeInt64 int64 `json:"age_int64,omitempty"`
-	// AgeUint holds the value of the "age_uint" field.
-	AgeUint uint `json:"age_uint,omitempty"`
 	// AgeUint32 holds the value of the "age_uint32" field.
 	AgeUint32 uint32 `json:"age_uint32,omitempty"`
+	// AgeInt64 holds the value of the "age_int64" field.
+	AgeInt64 int64 `json:"age_int64,omitempty"`
 	// AgeUint64 holds the value of the "age_uint64" field.
 	AgeUint64 uint64 `json:"age_uint64,omitempty"`
+	// AgeInt holds the value of the "age_int" field.
+	AgeInt int `json:"age_int,omitempty"`
+	// AgeUint holds the value of the "age_uint" field.
+	AgeUint uint `json:"age_uint,omitempty"`
 	// WeightFloat holds the value of the "weight_float" field.
 	WeightFloat float64 `json:"weight_float,omitempty"`
 	// WeightFloat32 holds the value of the "weight_float32" field.
@@ -56,7 +66,7 @@ func (*Student) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullBool)
 		case student.FieldWeightFloat, student.FieldWeightFloat32:
 			values[i] = new(sql.NullFloat64)
-		case student.FieldID, student.FieldAge, student.FieldAgeInt32, student.FieldAgeInt64, student.FieldAgeUint, student.FieldAgeUint32, student.FieldAgeUint64:
+		case student.FieldID, student.FieldAge, student.FieldAgeInt8, student.FieldAgeUint8, student.FieldAgeInt16, student.FieldAgeUint16, student.FieldAgeInt32, student.FieldAgeUint32, student.FieldAgeInt64, student.FieldAgeUint64, student.FieldAgeInt, student.FieldAgeUint:
 			values[i] = new(sql.NullInt64)
 		case student.FieldName:
 			values[i] = new(sql.NullString)
@@ -109,23 +119,35 @@ func (s *Student) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				s.Age = int(value.Int64)
 			}
+		case student.FieldAgeInt8:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field age_int8", values[i])
+			} else if value.Valid {
+				s.AgeInt8 = int8(value.Int64)
+			}
+		case student.FieldAgeUint8:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field age_uint8", values[i])
+			} else if value.Valid {
+				s.AgeUint8 = uint8(value.Int64)
+			}
+		case student.FieldAgeInt16:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field age_int16", values[i])
+			} else if value.Valid {
+				s.AgeInt16 = int16(value.Int64)
+			}
+		case student.FieldAgeUint16:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field age_uint16", values[i])
+			} else if value.Valid {
+				s.AgeUint16 = uint16(value.Int64)
+			}
 		case student.FieldAgeInt32:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field age_int32", values[i])
 			} else if value.Valid {
 				s.AgeInt32 = int32(value.Int64)
-			}
-		case student.FieldAgeInt64:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field age_int64", values[i])
-			} else if value.Valid {
-				s.AgeInt64 = value.Int64
-			}
-		case student.FieldAgeUint:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field age_uint", values[i])
-			} else if value.Valid {
-				s.AgeUint = uint(value.Int64)
 			}
 		case student.FieldAgeUint32:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -133,11 +155,29 @@ func (s *Student) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				s.AgeUint32 = uint32(value.Int64)
 			}
+		case student.FieldAgeInt64:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field age_int64", values[i])
+			} else if value.Valid {
+				s.AgeInt64 = value.Int64
+			}
 		case student.FieldAgeUint64:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field age_uint64", values[i])
 			} else if value.Valid {
 				s.AgeUint64 = uint64(value.Int64)
+			}
+		case student.FieldAgeInt:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field age_int", values[i])
+			} else if value.Valid {
+				s.AgeInt = int(value.Int64)
+			}
+		case student.FieldAgeUint:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field age_uint", values[i])
+			} else if value.Valid {
+				s.AgeUint = uint(value.Int64)
 			}
 		case student.FieldWeightFloat:
 			if value, ok := values[i].(*sql.NullFloat64); !ok {
@@ -209,20 +249,35 @@ func (s *Student) String() string {
 	builder.WriteString("age=")
 	builder.WriteString(fmt.Sprintf("%v", s.Age))
 	builder.WriteString(", ")
+	builder.WriteString("age_int8=")
+	builder.WriteString(fmt.Sprintf("%v", s.AgeInt8))
+	builder.WriteString(", ")
+	builder.WriteString("age_uint8=")
+	builder.WriteString(fmt.Sprintf("%v", s.AgeUint8))
+	builder.WriteString(", ")
+	builder.WriteString("age_int16=")
+	builder.WriteString(fmt.Sprintf("%v", s.AgeInt16))
+	builder.WriteString(", ")
+	builder.WriteString("age_uint16=")
+	builder.WriteString(fmt.Sprintf("%v", s.AgeUint16))
+	builder.WriteString(", ")
 	builder.WriteString("age_int32=")
 	builder.WriteString(fmt.Sprintf("%v", s.AgeInt32))
-	builder.WriteString(", ")
-	builder.WriteString("age_int64=")
-	builder.WriteString(fmt.Sprintf("%v", s.AgeInt64))
-	builder.WriteString(", ")
-	builder.WriteString("age_uint=")
-	builder.WriteString(fmt.Sprintf("%v", s.AgeUint))
 	builder.WriteString(", ")
 	builder.WriteString("age_uint32=")
 	builder.WriteString(fmt.Sprintf("%v", s.AgeUint32))
 	builder.WriteString(", ")
+	builder.WriteString("age_int64=")
+	builder.WriteString(fmt.Sprintf("%v", s.AgeInt64))
+	builder.WriteString(", ")
 	builder.WriteString("age_uint64=")
 	builder.WriteString(fmt.Sprintf("%v", s.AgeUint64))
+	builder.WriteString(", ")
+	builder.WriteString("age_int=")
+	builder.WriteString(fmt.Sprintf("%v", s.AgeInt))
+	builder.WriteString(", ")
+	builder.WriteString("age_uint=")
+	builder.WriteString(fmt.Sprintf("%v", s.AgeUint))
 	builder.WriteString(", ")
 	builder.WriteString("weight_float=")
 	builder.WriteString(fmt.Sprintf("%v", s.WeightFloat))

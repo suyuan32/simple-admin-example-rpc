@@ -61,21 +61,33 @@ func (sc *StudentCreate) SetAge(i int) *StudentCreate {
 	return sc
 }
 
+// SetAgeInt8 sets the "age_int8" field.
+func (sc *StudentCreate) SetAgeInt8(i int8) *StudentCreate {
+	sc.mutation.SetAgeInt8(i)
+	return sc
+}
+
+// SetAgeUint8 sets the "age_uint8" field.
+func (sc *StudentCreate) SetAgeUint8(u uint8) *StudentCreate {
+	sc.mutation.SetAgeUint8(u)
+	return sc
+}
+
+// SetAgeInt16 sets the "age_int16" field.
+func (sc *StudentCreate) SetAgeInt16(i int16) *StudentCreate {
+	sc.mutation.SetAgeInt16(i)
+	return sc
+}
+
+// SetAgeUint16 sets the "age_uint16" field.
+func (sc *StudentCreate) SetAgeUint16(u uint16) *StudentCreate {
+	sc.mutation.SetAgeUint16(u)
+	return sc
+}
+
 // SetAgeInt32 sets the "age_int32" field.
 func (sc *StudentCreate) SetAgeInt32(i int32) *StudentCreate {
 	sc.mutation.SetAgeInt32(i)
-	return sc
-}
-
-// SetAgeInt64 sets the "age_int64" field.
-func (sc *StudentCreate) SetAgeInt64(i int64) *StudentCreate {
-	sc.mutation.SetAgeInt64(i)
-	return sc
-}
-
-// SetAgeUint sets the "age_uint" field.
-func (sc *StudentCreate) SetAgeUint(u uint) *StudentCreate {
-	sc.mutation.SetAgeUint(u)
 	return sc
 }
 
@@ -85,9 +97,27 @@ func (sc *StudentCreate) SetAgeUint32(u uint32) *StudentCreate {
 	return sc
 }
 
+// SetAgeInt64 sets the "age_int64" field.
+func (sc *StudentCreate) SetAgeInt64(i int64) *StudentCreate {
+	sc.mutation.SetAgeInt64(i)
+	return sc
+}
+
 // SetAgeUint64 sets the "age_uint64" field.
 func (sc *StudentCreate) SetAgeUint64(u uint64) *StudentCreate {
 	sc.mutation.SetAgeUint64(u)
+	return sc
+}
+
+// SetAgeInt sets the "age_int" field.
+func (sc *StudentCreate) SetAgeInt(i int) *StudentCreate {
+	sc.mutation.SetAgeInt(i)
+	return sc
+}
+
+// SetAgeUint sets the "age_uint" field.
+func (sc *StudentCreate) SetAgeUint(u uint) *StudentCreate {
+	sc.mutation.SetAgeUint(u)
 	return sc
 }
 
@@ -186,20 +216,35 @@ func (sc *StudentCreate) check() error {
 	if _, ok := sc.mutation.Age(); !ok {
 		return &ValidationError{Name: "age", err: errors.New(`ent: missing required field "Student.age"`)}
 	}
+	if _, ok := sc.mutation.AgeInt8(); !ok {
+		return &ValidationError{Name: "age_int8", err: errors.New(`ent: missing required field "Student.age_int8"`)}
+	}
+	if _, ok := sc.mutation.AgeUint8(); !ok {
+		return &ValidationError{Name: "age_uint8", err: errors.New(`ent: missing required field "Student.age_uint8"`)}
+	}
+	if _, ok := sc.mutation.AgeInt16(); !ok {
+		return &ValidationError{Name: "age_int16", err: errors.New(`ent: missing required field "Student.age_int16"`)}
+	}
+	if _, ok := sc.mutation.AgeUint16(); !ok {
+		return &ValidationError{Name: "age_uint16", err: errors.New(`ent: missing required field "Student.age_uint16"`)}
+	}
 	if _, ok := sc.mutation.AgeInt32(); !ok {
 		return &ValidationError{Name: "age_int32", err: errors.New(`ent: missing required field "Student.age_int32"`)}
-	}
-	if _, ok := sc.mutation.AgeInt64(); !ok {
-		return &ValidationError{Name: "age_int64", err: errors.New(`ent: missing required field "Student.age_int64"`)}
-	}
-	if _, ok := sc.mutation.AgeUint(); !ok {
-		return &ValidationError{Name: "age_uint", err: errors.New(`ent: missing required field "Student.age_uint"`)}
 	}
 	if _, ok := sc.mutation.AgeUint32(); !ok {
 		return &ValidationError{Name: "age_uint32", err: errors.New(`ent: missing required field "Student.age_uint32"`)}
 	}
+	if _, ok := sc.mutation.AgeInt64(); !ok {
+		return &ValidationError{Name: "age_int64", err: errors.New(`ent: missing required field "Student.age_int64"`)}
+	}
 	if _, ok := sc.mutation.AgeUint64(); !ok {
 		return &ValidationError{Name: "age_uint64", err: errors.New(`ent: missing required field "Student.age_uint64"`)}
+	}
+	if _, ok := sc.mutation.AgeInt(); !ok {
+		return &ValidationError{Name: "age_int", err: errors.New(`ent: missing required field "Student.age_int"`)}
+	}
+	if _, ok := sc.mutation.AgeUint(); !ok {
+		return &ValidationError{Name: "age_uint", err: errors.New(`ent: missing required field "Student.age_uint"`)}
 	}
 	if _, ok := sc.mutation.WeightFloat(); !ok {
 		return &ValidationError{Name: "weight_float", err: errors.New(`ent: missing required field "Student.weight_float"`)}
@@ -264,25 +309,45 @@ func (sc *StudentCreate) createSpec() (*Student, *sqlgraph.CreateSpec) {
 		_spec.SetField(student.FieldAge, field.TypeInt, value)
 		_node.Age = value
 	}
+	if value, ok := sc.mutation.AgeInt8(); ok {
+		_spec.SetField(student.FieldAgeInt8, field.TypeInt8, value)
+		_node.AgeInt8 = value
+	}
+	if value, ok := sc.mutation.AgeUint8(); ok {
+		_spec.SetField(student.FieldAgeUint8, field.TypeUint8, value)
+		_node.AgeUint8 = value
+	}
+	if value, ok := sc.mutation.AgeInt16(); ok {
+		_spec.SetField(student.FieldAgeInt16, field.TypeInt16, value)
+		_node.AgeInt16 = value
+	}
+	if value, ok := sc.mutation.AgeUint16(); ok {
+		_spec.SetField(student.FieldAgeUint16, field.TypeUint16, value)
+		_node.AgeUint16 = value
+	}
 	if value, ok := sc.mutation.AgeInt32(); ok {
 		_spec.SetField(student.FieldAgeInt32, field.TypeInt32, value)
 		_node.AgeInt32 = value
-	}
-	if value, ok := sc.mutation.AgeInt64(); ok {
-		_spec.SetField(student.FieldAgeInt64, field.TypeInt64, value)
-		_node.AgeInt64 = value
-	}
-	if value, ok := sc.mutation.AgeUint(); ok {
-		_spec.SetField(student.FieldAgeUint, field.TypeUint, value)
-		_node.AgeUint = value
 	}
 	if value, ok := sc.mutation.AgeUint32(); ok {
 		_spec.SetField(student.FieldAgeUint32, field.TypeUint32, value)
 		_node.AgeUint32 = value
 	}
+	if value, ok := sc.mutation.AgeInt64(); ok {
+		_spec.SetField(student.FieldAgeInt64, field.TypeInt64, value)
+		_node.AgeInt64 = value
+	}
 	if value, ok := sc.mutation.AgeUint64(); ok {
 		_spec.SetField(student.FieldAgeUint64, field.TypeUint64, value)
 		_node.AgeUint64 = value
+	}
+	if value, ok := sc.mutation.AgeInt(); ok {
+		_spec.SetField(student.FieldAgeInt, field.TypeInt, value)
+		_node.AgeInt = value
+	}
+	if value, ok := sc.mutation.AgeUint(); ok {
+		_spec.SetField(student.FieldAgeUint, field.TypeUint, value)
+		_node.AgeUint = value
 	}
 	if value, ok := sc.mutation.WeightFloat(); ok {
 		_spec.SetField(student.FieldWeightFloat, field.TypeFloat64, value)

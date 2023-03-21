@@ -19,16 +19,26 @@ const (
 	FieldName = "name"
 	// FieldAge holds the string denoting the age field in the database.
 	FieldAge = "age"
+	// FieldAgeInt8 holds the string denoting the age_int8 field in the database.
+	FieldAgeInt8 = "age_int8"
+	// FieldAgeUint8 holds the string denoting the age_uint8 field in the database.
+	FieldAgeUint8 = "age_uint8"
+	// FieldAgeInt16 holds the string denoting the age_int16 field in the database.
+	FieldAgeInt16 = "age_int16"
+	// FieldAgeUint16 holds the string denoting the age_uint16 field in the database.
+	FieldAgeUint16 = "age_uint16"
 	// FieldAgeInt32 holds the string denoting the age_int32 field in the database.
 	FieldAgeInt32 = "age_int32"
-	// FieldAgeInt64 holds the string denoting the age_int64 field in the database.
-	FieldAgeInt64 = "age_int64"
-	// FieldAgeUint holds the string denoting the age_uint field in the database.
-	FieldAgeUint = "age_uint"
 	// FieldAgeUint32 holds the string denoting the age_uint32 field in the database.
 	FieldAgeUint32 = "age_uint32"
+	// FieldAgeInt64 holds the string denoting the age_int64 field in the database.
+	FieldAgeInt64 = "age_int64"
 	// FieldAgeUint64 holds the string denoting the age_uint64 field in the database.
 	FieldAgeUint64 = "age_uint64"
+	// FieldAgeInt holds the string denoting the age_int field in the database.
+	FieldAgeInt = "age_int"
+	// FieldAgeUint holds the string denoting the age_uint field in the database.
+	FieldAgeUint = "age_uint"
 	// FieldWeightFloat holds the string denoting the weight_float field in the database.
 	FieldWeightFloat = "weight_float"
 	// FieldWeightFloat32 holds the string denoting the weight_float32 field in the database.
@@ -50,11 +60,16 @@ var Columns = []string{
 	FieldUpdatedAt,
 	FieldName,
 	FieldAge,
+	FieldAgeInt8,
+	FieldAgeUint8,
+	FieldAgeInt16,
+	FieldAgeUint16,
 	FieldAgeInt32,
-	FieldAgeInt64,
-	FieldAgeUint,
 	FieldAgeUint32,
+	FieldAgeInt64,
 	FieldAgeUint64,
+	FieldAgeInt,
+	FieldAgeUint,
 	FieldWeightFloat,
 	FieldWeightFloat32,
 	FieldClassID,

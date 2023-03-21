@@ -35,6 +35,70 @@ func (s *StudentUpdateOne) SetNotEmptyAge(value int) *StudentUpdateOne {
 }
 
 // set field if value is not empty. e.g. string does not equal to ""
+func (s *StudentUpdate) SetNotEmptyAgeInt8(value int8) *StudentUpdate {
+	if value != 0 {
+		return s.SetAgeInt8(value)
+	}
+	return s
+}
+
+// set field if value is not empty. e.g. string does not equal to ""
+func (s *StudentUpdateOne) SetNotEmptyAgeInt8(value int8) *StudentUpdateOne {
+	if value != 0 {
+		return s.SetAgeInt8(value)
+	}
+	return s
+}
+
+// set field if value is not empty. e.g. string does not equal to ""
+func (s *StudentUpdate) SetNotEmptyAgeUint8(value uint8) *StudentUpdate {
+	if value != 0 {
+		return s.SetAgeUint8(value)
+	}
+	return s
+}
+
+// set field if value is not empty. e.g. string does not equal to ""
+func (s *StudentUpdateOne) SetNotEmptyAgeUint8(value uint8) *StudentUpdateOne {
+	if value != 0 {
+		return s.SetAgeUint8(value)
+	}
+	return s
+}
+
+// set field if value is not empty. e.g. string does not equal to ""
+func (s *StudentUpdate) SetNotEmptyAgeInt16(value int16) *StudentUpdate {
+	if value != 0 {
+		return s.SetAgeInt16(value)
+	}
+	return s
+}
+
+// set field if value is not empty. e.g. string does not equal to ""
+func (s *StudentUpdateOne) SetNotEmptyAgeInt16(value int16) *StudentUpdateOne {
+	if value != 0 {
+		return s.SetAgeInt16(value)
+	}
+	return s
+}
+
+// set field if value is not empty. e.g. string does not equal to ""
+func (s *StudentUpdate) SetNotEmptyAgeUint16(value uint16) *StudentUpdate {
+	if value != 0 {
+		return s.SetAgeUint16(value)
+	}
+	return s
+}
+
+// set field if value is not empty. e.g. string does not equal to ""
+func (s *StudentUpdateOne) SetNotEmptyAgeUint16(value uint16) *StudentUpdateOne {
+	if value != 0 {
+		return s.SetAgeUint16(value)
+	}
+	return s
+}
+
+// set field if value is not empty. e.g. string does not equal to ""
 func (s *StudentUpdate) SetNotEmptyAgeInt32(value int32) *StudentUpdate {
 	if value != 0 {
 		return s.SetAgeInt32(value)
@@ -46,38 +110,6 @@ func (s *StudentUpdate) SetNotEmptyAgeInt32(value int32) *StudentUpdate {
 func (s *StudentUpdateOne) SetNotEmptyAgeInt32(value int32) *StudentUpdateOne {
 	if value != 0 {
 		return s.SetAgeInt32(value)
-	}
-	return s
-}
-
-// set field if value is not empty. e.g. string does not equal to ""
-func (s *StudentUpdate) SetNotEmptyAgeInt64(value int64) *StudentUpdate {
-	if value != 0 {
-		return s.SetAgeInt64(value)
-	}
-	return s
-}
-
-// set field if value is not empty. e.g. string does not equal to ""
-func (s *StudentUpdateOne) SetNotEmptyAgeInt64(value int64) *StudentUpdateOne {
-	if value != 0 {
-		return s.SetAgeInt64(value)
-	}
-	return s
-}
-
-// set field if value is not empty. e.g. string does not equal to ""
-func (s *StudentUpdate) SetNotEmptyAgeUint(value uint) *StudentUpdate {
-	if value != 0 {
-		return s.SetAgeUint(value)
-	}
-	return s
-}
-
-// set field if value is not empty. e.g. string does not equal to ""
-func (s *StudentUpdateOne) SetNotEmptyAgeUint(value uint) *StudentUpdateOne {
-	if value != 0 {
-		return s.SetAgeUint(value)
 	}
 	return s
 }
@@ -99,6 +131,22 @@ func (s *StudentUpdateOne) SetNotEmptyAgeUint32(value uint32) *StudentUpdateOne 
 }
 
 // set field if value is not empty. e.g. string does not equal to ""
+func (s *StudentUpdate) SetNotEmptyAgeInt64(value int64) *StudentUpdate {
+	if value != 0 {
+		return s.SetAgeInt64(value)
+	}
+	return s
+}
+
+// set field if value is not empty. e.g. string does not equal to ""
+func (s *StudentUpdateOne) SetNotEmptyAgeInt64(value int64) *StudentUpdateOne {
+	if value != 0 {
+		return s.SetAgeInt64(value)
+	}
+	return s
+}
+
+// set field if value is not empty. e.g. string does not equal to ""
 func (s *StudentUpdate) SetNotEmptyAgeUint64(value uint64) *StudentUpdate {
 	if value != 0 {
 		return s.SetAgeUint64(value)
@@ -110,6 +158,38 @@ func (s *StudentUpdate) SetNotEmptyAgeUint64(value uint64) *StudentUpdate {
 func (s *StudentUpdateOne) SetNotEmptyAgeUint64(value uint64) *StudentUpdateOne {
 	if value != 0 {
 		return s.SetAgeUint64(value)
+	}
+	return s
+}
+
+// set field if value is not empty. e.g. string does not equal to ""
+func (s *StudentUpdate) SetNotEmptyAgeInt(value int) *StudentUpdate {
+	if value != 0 {
+		return s.SetAgeInt(value)
+	}
+	return s
+}
+
+// set field if value is not empty. e.g. string does not equal to ""
+func (s *StudentUpdateOne) SetNotEmptyAgeInt(value int) *StudentUpdateOne {
+	if value != 0 {
+		return s.SetAgeInt(value)
+	}
+	return s
+}
+
+// set field if value is not empty. e.g. string does not equal to ""
+func (s *StudentUpdate) SetNotEmptyAgeUint(value uint) *StudentUpdate {
+	if value != 0 {
+		return s.SetAgeUint(value)
+	}
+	return s
+}
+
+// set field if value is not empty. e.g. string does not equal to ""
+func (s *StudentUpdateOne) SetNotEmptyAgeUint(value uint) *StudentUpdateOne {
+	if value != 0 {
+		return s.SetAgeUint(value)
 	}
 	return s
 }
