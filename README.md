@@ -12,8 +12,8 @@ cd example
 go mod tidy
 ```
 
-> 修改 ent/schema/examle.go \
-> Modify ent/schema/examle.go
+> 修改 `ent/schema/examle.go` , 参考 example 中的 schema \
+> Modify `ent/schema/examle.go`, you can find it in example's `ent/schema` directory
 
 
 > 运行如下命令生成 CRUD 代码 \

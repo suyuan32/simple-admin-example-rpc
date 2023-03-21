@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+// Student message
+
+message StudentInfo {
+  uint64 id = 1;
+  int64 created_at = 2;
+  int64 updated_at = 3;
+  string name = 4;
+  int64 age = 5;
+  int32 age_int8 = 6;
+  uint32 age_uint8 = 7;
+  int32 age_int16 = 8;
+  uint32 age_uint16 = 9;
+  int32 age_int32 = 10;
+  uint32 age_uint32 = 11;
+  int64 age_int64 = 12;
+  uint64 age_uint64 = 13;
+  int64 age_int = 14;
+  uint64 age_uint = 15;
+  double weight_float = 16;
+  float weight_float32 = 17;
+  string class_id = 18;
+  int64  enroll_at = 19;
+  bool status_bool = 20;
+}
+
+message StudentListResp {
+  uint64 total = 1;
+  repeated StudentInfo data = 2;
+}
+
+message StudentListReq {
+  uint64 page = 1;
+  uint64 page_size = 2;
+  string name = 3;
+}
+
+
+service Example {
+
+  // Student management
+  // group: student
+  rpc createStudent (StudentInfo) returns (BaseIDResp);
+  // group: student
+  rpc updateStudent (StudentInfo) returns (BaseResp);
+  // group: student
+  rpc getStudentList (StudentListReq) returns (StudentListResp);
+  // group: student
+  rpc getStudentById (IDReq) returns (StudentInfo);
+  // group: student
+  rpc deleteStudent (IDsReq) returns (BaseResp);
+
+
+}
