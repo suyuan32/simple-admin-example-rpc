@@ -1,4 +1,4 @@
-# simple admin example rpc
+# simple admin example rpc v0.2.9-beta
 
 > 只需运行如下命令即可生成这个rpc项目模板
 

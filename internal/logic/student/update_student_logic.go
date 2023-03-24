@@ -4,9 +4,9 @@ import (
 	"context"
 	"time"
 
-	"github.com/suyuan32/simple-admin-example-rpc/example"
 	"github.com/suyuan32/simple-admin-example-rpc/internal/svc"
 	"github.com/suyuan32/simple-admin-example-rpc/internal/utils/dberrorhandler"
+	"github.com/suyuan32/simple-admin-example-rpc/types/example"
 
 	"github.com/suyuan32/simple-admin-common/i18n"
 	"github.com/suyuan32/simple-admin-common/utils/uuidx"

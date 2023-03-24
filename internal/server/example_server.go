@@ -6,11 +6,11 @@ package server
 import (
 	"context"
 
-	"github.com/suyuan32/simple-admin-example-rpc/example"
 	"github.com/suyuan32/simple-admin-example-rpc/internal/logic/base"
 	"github.com/suyuan32/simple-admin-example-rpc/internal/logic/student"
 	"github.com/suyuan32/simple-admin-example-rpc/internal/logic/teacher"
 	"github.com/suyuan32/simple-admin-example-rpc/internal/svc"
+	"github.com/suyuan32/simple-admin-example-rpc/types/example"
 )
 
 type ExampleServer struct {

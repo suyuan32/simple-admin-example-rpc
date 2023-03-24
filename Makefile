@@ -15,7 +15,7 @@ publish-docker:
 	@printf $(GREEN)"[SUCCESS] publish docker successfully"
 
 gen-rpc:
-	goctls rpc protoc ./example.proto --go_out=. --go-grpc_out=. --zrpc_out=.
+	goctls rpc protoc ./example.proto --go_out=./types --go-grpc_out=./types --zrpc_out=.
 	@printf $(GREEN)"[SUCCESS] generate rpc successfully"
 
 gen-ent:
@@ -23,6 +23,6 @@ gen-ent:
 	@printf $(GREEN)"[SUCCESS] generate ent successfully"
 
 gen-rpc-ent-logic:
-	goctls rpc ent --schema=./ent/schema  --style=go_zero --multiple=false --service_name=example --search_key_num=3 --o=./ --model=$(model) --group=$(group) --proto_out=./desc/$(shell echo $(model) | tr A-Z a-z).proto
+	goctls rpc ent --schema=./ent/schema  --style=go_zero --multiple=false --service_name=example --search_key_num=3 --o=./ --model=$(model) --group=$(group) --proto_out=./desc/$(shell echo $(model) | tr A-Z a-z).proto --overwrite=true
 	@printf $(GREEN)"[SUCCESS] generate ent logic codes successfully"
 
