@@ -4,10 +4,10 @@ import (
 	"flag"
 	"fmt"
 
-	"github.com/suyuan32/simple-admin-example-rpc/example"
 	"github.com/suyuan32/simple-admin-example-rpc/internal/config"
 	"github.com/suyuan32/simple-admin-example-rpc/internal/server"
 	"github.com/suyuan32/simple-admin-example-rpc/internal/svc"
+	"github.com/suyuan32/simple-admin-example-rpc/types/example"
 
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/core/service"
