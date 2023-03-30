@@ -3,9 +3,86 @@ syntax = "proto3";
 package example;
 option go_package="./example";
 
+message BaseIDResp {
+  uint64 id = 1;
+  string msg = 2;
+}
+
+message StudentListReq {
+  uint64 page = 1;
+  uint64 page_size = 2;
+  string name = 3;
+}
+
+message TeacherListReq {
+  uint64 page = 1;
+  uint64 page_size = 2;
+  string name = 3;
+}
+
+message UUIDsReq {
+  repeated string ids = 1;
+}
+
+message BaseResp {
+  string msg = 1;
+}
+
 message StatusCodeUUIDReq {
   string id = 1;
   uint64 status = 2;
+}
+
+message TeacherListResp {
+  uint64 total = 1;
+  repeated TeacherInfo data = 2;
+}
+
+message UUIDReq {
+  string id = 1;
+}
+
+message PageInfoReq {
+  uint64 page = 1;
+  uint64 page_size = 2;
+}
+
+message StudentInfo {
+  uint64 id = 1;
+  int64 created_at = 2;
+  int64 updated_at = 3;
+  string name = 4;
+  int64 age = 5;
+  int32 age_int8 = 6;
+  uint32 age_uint8 = 7;
+  int32 age_int16 = 8;
+  uint32 age_uint16 = 9;
+  int32 age_int32 = 10;
+  uint32 age_uint32 = 11;
+  int64 age_int64 = 12;
+  uint64 age_uint64 = 13;
+  int64 age_int = 14;
+  uint64 age_uint = 15;
+  double weight_float = 16;
+  float weight_float32 = 17;
+  string class_id = 18;
+  int64 enroll_at = 19;
+  bool status_bool = 20;
+}
+
+message StatusCodeReq {
+  uint64 id = 1;
+  uint64 status = 2;
+}
+
+message BaseUUIDResp {
+  string id = 1;
+  string msg = 2;
+}
+
+message StudentListResp {
+  uint64 total = 1;
+  repeated StudentInfo data = 2;
 }
 
 message TeacherInfo {
@@ -33,85 +110,8 @@ message IDReq {
   uint64 id = 1;
 }
 
-message BaseResp {
-  string msg = 1;
-}
-
-message StatusCodeReq {
-  uint64 id = 1;
-  uint64 status = 2;
-}
-
-message StudentListReq {
-  uint64 page = 1;
-  uint64 page_size = 2;
-  string name = 3;
-}
-
-message BaseIDResp {
-  uint64 id = 1;
-  string msg = 2;
-}
-
-message StudentListResp {
-  uint64 total = 1;
-  repeated StudentInfo data = 2;
-}
-
-message TeacherListReq {
-  uint64 page = 1;
-  uint64 page_size = 2;
-  string name = 3;
-}
-
 message IDsReq {
   repeated uint64 ids = 1;
-}
-
-message UUIDsReq {
-  repeated string ids = 1;
-}
-
-message UUIDReq {
-  string id = 1;
-}
-
-message PageInfoReq {
-  uint64 page = 1;
-  uint64 page_size = 2;
-}
-
-message BaseUUIDResp {
-  string id = 1;
-  string msg = 2;
-}
-
-message StudentInfo {
-  uint64 id = 1;
-  int64 created_at = 2;
-  int64 updated_at = 3;
-  string name = 4;
-  int64 age = 5;
-  int32 age_int8 = 6;
-  uint32 age_uint8 = 7;
-  int32 age_int16 = 8;
-  uint32 age_uint16 = 9;
-  int32 age_int32 = 10;
-  uint32 age_uint32 = 11;
-  int64 age_int64 = 12;
-  uint64 age_uint64 = 13;
-  int64 age_int = 14;
-  uint64 age_uint = 15;
-  double weight_float = 16;
-  float weight_float32 = 17;
-  string class_id = 18;
-  int64 enroll_at = 19;
-  bool status_bool = 20;
-}
-
-message TeacherListResp {
-  uint64 total = 1;
-  repeated TeacherInfo data = 2;
 }
 
 service Example {
