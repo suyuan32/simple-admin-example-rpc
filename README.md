@@ -1,11 +1,14 @@
-# simple admin example rpc v0.3.1
+# simple admin example rpc v0.3.2
 
 > 只需运行如下命令即可生成这个rpc项目模板
 
 > You just need to run the command below to generate this project
 
 ```shell
-goctls rpc new example --ent=true --module_name=github.com/suyuan32/simple-admin-example-rpc --go_zero_version=v1.5.0 --tool_version=v0.3.1 --port=8080 --desc=true
+goctls rpc new example --ent=true --module_name=github.com/suyuan32/simple-admin-example-rpc --go_zero_version=v1.5.1 --tool_version=v0.3.2 --port=8080 --desc=true
+
+# or
+# goctls rpc new example -e -m github.com/suyuan32/simple-admin-example-rpc -z v1.5.1 -t v0.3.2 -p 8080 -d
 
 cd example
 
@@ -20,7 +23,7 @@ go mod tidy
 > Run the command below to generate CRUD code
 
 ```shell
-# 如果 make gen-api 报错， 执行 go mod tidy | If there ig error when run make gen-ent command, run go mod tidy command.
+# 如果 make gen-ent 报错， 执行 go mod tidy | If there ig error when run make gen-ent command, run go mod tidy command.
 make gen-ent
 
 make gen-rpc-ent-logic model=Student group=student
