@@ -57,7 +57,7 @@ func (o OrderDirection) reverse() OrderDirection {
 const errInvalidPagination = "INVALID_PAGINATION"
 
 type StudentPager struct {
-	Order  OrderFunc
+	Order  student.Order
 	Filter func(*StudentQuery) (*StudentQuery, error)
 }
 
@@ -65,7 +65,7 @@ type StudentPager struct {
 type StudentPaginateOption func(*StudentPager)
 
 // DefaultStudentOrder is the default ordering of Student.
-var DefaultStudentOrder = Asc(student.FieldID)
+var DefaultStudentOrder = Desc(student.FieldID)
 
 func newStudentPager(opts []StudentPaginateOption) (*StudentPager, error) {
 	pager := &StudentPager{}
@@ -136,7 +136,7 @@ func (s *StudentQuery) Page(
 }
 
 type TeacherPager struct {
-	Order  OrderFunc
+	Order  teacher.Order
 	Filter func(*TeacherQuery) (*TeacherQuery, error)
 }
 
@@ -144,7 +144,7 @@ type TeacherPager struct {
 type TeacherPaginateOption func(*TeacherPager)
 
 // DefaultTeacherOrder is the default ordering of Teacher.
-var DefaultTeacherOrder = Asc(teacher.FieldID)
+var DefaultTeacherOrder = Desc(teacher.FieldID)
 
 func newTeacherPager(opts []TeacherPaginateOption) (*TeacherPager, error) {
 	pager := &TeacherPager{}

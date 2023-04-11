@@ -58,7 +58,7 @@
         {{ $query := print $node.Name "Query"}}
         {{ $orderField := print $node.Name "OrderField"}}
         type {{ $pager }} struct {
-            Order OrderFunc
+            Order {{ lower $node.Name }}.Order
             Filter func(*{{ $query }}) (*{{ $query }}, error)
         }
 
@@ -71,7 +71,7 @@
         {{- $defaultOrder := print "Default" $node.Name "Order" }}
 
         // {{ $defaultOrder }} is the default ordering of {{ $node.Name }}.
-        var {{ $defaultOrder }} = Asc({{ lower $node.Name }}.FieldID)
+        var {{ $defaultOrder }} = Desc({{ lower $node.Name }}.FieldID)
 
         func {{ $newPager }}(opts []{{ $opt }}) (*{{ $pager }}, error) {
             pager := &{{ $pager }}{}

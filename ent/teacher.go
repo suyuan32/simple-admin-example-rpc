@@ -7,6 +7,7 @@ import (
 	"strings"
 	"time"
 
+	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
 	uuid "github.com/gofrs/uuid/v5"
 	"github.com/suyuan32/simple-admin-example-rpc/ent/teacher"
@@ -45,7 +46,8 @@ type Teacher struct {
 	// EnrollAt holds the value of the "enroll_at" field.
 	EnrollAt time.Time `json:"enroll_at,omitempty"`
 	// StatusBool holds the value of the "status_bool" field.
-	StatusBool bool `json:"status_bool,omitempty"`
+	StatusBool   bool `json:"status_bool,omitempty"`
+	selectValues sql.SelectValues
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -66,7 +68,7 @@ func (*Teacher) scanValues(columns []string) ([]any, error) {
 		case teacher.FieldID, teacher.FieldClassID:
 			values[i] = new(uuid.UUID)
 		default:
-			return nil, fmt.Errorf("unexpected column %q for type Teacher", columns[i])
+			values[i] = new(sql.UnknownType)
 		}
 	}
 	return values, nil
@@ -170,9 +172,17 @@ func (t *Teacher) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				t.StatusBool = value.Bool
 			}
+		default:
+			t.selectValues.Set(columns[i], values[i])
 		}
 	}
 	return nil
+}
+
+// Value returns the ent.Value that was dynamically selected and assigned to the Teacher.
+// This includes values selected through modifiers, order, etc.
+func (t *Teacher) Value(name string) (ent.Value, error) {
+	return t.selectValues.Get(name)
 }
 
 // Update returns a builder for updating this Teacher.
