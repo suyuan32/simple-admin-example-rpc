@@ -13,23 +13,21 @@ import (
 )
 
 type (
-	BaseIDResp        = example.BaseIDResp
-	BaseResp          = example.BaseResp
-	BaseUUIDResp      = example.BaseUUIDResp
-	Empty             = example.Empty
-	IDReq             = example.IDReq
-	IDsReq            = example.IDsReq
-	PageInfoReq       = example.PageInfoReq
-	StatusCodeReq     = example.StatusCodeReq
-	StatusCodeUUIDReq = example.StatusCodeUUIDReq
-	StudentInfo       = example.StudentInfo
-	StudentListReq    = example.StudentListReq
-	StudentListResp   = example.StudentListResp
-	TeacherInfo       = example.TeacherInfo
-	TeacherListReq    = example.TeacherListReq
-	TeacherListResp   = example.TeacherListResp
-	UUIDReq           = example.UUIDReq
-	UUIDsReq          = example.UUIDsReq
+	BaseIDResp      = example.BaseIDResp
+	BaseResp        = example.BaseResp
+	BaseUUIDResp    = example.BaseUUIDResp
+	Empty           = example.Empty
+	IDReq           = example.IDReq
+	IDsReq          = example.IDsReq
+	PageInfoReq     = example.PageInfoReq
+	StudentInfo     = example.StudentInfo
+	StudentListReq  = example.StudentListReq
+	StudentListResp = example.StudentListResp
+	TeacherInfo     = example.TeacherInfo
+	TeacherListReq  = example.TeacherListReq
+	TeacherListResp = example.TeacherListResp
+	UUIDReq         = example.UUIDReq
+	UUIDsReq        = example.UUIDsReq
 
 	Example interface {
 		InitDatabase(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*BaseResp, error)

@@ -31,16 +31,6 @@ message PageInfoReq {
   uint64 page_size = 2;
 }
 
-message StatusCodeReq {
-  uint64 id = 1;
-  uint64 status = 2;
-}
-
-message StatusCodeUUIDReq {
-  string id = 1;
-  uint64 status = 2;
-}
-
 message BaseIDResp {
   uint64 id = 1;
   string msg = 2;
@@ -50,6 +40,7 @@ message BaseUUIDResp {
   string id = 1;
   string msg = 2;
 }
+
 
 service Example {
   // group: base

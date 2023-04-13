@@ -1,14 +1,14 @@
-# simple admin example rpc v0.3.2
+# simple admin example rpc v0.3.3-beta
 
 > 只需运行如下命令即可生成这个rpc项目模板
 
 > You just need to run the command below to generate this project
 
 ```shell
-goctls rpc new example --ent=true --module_name=github.com/suyuan32/simple-admin-example-rpc --go_zero_version=v1.5.1 --tool_version=v0.3.2 --port=8080 --desc=true
+goctls rpc new example --ent=true --module_name=github.com/suyuan32/simple-admin-example-rpc --go_zero_version=v1.5.1 --tool_version=v0.3.3-beta --port=8080 --desc=true
 
 # or
-# goctls rpc new example -e -m github.com/suyuan32/simple-admin-example-rpc -z v1.5.1 -t v0.3.2 -p 8080 -d
+# goctls rpc new example -e -m github.com/suyuan32/simple-admin-example-rpc -z v1.5.1 -t v0.3.3-beta -p 8080 -d
 
 cd example
 

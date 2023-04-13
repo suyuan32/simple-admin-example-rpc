@@ -3,6 +3,42 @@ syntax = "proto3";
 package example;
 option go_package="./example";
 
+//  base message
+message Empty {}
+
+message UUIDReq {
+  string id = 1;
+}
+
+message StudentListResp {
+  uint64 total = 1;
+  repeated StudentInfo data = 2;
+}
+
+message StudentListReq {
+  uint64 page = 1;
+  uint64 page_size = 2;
+  string name = 3;
+}
+
+message TeacherInfo {
+  string id = 1;
+  int64 created_at = 2;
+  int64 updated_at = 3;
+  string name = 4;
+  int64 age = 5;
+  int32 age_int32 = 6;
+  int64 age_int64 = 7;
+  uint64 age_uint = 8;
+  uint32 age_uint32 = 9;
+  uint64 age_uint64 = 10;
+  double weight_float = 11;
+  float weight_float32 = 12;
+  string class_id = 13;
+  int64 enroll_at = 14;
+  bool status_bool = 15;
+}
+
 message IDsReq {
   repeated uint64 ids = 1;
 }
@@ -10,13 +46,6 @@ message IDsReq {
 message BaseIDResp {
   uint64 id = 1;
   string msg = 2;
-}
-
-//  base message
-message Empty {}
-
-message BaseResp {
-  string msg = 1;
 }
 
 message BaseUUIDResp {
@@ -47,27 +76,9 @@ message StudentInfo {
   bool status_bool = 20;
 }
 
-message UUIDsReq {
-  repeated string ids = 1;
-}
-
-message UUIDReq {
-  string id = 1;
-}
-
 message PageInfoReq {
   uint64 page = 1;
   uint64 page_size = 2;
-}
-
-message StatusCodeReq {
-  uint64 id = 1;
-  uint64 status = 2;
-}
-
-message StudentListResp {
-  uint64 total = 1;
-  repeated StudentInfo data = 2;
 }
 
 message TeacherListResp {
@@ -79,33 +90,12 @@ message IDReq {
   uint64 id = 1;
 }
 
-message StatusCodeUUIDReq {
-  string id = 1;
-  uint64 status = 2;
+message UUIDsReq {
+  repeated string ids = 1;
 }
 
-message StudentListReq {
-  uint64 page = 1;
-  uint64 page_size = 2;
-  string name = 3;
-}
-
-message TeacherInfo {
-  string id = 1;
-  int64 created_at = 2;
-  int64 updated_at = 3;
-  string name = 4;
-  int64 age = 5;
-  int32 age_int32 = 6;
-  int64 age_int64 = 7;
-  uint64 age_uint = 8;
-  uint32 age_uint32 = 9;
-  uint64 age_uint64 = 10;
-  double weight_float = 11;
-  float weight_float32 = 12;
-  string class_id = 13;
-  int64 enroll_at = 14;
-  bool status_bool = 15;
+message BaseResp {
+  string msg = 1;
 }
 
 message TeacherListReq {
