@@ -10,11 +10,15 @@ SERVICE_SNAKE=example
 # Service name in snake format | 项目名称短杠格式
 SERVICE_DASH=example
 
+# The project version, if you don't use git, you should set it manually | 项目版本，如果不使用git请手动设置
+VERSION=$(shell git describe --tags --always)
+
+# ---- You may not need to modify the codes below | 下面的代码大概率不需要更改 ----
+
 GO ?= go
 GOFMT ?= gofmt "-s"
 GOFILES := $(shell find . -name "*.go")
 LDFLAGS := -s -w
-VERSION=$(shell git describe --tags --always)
 
 .PHONY: test
 test: # Run test for the project | 运行项目测试
@@ -47,10 +51,8 @@ publish-docker: # Publish docker image | 发布 docker 镜像
 gen-rpc: # Generate RPC files from proto | 生成 RPC 的代码
 	goctls rpc protoc ./$(SERVICE_SNAKE).proto --go_out=./types --go-grpc_out=./types --zrpc_out=.
 ifeq ($(shell uname -s), Darwin)
-	# platform is macOS
 	sed -i "" 's/,omitempty//g' ./types/$(SERVICE_LOWER)/*.pb.go
 else
-	# platform is Linux | windows
 	sed -i 's/,omitempty//g' ./types/$(SERVICE_LOWER)/*.pb.go
 endif
 	@echo "Generate RPC codes successfully"

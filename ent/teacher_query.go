@@ -19,7 +19,7 @@ import (
 type TeacherQuery struct {
 	config
 	ctx        *QueryContext
-	order      []teacher.Order
+	order      []teacher.OrderOption
 	inters     []Interceptor
 	predicates []predicate.Teacher
 	// intermediate query (i.e. traversal path).
@@ -53,7 +53,7 @@ func (tq *TeacherQuery) Unique(unique bool) *TeacherQuery {
 }
 
 // Order specifies how the records should be ordered.
-func (tq *TeacherQuery) Order(o ...teacher.Order) *TeacherQuery {
+func (tq *TeacherQuery) Order(o ...teacher.OrderOption) *TeacherQuery {
 	tq.order = append(tq.order, o...)
 	return tq
 }
@@ -247,7 +247,7 @@ func (tq *TeacherQuery) Clone() *TeacherQuery {
 	return &TeacherQuery{
 		config:     tq.config,
 		ctx:        tq.ctx.Clone(),
-		order:      append([]teacher.Order{}, tq.order...),
+		order:      append([]teacher.OrderOption{}, tq.order...),
 		inters:     append([]Interceptor{}, tq.inters...),
 		predicates: append([]predicate.Teacher{}, tq.predicates...),
 		// clone intermediate query.

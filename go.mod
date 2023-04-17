@@ -5,7 +5,7 @@ go 1.20
 replace github.com/zeromicro/go-zero v1.5.1 => github.com/suyuan32/simple-admin-tools v0.3.3-beta
 
 require (
-	entgo.io/ent v0.12.0
+	entgo.io/ent v0.12.1
 	github.com/gofrs/uuid/v5 v5.0.0
 	github.com/suyuan32/simple-admin-common v0.3.2
 	github.com/zeromicro/go-zero v1.5.1
