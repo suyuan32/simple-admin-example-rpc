@@ -171,7 +171,7 @@ func (tu *TeacherUpdate) Mutation() *TeacherMutation {
 // Save executes the query and returns the number of nodes affected by the update operation.
 func (tu *TeacherUpdate) Save(ctx context.Context) (int, error) {
 	tu.defaults()
-	return withHooks[int, TeacherMutation](ctx, tu.sqlSave, tu.mutation, tu.hooks)
+	return withHooks(ctx, tu.sqlSave, tu.mutation, tu.hooks)
 }
 
 // SaveX is like Save, but panics if an error occurs.
@@ -451,7 +451,7 @@ func (tuo *TeacherUpdateOne) Select(field string, fields ...string) *TeacherUpda
 // Save executes the query and returns the updated Teacher entity.
 func (tuo *TeacherUpdateOne) Save(ctx context.Context) (*Teacher, error) {
 	tuo.defaults()
-	return withHooks[*Teacher, TeacherMutation](ctx, tuo.sqlSave, tuo.mutation, tuo.hooks)
+	return withHooks(ctx, tuo.sqlSave, tuo.mutation, tuo.hooks)
 }
 
 // SaveX is like Save, but panics if an error occurs.

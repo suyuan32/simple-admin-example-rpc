@@ -143,7 +143,7 @@ func (tc *TeacherCreate) Mutation() *TeacherMutation {
 // Save creates the Teacher in the database.
 func (tc *TeacherCreate) Save(ctx context.Context) (*Teacher, error) {
 	tc.defaults()
-	return withHooks[*Teacher, TeacherMutation](ctx, tc.sqlSave, tc.mutation, tc.hooks)
+	return withHooks(ctx, tc.sqlSave, tc.mutation, tc.hooks)
 }
 
 // SaveX calls Save and panics if Save returns an error.
