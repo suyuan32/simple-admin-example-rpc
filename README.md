@@ -5,10 +5,10 @@
 > You just need to run the command below to generate this project
 
 ```shell
-goctls rpc new example --ent=true --module_name=github.com/suyuan32/simple-admin-example-rpc --port=8080 --desc=true
+goctls rpc new example --ent=true --module_name=github.com/suyuan32/simple-admin-example-rpc --port=8080 --desc=true --i18n=true
 
 # or
-# goctls rpc new example -e -m github.com/suyuan32/simple-admin-example-rpc -p 8080 -d
+# goctls rpc new example -e -m github.com/suyuan32/simple-admin-example-rpc -p 8080 -d -i
 
 cd example
 
