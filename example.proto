@@ -8,17 +8,23 @@ message BaseUUIDResp {
   string msg = 2;
 }
 
-message TeacherListResp {
+message StudentListResp {
   uint64 total = 1;
-  repeated TeacherInfo data = 2;
+  repeated StudentInfo data = 2;
+}
+
+message StudentListReq {
+  uint64 page = 1;
+  uint64 page_size = 2;
+  string name = 3;
+}
+
+message IDReq {
+  uint64 id = 1;
 }
 
 message IDsReq {
   repeated uint64 ids = 1;
-}
-
-message UUIDReq {
-  string id = 1;
 }
 
 message BaseIDResp {
@@ -49,19 +55,17 @@ message StudentInfo {
   bool status_bool = 20;
 }
 
-message IDReq {
-  uint64 id = 1;
-}
-
-message StudentListResp {
-  uint64 total = 1;
-  repeated StudentInfo data = 2;
-}
-
-message StudentListReq {
+message TeacherListReq {
   uint64 page = 1;
   uint64 page_size = 2;
   string name = 3;
+}
+
+//  base message
+message Empty {}
+
+message UUIDsReq {
+  repeated string ids = 1;
 }
 
 message TeacherInfo {
@@ -82,27 +86,23 @@ message TeacherInfo {
   bool status_bool = 15;
 }
 
-message BaseResp {
-  string msg = 1;
+message TeacherListResp {
+  uint64 total = 1;
+  repeated TeacherInfo data = 2;
 }
 
-message UUIDsReq {
-  repeated string ids = 1;
+message UUIDReq {
+  string id = 1;
+}
+
+message BaseResp {
+  string msg = 1;
 }
 
 message PageInfoReq {
   uint64 page = 1;
   uint64 page_size = 2;
 }
-
-message TeacherListReq {
-  uint64 page = 1;
-  uint64 page_size = 2;
-  string name = 3;
-}
-
-//  base message
-message Empty {}
 
 service Example {
   //  group: base
