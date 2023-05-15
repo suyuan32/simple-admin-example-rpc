@@ -3,34 +3,8 @@ syntax = "proto3";
 package example;
 option go_package="./example";
 
-message BaseUUIDResp {
-  string id = 1;
-  string msg = 2;
-}
-
-message StudentListResp {
-  uint64 total = 1;
-  repeated StudentInfo data = 2;
-}
-
-message StudentListReq {
-  uint64 page = 1;
-  uint64 page_size = 2;
-  string name = 3;
-}
-
-message IDReq {
-  uint64 id = 1;
-}
-
-message IDsReq {
-  repeated uint64 ids = 1;
-}
-
-message BaseIDResp {
-  uint64 id = 1;
-  string msg = 2;
-}
+//  base message
+message Empty {}
 
 message StudentInfo {
   uint64 id = 1;
@@ -61,11 +35,20 @@ message TeacherListReq {
   string name = 3;
 }
 
-//  base message
-message Empty {}
+message StudentListReq {
+  uint64 page = 1;
+  uint64 page_size = 2;
+  string name = 3;
+}
 
-message UUIDsReq {
-  repeated string ids = 1;
+message PageInfoReq {
+  uint64 page = 1;
+  uint64 page_size = 2;
+}
+
+message BaseIDResp {
+  uint64 id = 1;
+  string msg = 2;
 }
 
 message TeacherInfo {
@@ -91,6 +74,18 @@ message TeacherListResp {
   repeated TeacherInfo data = 2;
 }
 
+message IDReq {
+  uint64 id = 1;
+}
+
+message IDsReq {
+  repeated uint64 ids = 1;
+}
+
+message UUIDsReq {
+  repeated string ids = 1;
+}
+
 message UUIDReq {
   string id = 1;
 }
@@ -99,9 +94,14 @@ message BaseResp {
   string msg = 1;
 }
 
-message PageInfoReq {
-  uint64 page = 1;
-  uint64 page_size = 2;
+message BaseUUIDResp {
+  string id = 1;
+  string msg = 2;
+}
+
+message StudentListResp {
+  uint64 total = 1;
+  repeated StudentInfo data = 2;
 }
 
 service Example {
