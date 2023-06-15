@@ -8,9 +8,10 @@ import (
 	"github.com/suyuan32/simple-admin-example-rpc/internal/utils/dberrorhandler"
 	"github.com/suyuan32/simple-admin-example-rpc/types/example"
 
-	"github.com/suyuan32/simple-admin-common/i18n"
+	"github.com/suyuan32/simple-admin-common/msg/errormsg"
 	"github.com/suyuan32/simple-admin-common/utils/uuidx"
 
+	"github.com/suyuan32/simple-admin-common/utils/pointy"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -30,23 +31,23 @@ func NewCreateTeacherLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Cre
 
 func (l *CreateTeacherLogic) CreateTeacher(in *example.TeacherInfo) (*example.BaseUUIDResp, error) {
 	result, err := l.svcCtx.DB.Teacher.Create().
-		SetName(in.Name).
-		SetAge(int(in.Age)).
-		SetAgeInt32(in.AgeInt32).
-		SetAgeInt64(in.AgeInt64).
-		SetAgeUint(uint(in.AgeUint)).
-		SetAgeUint32(in.AgeUint32).
-		SetAgeUint64(in.AgeUint64).
-		SetWeightFloat(in.WeightFloat).
-		SetWeightFloat32(in.WeightFloat32).
-		SetClassID(uuidx.ParseUUIDString(in.ClassId)).
-		SetEnrollAt(time.Unix(in.EnrollAt, 0)).
-		SetStatusBool(in.StatusBool).
+		SetNotNilName(in.Name).
+		SetNotNilAge(pointy.GetPointer(int(*in.Age))).
+		SetNotNilAgeInt32(in.AgeInt32).
+		SetNotNilAgeInt64(in.AgeInt64).
+		SetNotNilAgeUint(pointy.GetPointer(uint(*in.AgeUint))).
+		SetNotNilAgeUint32(in.AgeUint32).
+		SetNotNilAgeUint64(in.AgeUint64).
+		SetNotNilWeightFloat(in.WeightFloat).
+		SetNotNilWeightFloat32(in.WeightFloat32).
+		SetNotNilClassID(uuidx.ParseUUIDStringToPointer(*in.ClassId)).
+		SetNotNilEnrollAt(pointy.GetPointer(time.Unix(*in.EnrollAt, 0))).
+		SetNotNilStatusBool(in.StatusBool).
 		Save(l.ctx)
 
 	if err != nil {
 		return nil, dberrorhandler.DefaultEntError(l.Logger, err, in)
 	}
 
-	return &example.BaseUUIDResp{Id: result.ID.String(), Msg: i18n.CreateSuccess}, nil
+	return &example.BaseUUIDResp{Id: result.ID.String(), Msg: errormsg.CreateSuccess}, nil
 }

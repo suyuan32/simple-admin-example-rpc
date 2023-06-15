@@ -35,6 +35,26 @@ func (su *StudentUpdate) SetUpdatedAt(t time.Time) *StudentUpdate {
 	return su
 }
 
+// SetDeletedAt sets the "deleted_at" field.
+func (su *StudentUpdate) SetDeletedAt(t time.Time) *StudentUpdate {
+	su.mutation.SetDeletedAt(t)
+	return su
+}
+
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
+func (su *StudentUpdate) SetNillableDeletedAt(t *time.Time) *StudentUpdate {
+	if t != nil {
+		su.SetDeletedAt(*t)
+	}
+	return su
+}
+
+// ClearDeletedAt clears the value of the "deleted_at" field.
+func (su *StudentUpdate) ClearDeletedAt() *StudentUpdate {
+	su.mutation.ClearDeletedAt()
+	return su
+}
+
 // SetName sets the "name" field.
 func (su *StudentUpdate) SetName(s string) *StudentUpdate {
 	su.mutation.SetName(s)
@@ -235,7 +255,9 @@ func (su *StudentUpdate) Mutation() *StudentMutation {
 
 // Save executes the query and returns the number of nodes affected by the update operation.
 func (su *StudentUpdate) Save(ctx context.Context) (int, error) {
-	su.defaults()
+	if err := su.defaults(); err != nil {
+		return 0, err
+	}
 	return withHooks(ctx, su.sqlSave, su.mutation, su.hooks)
 }
 
@@ -262,11 +284,15 @@ func (su *StudentUpdate) ExecX(ctx context.Context) {
 }
 
 // defaults sets the default values of the builder before save.
-func (su *StudentUpdate) defaults() {
+func (su *StudentUpdate) defaults() error {
 	if _, ok := su.mutation.UpdatedAt(); !ok {
+		if student.UpdateDefaultUpdatedAt == nil {
+			return fmt.Errorf("ent: uninitialized student.UpdateDefaultUpdatedAt (forgotten import ent/runtime?)")
+		}
 		v := student.UpdateDefaultUpdatedAt()
 		su.mutation.SetUpdatedAt(v)
 	}
+	return nil
 }
 
 func (su *StudentUpdate) sqlSave(ctx context.Context) (n int, err error) {
@@ -280,6 +306,12 @@ func (su *StudentUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := su.mutation.UpdatedAt(); ok {
 		_spec.SetField(student.FieldUpdatedAt, field.TypeTime, value)
+	}
+	if value, ok := su.mutation.DeletedAt(); ok {
+		_spec.SetField(student.FieldDeletedAt, field.TypeTime, value)
+	}
+	if su.mutation.DeletedAtCleared() {
+		_spec.ClearField(student.FieldDeletedAt, field.TypeTime)
 	}
 	if value, ok := su.mutation.Name(); ok {
 		_spec.SetField(student.FieldName, field.TypeString, value)
@@ -394,6 +426,26 @@ type StudentUpdateOne struct {
 // SetUpdatedAt sets the "updated_at" field.
 func (suo *StudentUpdateOne) SetUpdatedAt(t time.Time) *StudentUpdateOne {
 	suo.mutation.SetUpdatedAt(t)
+	return suo
+}
+
+// SetDeletedAt sets the "deleted_at" field.
+func (suo *StudentUpdateOne) SetDeletedAt(t time.Time) *StudentUpdateOne {
+	suo.mutation.SetDeletedAt(t)
+	return suo
+}
+
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
+func (suo *StudentUpdateOne) SetNillableDeletedAt(t *time.Time) *StudentUpdateOne {
+	if t != nil {
+		suo.SetDeletedAt(*t)
+	}
+	return suo
+}
+
+// ClearDeletedAt clears the value of the "deleted_at" field.
+func (suo *StudentUpdateOne) ClearDeletedAt() *StudentUpdateOne {
+	suo.mutation.ClearDeletedAt()
 	return suo
 }
 
@@ -610,7 +662,9 @@ func (suo *StudentUpdateOne) Select(field string, fields ...string) *StudentUpda
 
 // Save executes the query and returns the updated Student entity.
 func (suo *StudentUpdateOne) Save(ctx context.Context) (*Student, error) {
-	suo.defaults()
+	if err := suo.defaults(); err != nil {
+		return nil, err
+	}
 	return withHooks(ctx, suo.sqlSave, suo.mutation, suo.hooks)
 }
 
@@ -637,11 +691,15 @@ func (suo *StudentUpdateOne) ExecX(ctx context.Context) {
 }
 
 // defaults sets the default values of the builder before save.
-func (suo *StudentUpdateOne) defaults() {
+func (suo *StudentUpdateOne) defaults() error {
 	if _, ok := suo.mutation.UpdatedAt(); !ok {
+		if student.UpdateDefaultUpdatedAt == nil {
+			return fmt.Errorf("ent: uninitialized student.UpdateDefaultUpdatedAt (forgotten import ent/runtime?)")
+		}
 		v := student.UpdateDefaultUpdatedAt()
 		suo.mutation.SetUpdatedAt(v)
 	}
+	return nil
 }
 
 func (suo *StudentUpdateOne) sqlSave(ctx context.Context) (_node *Student, err error) {
@@ -672,6 +730,12 @@ func (suo *StudentUpdateOne) sqlSave(ctx context.Context) (_node *Student, err e
 	}
 	if value, ok := suo.mutation.UpdatedAt(); ok {
 		_spec.SetField(student.FieldUpdatedAt, field.TypeTime, value)
+	}
+	if value, ok := suo.mutation.DeletedAt(); ok {
+		_spec.SetField(student.FieldDeletedAt, field.TypeTime, value)
+	}
+	if suo.mutation.DeletedAtCleared() {
+		_spec.ClearField(student.FieldDeletedAt, field.TypeTime)
 	}
 	if value, ok := suo.mutation.Name(); ok {
 		_spec.SetField(student.FieldName, field.TypeString, value)

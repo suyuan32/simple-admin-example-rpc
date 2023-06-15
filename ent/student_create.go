@@ -49,6 +49,20 @@ func (sc *StudentCreate) SetNillableUpdatedAt(t *time.Time) *StudentCreate {
 	return sc
 }
 
+// SetDeletedAt sets the "deleted_at" field.
+func (sc *StudentCreate) SetDeletedAt(t time.Time) *StudentCreate {
+	sc.mutation.SetDeletedAt(t)
+	return sc
+}
+
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
+func (sc *StudentCreate) SetNillableDeletedAt(t *time.Time) *StudentCreate {
+	if t != nil {
+		sc.SetDeletedAt(*t)
+	}
+	return sc
+}
+
 // SetName sets the "name" field.
 func (sc *StudentCreate) SetName(s string) *StudentCreate {
 	sc.mutation.SetName(s)
@@ -164,7 +178,9 @@ func (sc *StudentCreate) Mutation() *StudentMutation {
 
 // Save creates the Student in the database.
 func (sc *StudentCreate) Save(ctx context.Context) (*Student, error) {
-	sc.defaults()
+	if err := sc.defaults(); err != nil {
+		return nil, err
+	}
 	return withHooks(ctx, sc.sqlSave, sc.mutation, sc.hooks)
 }
 
@@ -191,15 +207,22 @@ func (sc *StudentCreate) ExecX(ctx context.Context) {
 }
 
 // defaults sets the default values of the builder before save.
-func (sc *StudentCreate) defaults() {
+func (sc *StudentCreate) defaults() error {
 	if _, ok := sc.mutation.CreatedAt(); !ok {
+		if student.DefaultCreatedAt == nil {
+			return fmt.Errorf("ent: uninitialized student.DefaultCreatedAt (forgotten import ent/runtime?)")
+		}
 		v := student.DefaultCreatedAt()
 		sc.mutation.SetCreatedAt(v)
 	}
 	if _, ok := sc.mutation.UpdatedAt(); !ok {
+		if student.DefaultUpdatedAt == nil {
+			return fmt.Errorf("ent: uninitialized student.DefaultUpdatedAt (forgotten import ent/runtime?)")
+		}
 		v := student.DefaultUpdatedAt()
 		sc.mutation.SetUpdatedAt(v)
 	}
+	return nil
 }
 
 // check runs all checks and user-defined validators on the builder.
@@ -300,6 +323,10 @@ func (sc *StudentCreate) createSpec() (*Student, *sqlgraph.CreateSpec) {
 	if value, ok := sc.mutation.UpdatedAt(); ok {
 		_spec.SetField(student.FieldUpdatedAt, field.TypeTime, value)
 		_node.UpdatedAt = value
+	}
+	if value, ok := sc.mutation.DeletedAt(); ok {
+		_spec.SetField(student.FieldDeletedAt, field.TypeTime, value)
+		_node.DeletedAt = value
 	}
 	if value, ok := sc.mutation.Name(); ok {
 		_spec.SetField(student.FieldName, field.TypeString, value)

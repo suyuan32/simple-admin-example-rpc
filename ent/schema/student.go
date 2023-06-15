@@ -5,6 +5,8 @@ import (
 	"entgo.io/ent/schema/field"
 	"github.com/gofrs/uuid/v5"
 	"github.com/suyuan32/simple-admin-common/orm/ent/mixins"
+
+	mixins2 "github.com/suyuan32/simple-admin-example-rpc/ent/schema/mixins"
 )
 
 // Student holds the schema definition for the Student entity.
@@ -44,6 +46,7 @@ func (Student) Fields() []ent.Field {
 func (Student) Mixin() []ent.Mixin {
 	return []ent.Mixin{
 		mixins.BaseIDMixin{},
+		mixins2.SoftDeleteMixin{},
 	}
 }
 

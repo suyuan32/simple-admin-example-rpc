@@ -14,6 +14,8 @@ import (
 	"github.com/zeromicro/go-zero/zrpc"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
+
+	_ "github.com/suyuan32/simple-admin-example-rpc/ent/runtime"
 )
 
 var configFile = flag.String("f", "etc/example.yaml", "the config file")

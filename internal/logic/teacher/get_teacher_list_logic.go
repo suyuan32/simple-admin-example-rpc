@@ -9,6 +9,7 @@ import (
 	"github.com/suyuan32/simple-admin-example-rpc/internal/utils/dberrorhandler"
 	"github.com/suyuan32/simple-admin-example-rpc/types/example"
 
+	"github.com/suyuan32/simple-admin-common/utils/pointy"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -28,8 +29,8 @@ func NewGetTeacherListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Ge
 
 func (l *GetTeacherListLogic) GetTeacherList(in *example.TeacherListReq) (*example.TeacherListResp, error) {
 	var predicates []predicate.Teacher
-	if in.Name != "" {
-		predicates = append(predicates, teacher.NameContains(in.Name))
+	if in.Name != nil {
+		predicates = append(predicates, teacher.NameContains(*in.Name))
 	}
 	result, err := l.svcCtx.DB.Teacher.Query().Where(predicates...).Page(l.ctx, in.Page, in.PageSize)
 
@@ -42,21 +43,21 @@ func (l *GetTeacherListLogic) GetTeacherList(in *example.TeacherListReq) (*examp
 
 	for _, v := range result.List {
 		resp.Data = append(resp.Data, &example.TeacherInfo{
-			Id:            v.ID.String(),
-			CreatedAt:     v.CreatedAt.UnixMilli(),
-			UpdatedAt:     v.UpdatedAt.UnixMilli(),
-			Name:          v.Name,
-			Age:           int64(v.Age),
-			AgeInt32:      v.AgeInt32,
-			AgeInt64:      v.AgeInt64,
-			AgeUint:       uint64(v.AgeUint),
-			AgeUint32:     v.AgeUint32,
-			AgeUint64:     v.AgeUint64,
-			WeightFloat:   v.WeightFloat,
-			WeightFloat32: v.WeightFloat32,
-			ClassId:       v.ClassID.String(),
-			EnrollAt:      v.EnrollAt.UnixMilli(),
-			StatusBool:    v.StatusBool,
+			Id:            pointy.GetPointer(v.ID.String()),
+			CreatedAt:     pointy.GetPointer(v.CreatedAt.UnixMilli()),
+			UpdatedAt:     pointy.GetPointer(v.UpdatedAt.UnixMilli()),
+			Name:          &v.Name,
+			Age:           pointy.GetPointer(int64(v.Age)),
+			AgeInt32:      &v.AgeInt32,
+			AgeInt64:      &v.AgeInt64,
+			AgeUint:       pointy.GetPointer(uint64(v.AgeUint)),
+			AgeUint32:     &v.AgeUint32,
+			AgeUint64:     &v.AgeUint64,
+			WeightFloat:   &v.WeightFloat,
+			WeightFloat32: &v.WeightFloat32,
+			ClassId:       pointy.GetPointer(v.ClassID.String()),
+			EnrollAt:      pointy.GetPointer(v.EnrollAt.UnixMilli()),
+			StatusBool:    &v.StatusBool,
 		})
 	}
 

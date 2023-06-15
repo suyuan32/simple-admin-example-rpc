@@ -17,11 +17,13 @@ VERSION=$(shell git describe --tags --always)
 PROJECT_STYLE=go_zero
 
 # Whether to use i18n | 是否启用 i18n
-PROJECT_I18N=true
+PROJECT_I18N=false
 
 # The suffix after build or compile | 构建后缀
 PROJECT_BUILD_SUFFIX=rpc
 
+# Ent enabled features | Ent 启用的官方特性
+ENT_FEATURE := sql/execquery,intercept
 
 # ---- You may not need to modify the codes below | 下面的代码大概率不需要更改 ----
 
@@ -69,12 +71,12 @@ endif
 
 .PHONY: gen-ent
 gen-ent: # Generate Ent codes | 生成 Ent 的代码
-	go run -mod=mod entgo.io/ent/cmd/ent generate --template glob="./ent/template/*.tmpl" ./ent/schema
+	go run -mod=mod entgo.io/ent/cmd/ent generate --template glob="./ent/template/*.tmpl" ./ent/schema --feature $(ENT_FEATURE)
 	@echo "Generate Ent codes successfully"
 
 .PHONY: gen-rpc-ent-logic
 gen-rpc-ent-logic: # Generate logic code from Ent, need model and group params | 根据 Ent 生成逻辑代码, 需要设置 model 和 group
-	goctls rpc ent --schema=./ent/schema  --style=go_zero --multiple=false --service_name=$(SERVICE) --search_key_num=3 --output=./ --model=$(model) --group=$(group) --proto_out=./desc/$(shell echo $(model) | tr A-Z a-z).proto --i18n=$(PROJECT_I18N) --overwrite=true
+	goctls rpc ent --schema=./ent/schema  --style=$(PROJECT_STYLE) --multiple=false --service_name=$(SERVICE) --search_key_num=3 --output=./ --model=$(model) --group=$(group) --proto_out=./desc/$(shell echo $(model) | tr A-Z a-z).proto --i18n=$(PROJECT_I18N) --overwrite=true
 	@echo "Generate logic codes from Ent successfully"
 
 .PHONY: build-win

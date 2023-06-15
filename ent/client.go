@@ -16,6 +16,8 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"github.com/suyuan32/simple-admin-example-rpc/ent/student"
 	"github.com/suyuan32/simple-admin-example-rpc/ent/teacher"
+
+	stdsql "database/sql"
 )
 
 // Client is the client that holds all ent builders.
@@ -293,12 +295,14 @@ func (c *StudentClient) GetX(ctx context.Context, id uint64) *Student {
 
 // Hooks returns the client hooks.
 func (c *StudentClient) Hooks() []Hook {
-	return c.hooks.Student
+	hooks := c.hooks.Student
+	return append(hooks[:len(hooks):len(hooks)], student.Hooks[:]...)
 }
 
 // Interceptors returns the client interceptors.
 func (c *StudentClient) Interceptors() []Interceptor {
-	return c.inters.Student
+	inters := c.inters.Student
+	return append(inters[:len(inters):len(inters)], student.Interceptors[:]...)
 }
 
 func (c *StudentClient) mutate(ctx context.Context, m *StudentMutation) (Value, error) {
@@ -443,3 +447,27 @@ type (
 		Student, Teacher []ent.Interceptor
 	}
 )
+
+// ExecContext allows calling the underlying ExecContext method of the driver if it is supported by it.
+// See, database/sql#DB.ExecContext for more information.
+func (c *config) ExecContext(ctx context.Context, query string, args ...any) (stdsql.Result, error) {
+	ex, ok := c.driver.(interface {
+		ExecContext(context.Context, string, ...any) (stdsql.Result, error)
+	})
+	if !ok {
+		return nil, fmt.Errorf("Driver.ExecContext is not supported")
+	}
+	return ex.ExecContext(ctx, query, args...)
+}
+
+// QueryContext allows calling the underlying QueryContext method of the driver if it is supported by it.
+// See, database/sql#DB.QueryContext for more information.
+func (c *config) QueryContext(ctx context.Context, query string, args ...any) (*stdsql.Rows, error) {
+	q, ok := c.driver.(interface {
+		QueryContext(context.Context, string, ...any) (*stdsql.Rows, error)
+	})
+	if !ok {
+		return nil, fmt.Errorf("Driver.QueryContext is not supported")
+	}
+	return q.QueryContext(ctx, query, args...)
+}

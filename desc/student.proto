@@ -3,26 +3,26 @@ syntax = "proto3";
 // Student message
 
 message StudentInfo {
-  uint64 id = 1;
-  int64 created_at = 2;
-  int64 updated_at = 3;
-  string name = 4;
-  int64 age = 5;
-  int32 age_int8 = 6;
-  uint32 age_uint8 = 7;
-  int32 age_int16 = 8;
-  uint32 age_uint16 = 9;
-  int32 age_int32 = 10;
-  uint32 age_uint32 = 11;
-  int64 age_int64 = 12;
-  uint64 age_uint64 = 13;
-  int64 age_int = 14;
-  uint64 age_uint = 15;
-  double weight_float = 16;
-  float weight_float32 = 17;
-  string class_id = 18;
-  int64  enroll_at = 19;
-  bool status_bool = 20;
+  optional uint64 id = 1;
+  optional int64 created_at = 2;
+  optional int64 updated_at = 3;
+  optional string name = 4;
+  optional int64 age = 5;
+  optional int32 age_int8 = 6;
+  optional uint32 age_uint8 = 7;
+  optional int32 age_int16 = 8;
+  optional uint32 age_uint16 = 9;
+  optional int32 age_int32 = 10;
+  optional uint32 age_uint32 = 11;
+  optional int64 age_int64 = 12;
+  optional uint64 age_uint64 = 13;
+  optional int64 age_int = 14;
+  optional uint64 age_uint = 15;
+  optional double weight_float = 16;
+  optional float weight_float32 = 17;
+  optional string class_id = 18;
+  optional int64  enroll_at = 19;
+  optional bool status_bool = 20;
 }
 
 message StudentListResp {
@@ -33,7 +33,7 @@ message StudentListResp {
 message StudentListReq {
   uint64 page = 1;
   uint64 page_size = 2;
-  string name = 3;
+  optional string name = 3;
 }
 
 
