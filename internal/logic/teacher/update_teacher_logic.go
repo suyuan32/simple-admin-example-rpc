@@ -2,7 +2,6 @@ package teacher
 
 import (
 	"context"
-	"time"
 
 	"github.com/suyuan32/simple-admin-example-rpc/internal/svc"
 	"github.com/suyuan32/simple-admin-example-rpc/internal/utils/dberrorhandler"
@@ -29,20 +28,26 @@ func NewUpdateTeacherLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Upd
 }
 
 func (l *UpdateTeacherLogic) UpdateTeacher(in *example.TeacherInfo) (*example.BaseResp, error) {
-	err := l.svcCtx.DB.Teacher.UpdateOneID(uuidx.ParseUUIDString(*in.Id)).
+	query := l.svcCtx.DB.Teacher.UpdateOneID(uuidx.ParseUUIDString(*in.Id)).
 		SetNotNilName(in.Name).
-		SetNotNilAge(pointy.GetPointer(int(*in.Age))).
 		SetNotNilAgeInt32(in.AgeInt32).
 		SetNotNilAgeInt64(in.AgeInt64).
-		SetNotNilAgeUint(pointy.GetPointer(uint(*in.AgeUint))).
 		SetNotNilAgeUint32(in.AgeUint32).
 		SetNotNilAgeUint64(in.AgeUint64).
 		SetNotNilWeightFloat(in.WeightFloat).
 		SetNotNilWeightFloat32(in.WeightFloat32).
-		SetNotNilClassID(uuidx.ParseUUIDStringToPointer(*in.ClassId)).
-		SetNotNilEnrollAt(pointy.GetPointer(time.Unix(*in.EnrollAt, 0))).
-		SetNotNilStatusBool(in.StatusBool).
-		Exec(l.ctx)
+		SetNotNilClassID(uuidx.ParseUUIDStringToPointer(in.ClassId)).
+		SetNotNilEnrollAt(pointy.GetTimePointer(in.EnrollAt, 0)).
+		SetNotNilStatusBool(in.StatusBool)
+
+	if in.Age != nil {
+		query.SetNotNilAge(pointy.GetPointer(int(*in.Age)))
+	}
+	if in.AgeUint != nil {
+		query.SetNotNilAgeUint(pointy.GetPointer(uint(*in.AgeUint)))
+	}
+
+	err := query.Exec(l.ctx)
 
 	if err != nil {
 		return nil, dberrorhandler.DefaultEntError(l.Logger, err, in)
