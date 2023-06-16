@@ -2,7 +2,6 @@ package student
 
 import (
 	"context"
-	"time"
 
 	"github.com/suyuan32/simple-admin-example-rpc/internal/svc"
 	"github.com/suyuan32/simple-admin-example-rpc/internal/utils/dberrorhandler"
