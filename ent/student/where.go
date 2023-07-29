@@ -65,11 +65,6 @@ func UpdatedAt(v time.Time) predicate.Student {
 	return predicate.Student(sql.FieldEQ(FieldUpdatedAt, v))
 }
 
-// DeletedAt applies equality check predicate on the "deleted_at" field. It's identical to DeletedAtEQ.
-func DeletedAt(v time.Time) predicate.Student {
-	return predicate.Student(sql.FieldEQ(FieldDeletedAt, v))
-}
-
 // Name applies equality check predicate on the "name" field. It's identical to NameEQ.
 func Name(v string) predicate.Student {
 	return predicate.Student(sql.FieldEQ(FieldName, v))
@@ -80,34 +75,9 @@ func Age(v int) predicate.Student {
 	return predicate.Student(sql.FieldEQ(FieldAge, v))
 }
 
-// AgeInt8 applies equality check predicate on the "age_int8" field. It's identical to AgeInt8EQ.
-func AgeInt8(v int8) predicate.Student {
-	return predicate.Student(sql.FieldEQ(FieldAgeInt8, v))
-}
-
-// AgeUint8 applies equality check predicate on the "age_uint8" field. It's identical to AgeUint8EQ.
-func AgeUint8(v uint8) predicate.Student {
-	return predicate.Student(sql.FieldEQ(FieldAgeUint8, v))
-}
-
-// AgeInt16 applies equality check predicate on the "age_int16" field. It's identical to AgeInt16EQ.
-func AgeInt16(v int16) predicate.Student {
-	return predicate.Student(sql.FieldEQ(FieldAgeInt16, v))
-}
-
-// AgeUint16 applies equality check predicate on the "age_uint16" field. It's identical to AgeUint16EQ.
-func AgeUint16(v uint16) predicate.Student {
-	return predicate.Student(sql.FieldEQ(FieldAgeUint16, v))
-}
-
 // AgeInt32 applies equality check predicate on the "age_int32" field. It's identical to AgeInt32EQ.
 func AgeInt32(v int32) predicate.Student {
 	return predicate.Student(sql.FieldEQ(FieldAgeInt32, v))
-}
-
-// AgeUint32 applies equality check predicate on the "age_uint32" field. It's identical to AgeUint32EQ.
-func AgeUint32(v uint32) predicate.Student {
-	return predicate.Student(sql.FieldEQ(FieldAgeUint32, v))
 }
 
 // AgeInt64 applies equality check predicate on the "age_int64" field. It's identical to AgeInt64EQ.
@@ -115,19 +85,19 @@ func AgeInt64(v int64) predicate.Student {
 	return predicate.Student(sql.FieldEQ(FieldAgeInt64, v))
 }
 
-// AgeUint64 applies equality check predicate on the "age_uint64" field. It's identical to AgeUint64EQ.
-func AgeUint64(v uint64) predicate.Student {
-	return predicate.Student(sql.FieldEQ(FieldAgeUint64, v))
-}
-
-// AgeInt applies equality check predicate on the "age_int" field. It's identical to AgeIntEQ.
-func AgeInt(v int) predicate.Student {
-	return predicate.Student(sql.FieldEQ(FieldAgeInt, v))
-}
-
 // AgeUint applies equality check predicate on the "age_uint" field. It's identical to AgeUintEQ.
 func AgeUint(v uint) predicate.Student {
 	return predicate.Student(sql.FieldEQ(FieldAgeUint, v))
+}
+
+// AgeUint32 applies equality check predicate on the "age_uint32" field. It's identical to AgeUint32EQ.
+func AgeUint32(v uint32) predicate.Student {
+	return predicate.Student(sql.FieldEQ(FieldAgeUint32, v))
+}
+
+// AgeUint64 applies equality check predicate on the "age_uint64" field. It's identical to AgeUint64EQ.
+func AgeUint64(v uint64) predicate.Student {
+	return predicate.Student(sql.FieldEQ(FieldAgeUint64, v))
 }
 
 // WeightFloat applies equality check predicate on the "weight_float" field. It's identical to WeightFloatEQ.
@@ -235,56 +205,6 @@ func UpdatedAtLTE(v time.Time) predicate.Student {
 	return predicate.Student(sql.FieldLTE(FieldUpdatedAt, v))
 }
 
-// DeletedAtEQ applies the EQ predicate on the "deleted_at" field.
-func DeletedAtEQ(v time.Time) predicate.Student {
-	return predicate.Student(sql.FieldEQ(FieldDeletedAt, v))
-}
-
-// DeletedAtNEQ applies the NEQ predicate on the "deleted_at" field.
-func DeletedAtNEQ(v time.Time) predicate.Student {
-	return predicate.Student(sql.FieldNEQ(FieldDeletedAt, v))
-}
-
-// DeletedAtIn applies the In predicate on the "deleted_at" field.
-func DeletedAtIn(vs ...time.Time) predicate.Student {
-	return predicate.Student(sql.FieldIn(FieldDeletedAt, vs...))
-}
-
-// DeletedAtNotIn applies the NotIn predicate on the "deleted_at" field.
-func DeletedAtNotIn(vs ...time.Time) predicate.Student {
-	return predicate.Student(sql.FieldNotIn(FieldDeletedAt, vs...))
-}
-
-// DeletedAtGT applies the GT predicate on the "deleted_at" field.
-func DeletedAtGT(v time.Time) predicate.Student {
-	return predicate.Student(sql.FieldGT(FieldDeletedAt, v))
-}
-
-// DeletedAtGTE applies the GTE predicate on the "deleted_at" field.
-func DeletedAtGTE(v time.Time) predicate.Student {
-	return predicate.Student(sql.FieldGTE(FieldDeletedAt, v))
-}
-
-// DeletedAtLT applies the LT predicate on the "deleted_at" field.
-func DeletedAtLT(v time.Time) predicate.Student {
-	return predicate.Student(sql.FieldLT(FieldDeletedAt, v))
-}
-
-// DeletedAtLTE applies the LTE predicate on the "deleted_at" field.
-func DeletedAtLTE(v time.Time) predicate.Student {
-	return predicate.Student(sql.FieldLTE(FieldDeletedAt, v))
-}
-
-// DeletedAtIsNil applies the IsNil predicate on the "deleted_at" field.
-func DeletedAtIsNil() predicate.Student {
-	return predicate.Student(sql.FieldIsNull(FieldDeletedAt))
-}
-
-// DeletedAtNotNil applies the NotNil predicate on the "deleted_at" field.
-func DeletedAtNotNil() predicate.Student {
-	return predicate.Student(sql.FieldNotNull(FieldDeletedAt))
-}
-
 // NameEQ applies the EQ predicate on the "name" field.
 func NameEQ(v string) predicate.Student {
 	return predicate.Student(sql.FieldEQ(FieldName, v))
@@ -390,166 +310,6 @@ func AgeLTE(v int) predicate.Student {
 	return predicate.Student(sql.FieldLTE(FieldAge, v))
 }
 
-// AgeInt8EQ applies the EQ predicate on the "age_int8" field.
-func AgeInt8EQ(v int8) predicate.Student {
-	return predicate.Student(sql.FieldEQ(FieldAgeInt8, v))
-}
-
-// AgeInt8NEQ applies the NEQ predicate on the "age_int8" field.
-func AgeInt8NEQ(v int8) predicate.Student {
-	return predicate.Student(sql.FieldNEQ(FieldAgeInt8, v))
-}
-
-// AgeInt8In applies the In predicate on the "age_int8" field.
-func AgeInt8In(vs ...int8) predicate.Student {
-	return predicate.Student(sql.FieldIn(FieldAgeInt8, vs...))
-}
-
-// AgeInt8NotIn applies the NotIn predicate on the "age_int8" field.
-func AgeInt8NotIn(vs ...int8) predicate.Student {
-	return predicate.Student(sql.FieldNotIn(FieldAgeInt8, vs...))
-}
-
-// AgeInt8GT applies the GT predicate on the "age_int8" field.
-func AgeInt8GT(v int8) predicate.Student {
-	return predicate.Student(sql.FieldGT(FieldAgeInt8, v))
-}
-
-// AgeInt8GTE applies the GTE predicate on the "age_int8" field.
-func AgeInt8GTE(v int8) predicate.Student {
-	return predicate.Student(sql.FieldGTE(FieldAgeInt8, v))
-}
-
-// AgeInt8LT applies the LT predicate on the "age_int8" field.
-func AgeInt8LT(v int8) predicate.Student {
-	return predicate.Student(sql.FieldLT(FieldAgeInt8, v))
-}
-
-// AgeInt8LTE applies the LTE predicate on the "age_int8" field.
-func AgeInt8LTE(v int8) predicate.Student {
-	return predicate.Student(sql.FieldLTE(FieldAgeInt8, v))
-}
-
-// AgeUint8EQ applies the EQ predicate on the "age_uint8" field.
-func AgeUint8EQ(v uint8) predicate.Student {
-	return predicate.Student(sql.FieldEQ(FieldAgeUint8, v))
-}
-
-// AgeUint8NEQ applies the NEQ predicate on the "age_uint8" field.
-func AgeUint8NEQ(v uint8) predicate.Student {
-	return predicate.Student(sql.FieldNEQ(FieldAgeUint8, v))
-}
-
-// AgeUint8In applies the In predicate on the "age_uint8" field.
-func AgeUint8In(vs ...uint8) predicate.Student {
-	return predicate.Student(sql.FieldIn(FieldAgeUint8, vs...))
-}
-
-// AgeUint8NotIn applies the NotIn predicate on the "age_uint8" field.
-func AgeUint8NotIn(vs ...uint8) predicate.Student {
-	return predicate.Student(sql.FieldNotIn(FieldAgeUint8, vs...))
-}
-
-// AgeUint8GT applies the GT predicate on the "age_uint8" field.
-func AgeUint8GT(v uint8) predicate.Student {
-	return predicate.Student(sql.FieldGT(FieldAgeUint8, v))
-}
-
-// AgeUint8GTE applies the GTE predicate on the "age_uint8" field.
-func AgeUint8GTE(v uint8) predicate.Student {
-	return predicate.Student(sql.FieldGTE(FieldAgeUint8, v))
-}
-
-// AgeUint8LT applies the LT predicate on the "age_uint8" field.
-func AgeUint8LT(v uint8) predicate.Student {
-	return predicate.Student(sql.FieldLT(FieldAgeUint8, v))
-}
-
-// AgeUint8LTE applies the LTE predicate on the "age_uint8" field.
-func AgeUint8LTE(v uint8) predicate.Student {
-	return predicate.Student(sql.FieldLTE(FieldAgeUint8, v))
-}
-
-// AgeInt16EQ applies the EQ predicate on the "age_int16" field.
-func AgeInt16EQ(v int16) predicate.Student {
-	return predicate.Student(sql.FieldEQ(FieldAgeInt16, v))
-}
-
-// AgeInt16NEQ applies the NEQ predicate on the "age_int16" field.
-func AgeInt16NEQ(v int16) predicate.Student {
-	return predicate.Student(sql.FieldNEQ(FieldAgeInt16, v))
-}
-
-// AgeInt16In applies the In predicate on the "age_int16" field.
-func AgeInt16In(vs ...int16) predicate.Student {
-	return predicate.Student(sql.FieldIn(FieldAgeInt16, vs...))
-}
-
-// AgeInt16NotIn applies the NotIn predicate on the "age_int16" field.
-func AgeInt16NotIn(vs ...int16) predicate.Student {
-	return predicate.Student(sql.FieldNotIn(FieldAgeInt16, vs...))
-}
-
-// AgeInt16GT applies the GT predicate on the "age_int16" field.
-func AgeInt16GT(v int16) predicate.Student {
-	return predicate.Student(sql.FieldGT(FieldAgeInt16, v))
-}
-
-// AgeInt16GTE applies the GTE predicate on the "age_int16" field.
-func AgeInt16GTE(v int16) predicate.Student {
-	return predicate.Student(sql.FieldGTE(FieldAgeInt16, v))
-}
-
-// AgeInt16LT applies the LT predicate on the "age_int16" field.
-func AgeInt16LT(v int16) predicate.Student {
-	return predicate.Student(sql.FieldLT(FieldAgeInt16, v))
-}
-
-// AgeInt16LTE applies the LTE predicate on the "age_int16" field.
-func AgeInt16LTE(v int16) predicate.Student {
-	return predicate.Student(sql.FieldLTE(FieldAgeInt16, v))
-}
-
-// AgeUint16EQ applies the EQ predicate on the "age_uint16" field.
-func AgeUint16EQ(v uint16) predicate.Student {
-	return predicate.Student(sql.FieldEQ(FieldAgeUint16, v))
-}
-
-// AgeUint16NEQ applies the NEQ predicate on the "age_uint16" field.
-func AgeUint16NEQ(v uint16) predicate.Student {
-	return predicate.Student(sql.FieldNEQ(FieldAgeUint16, v))
-}
-
-// AgeUint16In applies the In predicate on the "age_uint16" field.
-func AgeUint16In(vs ...uint16) predicate.Student {
-	return predicate.Student(sql.FieldIn(FieldAgeUint16, vs...))
-}
-
-// AgeUint16NotIn applies the NotIn predicate on the "age_uint16" field.
-func AgeUint16NotIn(vs ...uint16) predicate.Student {
-	return predicate.Student(sql.FieldNotIn(FieldAgeUint16, vs...))
-}
-
-// AgeUint16GT applies the GT predicate on the "age_uint16" field.
-func AgeUint16GT(v uint16) predicate.Student {
-	return predicate.Student(sql.FieldGT(FieldAgeUint16, v))
-}
-
-// AgeUint16GTE applies the GTE predicate on the "age_uint16" field.
-func AgeUint16GTE(v uint16) predicate.Student {
-	return predicate.Student(sql.FieldGTE(FieldAgeUint16, v))
-}
-
-// AgeUint16LT applies the LT predicate on the "age_uint16" field.
-func AgeUint16LT(v uint16) predicate.Student {
-	return predicate.Student(sql.FieldLT(FieldAgeUint16, v))
-}
-
-// AgeUint16LTE applies the LTE predicate on the "age_uint16" field.
-func AgeUint16LTE(v uint16) predicate.Student {
-	return predicate.Student(sql.FieldLTE(FieldAgeUint16, v))
-}
-
 // AgeInt32EQ applies the EQ predicate on the "age_int32" field.
 func AgeInt32EQ(v int32) predicate.Student {
 	return predicate.Student(sql.FieldEQ(FieldAgeInt32, v))
@@ -588,46 +348,6 @@ func AgeInt32LT(v int32) predicate.Student {
 // AgeInt32LTE applies the LTE predicate on the "age_int32" field.
 func AgeInt32LTE(v int32) predicate.Student {
 	return predicate.Student(sql.FieldLTE(FieldAgeInt32, v))
-}
-
-// AgeUint32EQ applies the EQ predicate on the "age_uint32" field.
-func AgeUint32EQ(v uint32) predicate.Student {
-	return predicate.Student(sql.FieldEQ(FieldAgeUint32, v))
-}
-
-// AgeUint32NEQ applies the NEQ predicate on the "age_uint32" field.
-func AgeUint32NEQ(v uint32) predicate.Student {
-	return predicate.Student(sql.FieldNEQ(FieldAgeUint32, v))
-}
-
-// AgeUint32In applies the In predicate on the "age_uint32" field.
-func AgeUint32In(vs ...uint32) predicate.Student {
-	return predicate.Student(sql.FieldIn(FieldAgeUint32, vs...))
-}
-
-// AgeUint32NotIn applies the NotIn predicate on the "age_uint32" field.
-func AgeUint32NotIn(vs ...uint32) predicate.Student {
-	return predicate.Student(sql.FieldNotIn(FieldAgeUint32, vs...))
-}
-
-// AgeUint32GT applies the GT predicate on the "age_uint32" field.
-func AgeUint32GT(v uint32) predicate.Student {
-	return predicate.Student(sql.FieldGT(FieldAgeUint32, v))
-}
-
-// AgeUint32GTE applies the GTE predicate on the "age_uint32" field.
-func AgeUint32GTE(v uint32) predicate.Student {
-	return predicate.Student(sql.FieldGTE(FieldAgeUint32, v))
-}
-
-// AgeUint32LT applies the LT predicate on the "age_uint32" field.
-func AgeUint32LT(v uint32) predicate.Student {
-	return predicate.Student(sql.FieldLT(FieldAgeUint32, v))
-}
-
-// AgeUint32LTE applies the LTE predicate on the "age_uint32" field.
-func AgeUint32LTE(v uint32) predicate.Student {
-	return predicate.Student(sql.FieldLTE(FieldAgeUint32, v))
 }
 
 // AgeInt64EQ applies the EQ predicate on the "age_int64" field.
@@ -670,86 +390,6 @@ func AgeInt64LTE(v int64) predicate.Student {
 	return predicate.Student(sql.FieldLTE(FieldAgeInt64, v))
 }
 
-// AgeUint64EQ applies the EQ predicate on the "age_uint64" field.
-func AgeUint64EQ(v uint64) predicate.Student {
-	return predicate.Student(sql.FieldEQ(FieldAgeUint64, v))
-}
-
-// AgeUint64NEQ applies the NEQ predicate on the "age_uint64" field.
-func AgeUint64NEQ(v uint64) predicate.Student {
-	return predicate.Student(sql.FieldNEQ(FieldAgeUint64, v))
-}
-
-// AgeUint64In applies the In predicate on the "age_uint64" field.
-func AgeUint64In(vs ...uint64) predicate.Student {
-	return predicate.Student(sql.FieldIn(FieldAgeUint64, vs...))
-}
-
-// AgeUint64NotIn applies the NotIn predicate on the "age_uint64" field.
-func AgeUint64NotIn(vs ...uint64) predicate.Student {
-	return predicate.Student(sql.FieldNotIn(FieldAgeUint64, vs...))
-}
-
-// AgeUint64GT applies the GT predicate on the "age_uint64" field.
-func AgeUint64GT(v uint64) predicate.Student {
-	return predicate.Student(sql.FieldGT(FieldAgeUint64, v))
-}
-
-// AgeUint64GTE applies the GTE predicate on the "age_uint64" field.
-func AgeUint64GTE(v uint64) predicate.Student {
-	return predicate.Student(sql.FieldGTE(FieldAgeUint64, v))
-}
-
-// AgeUint64LT applies the LT predicate on the "age_uint64" field.
-func AgeUint64LT(v uint64) predicate.Student {
-	return predicate.Student(sql.FieldLT(FieldAgeUint64, v))
-}
-
-// AgeUint64LTE applies the LTE predicate on the "age_uint64" field.
-func AgeUint64LTE(v uint64) predicate.Student {
-	return predicate.Student(sql.FieldLTE(FieldAgeUint64, v))
-}
-
-// AgeIntEQ applies the EQ predicate on the "age_int" field.
-func AgeIntEQ(v int) predicate.Student {
-	return predicate.Student(sql.FieldEQ(FieldAgeInt, v))
-}
-
-// AgeIntNEQ applies the NEQ predicate on the "age_int" field.
-func AgeIntNEQ(v int) predicate.Student {
-	return predicate.Student(sql.FieldNEQ(FieldAgeInt, v))
-}
-
-// AgeIntIn applies the In predicate on the "age_int" field.
-func AgeIntIn(vs ...int) predicate.Student {
-	return predicate.Student(sql.FieldIn(FieldAgeInt, vs...))
-}
-
-// AgeIntNotIn applies the NotIn predicate on the "age_int" field.
-func AgeIntNotIn(vs ...int) predicate.Student {
-	return predicate.Student(sql.FieldNotIn(FieldAgeInt, vs...))
-}
-
-// AgeIntGT applies the GT predicate on the "age_int" field.
-func AgeIntGT(v int) predicate.Student {
-	return predicate.Student(sql.FieldGT(FieldAgeInt, v))
-}
-
-// AgeIntGTE applies the GTE predicate on the "age_int" field.
-func AgeIntGTE(v int) predicate.Student {
-	return predicate.Student(sql.FieldGTE(FieldAgeInt, v))
-}
-
-// AgeIntLT applies the LT predicate on the "age_int" field.
-func AgeIntLT(v int) predicate.Student {
-	return predicate.Student(sql.FieldLT(FieldAgeInt, v))
-}
-
-// AgeIntLTE applies the LTE predicate on the "age_int" field.
-func AgeIntLTE(v int) predicate.Student {
-	return predicate.Student(sql.FieldLTE(FieldAgeInt, v))
-}
-
 // AgeUintEQ applies the EQ predicate on the "age_uint" field.
 func AgeUintEQ(v uint) predicate.Student {
 	return predicate.Student(sql.FieldEQ(FieldAgeUint, v))
@@ -788,6 +428,86 @@ func AgeUintLT(v uint) predicate.Student {
 // AgeUintLTE applies the LTE predicate on the "age_uint" field.
 func AgeUintLTE(v uint) predicate.Student {
 	return predicate.Student(sql.FieldLTE(FieldAgeUint, v))
+}
+
+// AgeUint32EQ applies the EQ predicate on the "age_uint32" field.
+func AgeUint32EQ(v uint32) predicate.Student {
+	return predicate.Student(sql.FieldEQ(FieldAgeUint32, v))
+}
+
+// AgeUint32NEQ applies the NEQ predicate on the "age_uint32" field.
+func AgeUint32NEQ(v uint32) predicate.Student {
+	return predicate.Student(sql.FieldNEQ(FieldAgeUint32, v))
+}
+
+// AgeUint32In applies the In predicate on the "age_uint32" field.
+func AgeUint32In(vs ...uint32) predicate.Student {
+	return predicate.Student(sql.FieldIn(FieldAgeUint32, vs...))
+}
+
+// AgeUint32NotIn applies the NotIn predicate on the "age_uint32" field.
+func AgeUint32NotIn(vs ...uint32) predicate.Student {
+	return predicate.Student(sql.FieldNotIn(FieldAgeUint32, vs...))
+}
+
+// AgeUint32GT applies the GT predicate on the "age_uint32" field.
+func AgeUint32GT(v uint32) predicate.Student {
+	return predicate.Student(sql.FieldGT(FieldAgeUint32, v))
+}
+
+// AgeUint32GTE applies the GTE predicate on the "age_uint32" field.
+func AgeUint32GTE(v uint32) predicate.Student {
+	return predicate.Student(sql.FieldGTE(FieldAgeUint32, v))
+}
+
+// AgeUint32LT applies the LT predicate on the "age_uint32" field.
+func AgeUint32LT(v uint32) predicate.Student {
+	return predicate.Student(sql.FieldLT(FieldAgeUint32, v))
+}
+
+// AgeUint32LTE applies the LTE predicate on the "age_uint32" field.
+func AgeUint32LTE(v uint32) predicate.Student {
+	return predicate.Student(sql.FieldLTE(FieldAgeUint32, v))
+}
+
+// AgeUint64EQ applies the EQ predicate on the "age_uint64" field.
+func AgeUint64EQ(v uint64) predicate.Student {
+	return predicate.Student(sql.FieldEQ(FieldAgeUint64, v))
+}
+
+// AgeUint64NEQ applies the NEQ predicate on the "age_uint64" field.
+func AgeUint64NEQ(v uint64) predicate.Student {
+	return predicate.Student(sql.FieldNEQ(FieldAgeUint64, v))
+}
+
+// AgeUint64In applies the In predicate on the "age_uint64" field.
+func AgeUint64In(vs ...uint64) predicate.Student {
+	return predicate.Student(sql.FieldIn(FieldAgeUint64, vs...))
+}
+
+// AgeUint64NotIn applies the NotIn predicate on the "age_uint64" field.
+func AgeUint64NotIn(vs ...uint64) predicate.Student {
+	return predicate.Student(sql.FieldNotIn(FieldAgeUint64, vs...))
+}
+
+// AgeUint64GT applies the GT predicate on the "age_uint64" field.
+func AgeUint64GT(v uint64) predicate.Student {
+	return predicate.Student(sql.FieldGT(FieldAgeUint64, v))
+}
+
+// AgeUint64GTE applies the GTE predicate on the "age_uint64" field.
+func AgeUint64GTE(v uint64) predicate.Student {
+	return predicate.Student(sql.FieldGTE(FieldAgeUint64, v))
+}
+
+// AgeUint64LT applies the LT predicate on the "age_uint64" field.
+func AgeUint64LT(v uint64) predicate.Student {
+	return predicate.Student(sql.FieldLT(FieldAgeUint64, v))
+}
+
+// AgeUint64LTE applies the LTE predicate on the "age_uint64" field.
+func AgeUint64LTE(v uint64) predicate.Student {
+	return predicate.Student(sql.FieldLTE(FieldAgeUint64, v))
 }
 
 // WeightFloatEQ applies the EQ predicate on the "weight_float" field.

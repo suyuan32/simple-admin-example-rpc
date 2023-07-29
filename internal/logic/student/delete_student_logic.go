@@ -8,7 +8,7 @@ import (
 	"github.com/suyuan32/simple-admin-example-rpc/internal/utils/dberrorhandler"
 	"github.com/suyuan32/simple-admin-example-rpc/types/example"
 
-	"github.com/suyuan32/simple-admin-common/msg/errormsg"
+	"github.com/suyuan32/simple-admin-common/i18n"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -33,5 +33,5 @@ func (l *DeleteStudentLogic) DeleteStudent(in *example.IDsReq) (*example.BaseRes
 		return nil, dberrorhandler.DefaultEntError(l.Logger, err, in)
 	}
 
-	return &example.BaseResp{Msg: errormsg.DeleteSuccess}, nil
+	return &example.BaseResp{Msg: i18n.DeleteSuccess}, nil
 }

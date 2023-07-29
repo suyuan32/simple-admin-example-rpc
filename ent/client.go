@@ -295,14 +295,12 @@ func (c *StudentClient) GetX(ctx context.Context, id uint64) *Student {
 
 // Hooks returns the client hooks.
 func (c *StudentClient) Hooks() []Hook {
-	hooks := c.hooks.Student
-	return append(hooks[:len(hooks):len(hooks)], student.Hooks[:]...)
+	return c.hooks.Student
 }
 
 // Interceptors returns the client interceptors.
 func (c *StudentClient) Interceptors() []Interceptor {
-	inters := c.inters.Student
-	return append(inters[:len(inters):len(inters)], student.Interceptors[:]...)
+	return c.inters.Student
 }
 
 func (c *StudentClient) mutate(ctx context.Context, m *StudentMutation) (Value, error) {

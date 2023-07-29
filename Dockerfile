@@ -1,4 +1,4 @@
-FROM golang:1.20.3-alpine3.17 as builder
+FROM golang:1.20.5-alpine3.17 as builder
 
 # Define the project name | 定义项目名称
 ARG PROJECT=example
@@ -12,7 +12,7 @@ RUN go env -w GO111MODULE=on \
     && go mod tidy \
     && go build -ldflags="-s -w" -o /build/${PROJECT}_rpc ${PROJECT}.go
 
-FROM yuansu.china.work@gmail.com
+FROM alpine:latest
 
 # Define the project name | 定义项目名称
 ARG PROJECT=example
@@ -29,5 +29,7 @@ ENV CONFIG_FILE=${CONFIG_FILE}
 
 COPY --from=builder /build/${PROJECT}_rpc ./
 COPY --from=builder /build/etc/${CONFIG_FILE} ./etc/
+
+EXPOSE 8080
 
 ENTRYPOINT ./${PROJECT}_rpc -f etc/${CONFIG_FILE}

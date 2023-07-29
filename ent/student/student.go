@@ -5,7 +5,6 @@ package student
 import (
 	"time"
 
-	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
 )
 
@@ -18,32 +17,20 @@ const (
 	FieldCreatedAt = "created_at"
 	// FieldUpdatedAt holds the string denoting the updated_at field in the database.
 	FieldUpdatedAt = "updated_at"
-	// FieldDeletedAt holds the string denoting the deleted_at field in the database.
-	FieldDeletedAt = "deleted_at"
 	// FieldName holds the string denoting the name field in the database.
 	FieldName = "name"
 	// FieldAge holds the string denoting the age field in the database.
 	FieldAge = "age"
-	// FieldAgeInt8 holds the string denoting the age_int8 field in the database.
-	FieldAgeInt8 = "age_int8"
-	// FieldAgeUint8 holds the string denoting the age_uint8 field in the database.
-	FieldAgeUint8 = "age_uint8"
-	// FieldAgeInt16 holds the string denoting the age_int16 field in the database.
-	FieldAgeInt16 = "age_int16"
-	// FieldAgeUint16 holds the string denoting the age_uint16 field in the database.
-	FieldAgeUint16 = "age_uint16"
 	// FieldAgeInt32 holds the string denoting the age_int32 field in the database.
 	FieldAgeInt32 = "age_int32"
-	// FieldAgeUint32 holds the string denoting the age_uint32 field in the database.
-	FieldAgeUint32 = "age_uint32"
 	// FieldAgeInt64 holds the string denoting the age_int64 field in the database.
 	FieldAgeInt64 = "age_int64"
-	// FieldAgeUint64 holds the string denoting the age_uint64 field in the database.
-	FieldAgeUint64 = "age_uint64"
-	// FieldAgeInt holds the string denoting the age_int field in the database.
-	FieldAgeInt = "age_int"
 	// FieldAgeUint holds the string denoting the age_uint field in the database.
 	FieldAgeUint = "age_uint"
+	// FieldAgeUint32 holds the string denoting the age_uint32 field in the database.
+	FieldAgeUint32 = "age_uint32"
+	// FieldAgeUint64 holds the string denoting the age_uint64 field in the database.
+	FieldAgeUint64 = "age_uint64"
 	// FieldWeightFloat holds the string denoting the weight_float field in the database.
 	FieldWeightFloat = "weight_float"
 	// FieldWeightFloat32 holds the string denoting the weight_float32 field in the database.
@@ -63,19 +50,13 @@ var Columns = []string{
 	FieldID,
 	FieldCreatedAt,
 	FieldUpdatedAt,
-	FieldDeletedAt,
 	FieldName,
 	FieldAge,
-	FieldAgeInt8,
-	FieldAgeUint8,
-	FieldAgeInt16,
-	FieldAgeUint16,
 	FieldAgeInt32,
-	FieldAgeUint32,
 	FieldAgeInt64,
-	FieldAgeUint64,
-	FieldAgeInt,
 	FieldAgeUint,
+	FieldAgeUint32,
+	FieldAgeUint64,
 	FieldWeightFloat,
 	FieldWeightFloat32,
 	FieldClassID,
@@ -93,14 +74,7 @@ func ValidColumn(column string) bool {
 	return false
 }
 
-// Note that the variables below are initialized by the runtime
-// package on the initialization of the application. Therefore,
-// it should be imported in the main as follows:
-//
-//	import _ "github.com/suyuan32/simple-admin-example-rpc/ent/runtime"
 var (
-	Hooks        [1]ent.Hook
-	Interceptors [1]ent.Interceptor
 	// DefaultCreatedAt holds the default value on creation for the "created_at" field.
 	DefaultCreatedAt func() time.Time
 	// DefaultUpdatedAt holds the default value on creation for the "updated_at" field.
@@ -127,11 +101,6 @@ func ByUpdatedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldUpdatedAt, opts...).ToFunc()
 }
 
-// ByDeletedAt orders the results by the deleted_at field.
-func ByDeletedAt(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldDeletedAt, opts...).ToFunc()
-}
-
 // ByName orders the results by the name field.
 func ByName(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldName, opts...).ToFunc()
@@ -142,34 +111,9 @@ func ByAge(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldAge, opts...).ToFunc()
 }
 
-// ByAgeInt8 orders the results by the age_int8 field.
-func ByAgeInt8(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldAgeInt8, opts...).ToFunc()
-}
-
-// ByAgeUint8 orders the results by the age_uint8 field.
-func ByAgeUint8(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldAgeUint8, opts...).ToFunc()
-}
-
-// ByAgeInt16 orders the results by the age_int16 field.
-func ByAgeInt16(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldAgeInt16, opts...).ToFunc()
-}
-
-// ByAgeUint16 orders the results by the age_uint16 field.
-func ByAgeUint16(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldAgeUint16, opts...).ToFunc()
-}
-
 // ByAgeInt32 orders the results by the age_int32 field.
 func ByAgeInt32(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldAgeInt32, opts...).ToFunc()
-}
-
-// ByAgeUint32 orders the results by the age_uint32 field.
-func ByAgeUint32(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldAgeUint32, opts...).ToFunc()
 }
 
 // ByAgeInt64 orders the results by the age_int64 field.
@@ -177,19 +121,19 @@ func ByAgeInt64(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldAgeInt64, opts...).ToFunc()
 }
 
-// ByAgeUint64 orders the results by the age_uint64 field.
-func ByAgeUint64(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldAgeUint64, opts...).ToFunc()
-}
-
-// ByAgeInt orders the results by the age_int field.
-func ByAgeInt(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldAgeInt, opts...).ToFunc()
-}
-
 // ByAgeUint orders the results by the age_uint field.
 func ByAgeUint(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldAgeUint, opts...).ToFunc()
+}
+
+// ByAgeUint32 orders the results by the age_uint32 field.
+func ByAgeUint32(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldAgeUint32, opts...).ToFunc()
+}
+
+// ByAgeUint64 orders the results by the age_uint64 field.
+func ByAgeUint64(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldAgeUint64, opts...).ToFunc()
 }
 
 // ByWeightFloat orders the results by the weight_float field.

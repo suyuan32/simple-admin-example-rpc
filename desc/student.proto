@@ -8,21 +8,16 @@ message StudentInfo {
   optional int64 updated_at = 3;
   optional string name = 4;
   optional int64 age = 5;
-  optional int32 age_int8 = 6;
-  optional uint32 age_uint8 = 7;
-  optional int32 age_int16 = 8;
-  optional uint32 age_uint16 = 9;
-  optional int32 age_int32 = 10;
-  optional uint32 age_uint32 = 11;
-  optional int64 age_int64 = 12;
-  optional uint64 age_uint64 = 13;
-  optional int64 age_int = 14;
-  optional uint64 age_uint = 15;
-  optional double weight_float = 16;
-  optional float weight_float32 = 17;
-  optional string class_id = 18;
-  optional int64  enroll_at = 19;
-  optional bool status_bool = 20;
+  optional int32 age_int32 = 6;
+  optional int64 age_int64 = 7;
+  optional uint64 age_uint = 8;
+  optional uint32 age_uint32 = 9;
+  optional uint64 age_uint64 = 10;
+  optional double weight_float = 11;
+  optional float weight_float32 = 12;
+  optional string class_id = 13;
+  optional int64  enroll_at = 14;
+  optional bool status_bool = 15;
 }
 
 message StudentListResp {

@@ -1,4 +1,4 @@
-# simple admin example rpc v1.0.8 gen by v1.5.
+# simple admin example rpc v1.1.0 gen by goctls v1.5.16
 
 > 只需运行如下命令即可生成这个rpc项目模板
 
@@ -32,5 +32,8 @@ make gen-rpc-ent-logic model=Teacher group=teacher
 make gen-rpc
 ```
 
-# 注意： 默认生成代码是不能运行的，因为 update 中有不支持的方法， set not empty 不支持部分方法，需要手动修改
-# Note: The generated code cannot be run by default, because there are unsupported methods in update, some methods are not supported by set not empty, and need to be modified manually
+> 运行服务 | Run codes
+
+```shell
+go run example.go -f etc/example.yaml
+```
