@@ -325,11 +325,15 @@ func (tc *TeacherCreate) createSpec() (*Teacher, *sqlgraph.CreateSpec) {
 // TeacherCreateBulk is the builder for creating many Teacher entities in bulk.
 type TeacherCreateBulk struct {
 	config
+	err      error
 	builders []*TeacherCreate
 }
 
 // Save creates the Teacher entities in the database.
 func (tcb *TeacherCreateBulk) Save(ctx context.Context) ([]*Teacher, error) {
+	if tcb.err != nil {
+		return nil, tcb.err
+	}
 	specs := make([]*sqlgraph.CreateSpec, len(tcb.builders))
 	nodes := make([]*Teacher, len(tcb.builders))
 	mutators := make([]Mutator, len(tcb.builders))

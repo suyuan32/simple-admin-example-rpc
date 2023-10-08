@@ -3,24 +3,28 @@ syntax = "proto3";
 package example;
 option go_package="./example";
 
+message StudentInfo {
+  optional uint64 id = 1;
+  optional int64 created_at = 2;
+  optional int64 updated_at = 3;
+  //  姓名
+  optional string name = 4;
+  //  年龄
+  optional int64 age = 5;
+  optional int32 age_int32 = 6;
+  optional int64 age_int64 = 7;
+  optional uint64 age_uint = 8;
+  optional uint32 age_uint32 = 9;
+  optional uint64 age_uint64 = 10;
+  optional double weight_float = 11;
+  optional float weight_float32 = 12;
+  optional string class_id = 13;
+  optional int64 enroll_at = 14;
+  optional bool status_bool = 15;
+}
+
 message UUIDsReq {
   repeated string ids = 1;
-}
-
-message BaseIDResp {
-  uint64 id = 1;
-  string msg = 2;
-}
-
-//  base message
-message Empty {}
-
-message IDsReq {
-  repeated uint64 ids = 1;
-}
-
-message IDReq {
-  uint64 id = 1;
 }
 
 message PageInfoReq {
@@ -28,9 +32,31 @@ message PageInfoReq {
   uint64 page_size = 2;
 }
 
-message StudentListResp {
-  uint64 total = 1;
-  repeated StudentInfo data = 2;
+message BaseIDResp {
+  uint64 id = 1;
+  string msg = 2;
+}
+
+message TeacherListReq {
+  uint64 page = 1;
+  uint64 page_size = 2;
+  optional string name = 3;
+}
+
+//  base message
+message Empty {}
+
+message IDReq {
+  uint64 id = 1;
+}
+
+message BaseUUIDResp {
+  string id = 1;
+  string msg = 2;
+}
+
+message BaseResp {
+  string msg = 1;
 }
 
 message StudentListReq {
@@ -57,46 +83,22 @@ message TeacherInfo {
   optional bool status_bool = 15;
 }
 
-message TeacherListReq {
-  uint64 page = 1;
-  uint64 page_size = 2;
-  optional string name = 3;
+message TeacherListResp {
+  uint64 total = 1;
+  repeated TeacherInfo data = 2;
+}
+
+message IDsReq {
+  repeated uint64 ids = 1;
 }
 
 message UUIDReq {
   string id = 1;
 }
 
-message BaseResp {
-  string msg = 1;
-}
-
-message BaseUUIDResp {
-  string id = 1;
-  string msg = 2;
-}
-
-message StudentInfo {
-  optional uint64 id = 1;
-  optional int64 created_at = 2;
-  optional int64 updated_at = 3;
-  optional string name = 4;
-  optional int64 age = 5;
-  optional int32 age_int32 = 6;
-  optional int64 age_int64 = 7;
-  optional uint64 age_uint = 8;
-  optional uint32 age_uint32 = 9;
-  optional uint64 age_uint64 = 10;
-  optional double weight_float = 11;
-  optional float weight_float32 = 12;
-  optional string class_id = 13;
-  optional int64 enroll_at = 14;
-  optional bool status_bool = 15;
-}
-
-message TeacherListResp {
+message StudentListResp {
   uint64 total = 1;
-  repeated TeacherInfo data = 2;
+  repeated StudentInfo data = 2;
 }
 
 service Example {
