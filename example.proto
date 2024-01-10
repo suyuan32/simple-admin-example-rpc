@@ -3,16 +3,12 @@ syntax = "proto3";
 package example;
 option go_package="./example";
 
-//  base message
-message Empty {}
-
-message UUIDsReq {
-  repeated string ids = 1;
+message IDReq {
+  uint64 id = 1;
 }
 
-message StudentListResp {
-  uint64 total = 1;
-  repeated StudentInfo data = 2;
+message UUIDReq {
+  string id = 1;
 }
 
 message TeacherListResp {
@@ -20,22 +16,12 @@ message TeacherListResp {
   repeated TeacherInfo data = 2;
 }
 
-message TeacherListReq {
-  uint64 page = 1;
-  uint64 page_size = 2;
-  optional string name = 3;
+message BaseResp {
+  string msg = 1;
 }
 
-message IDReq {
+message BaseIDResp {
   uint64 id = 1;
-}
-
-message IDsReq {
-  repeated uint64 ids = 1;
-}
-
-message BaseUUIDResp {
-  string id = 1;
   string msg = 2;
 }
 
@@ -59,28 +45,23 @@ message StudentInfo {
   optional bool status_bool = 15;
 }
 
-message StudentListReq {
-  uint64 page = 1;
-  uint64 page_size = 2;
-  optional string name = 3;
-}
-
-message UUIDReq {
-  string id = 1;
-}
-
-message BaseResp {
-  string msg = 1;
-}
+//  base message
+message Empty {}
 
 message PageInfoReq {
   uint64 page = 1;
   uint64 page_size = 2;
 }
 
-message BaseIDResp {
-  uint64 id = 1;
+message BaseUUIDResp {
+  string id = 1;
   string msg = 2;
+}
+
+message StudentListReq {
+  uint64 page = 1;
+  uint64 page_size = 2;
+  optional string name = 3;
 }
 
 message TeacherInfo {
@@ -99,6 +80,25 @@ message TeacherInfo {
   optional string class_id = 13;
   optional int64 enroll_at = 14;
   optional bool status_bool = 15;
+}
+
+message TeacherListReq {
+  uint64 page = 1;
+  uint64 page_size = 2;
+  optional string name = 3;
+}
+
+message IDsReq {
+  repeated uint64 ids = 1;
+}
+
+message UUIDsReq {
+  repeated string ids = 1;
+}
+
+message StudentListResp {
+  uint64 total = 1;
+  repeated StudentInfo data = 2;
 }
 
 service Example {

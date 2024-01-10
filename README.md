@@ -1,4 +1,4 @@
-# simple admin example rpc v1.1.5 gen by goctls v1.6.6
+# simple admin example rpc v1.1.6 gen by goctls v1.6.21
 
 > 只需运行如下命令即可生成这个rpc项目模板
 
@@ -15,8 +15,8 @@ cd example
 go mod tidy
 ```
 
-> 修改 `ent/schema/examle.go` , 参考 example 中的 schema \
-> Modify `ent/schema/examle.go`, you can find it in example's `ent/schema` directory
+> 在 `ent/schema` 文件夹添加 student 和 teacher, 参考 example 中的 schema \
+> Add student and teacher schema to `ent/schema`, you can find it in example's `ent/schema` directory
 
 
 > 运行如下命令生成 CRUD 代码 \

@@ -38,7 +38,7 @@ func (l *CreateStudentLogic) CreateStudent(in *example.StudentInfo) (*example.Ba
 		SetNotNilWeightFloat(in.WeightFloat).
 		SetNotNilWeightFloat32(in.WeightFloat32).
 		SetNotNilClassID(uuidx.ParseUUIDStringToPointer(in.ClassId)).
-		SetNotNilEnrollAt(pointy.GetTimePointer(in.EnrollAt, 0)).
+		SetNotNilEnrollAt(pointy.GetTimeMilliPointer(in.EnrollAt)).
 		SetNotNilStatusBool(in.StatusBool)
 
 	if in.Age != nil {

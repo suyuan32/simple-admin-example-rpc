@@ -34,8 +34,8 @@ func (l *GetTeacherByIdLogic) GetTeacherById(in *example.UUIDReq) (*example.Teac
 
 	return &example.TeacherInfo{
 		Id:            pointy.GetPointer(result.ID.String()),
-		CreatedAt:     pointy.GetPointer(result.CreatedAt.Unix()),
-		UpdatedAt:     pointy.GetPointer(result.UpdatedAt.Unix()),
+		CreatedAt:     pointy.GetPointer(result.CreatedAt.UnixMilli()),
+		UpdatedAt:     pointy.GetPointer(result.UpdatedAt.UnixMilli()),
 		Name:          &result.Name,
 		Age:           pointy.GetPointer(int64(result.Age)),
 		AgeInt32:      &result.AgeInt32,

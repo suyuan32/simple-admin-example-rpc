@@ -33,8 +33,8 @@ func (l *GetStudentByIdLogic) GetStudentById(in *example.IDReq) (*example.Studen
 
 	return &example.StudentInfo{
 		Id:            &result.ID,
-		CreatedAt:     pointy.GetPointer(result.CreatedAt.Unix()),
-		UpdatedAt:     pointy.GetPointer(result.UpdatedAt.Unix()),
+		CreatedAt:     pointy.GetPointer(result.CreatedAt.UnixMilli()),
+		UpdatedAt:     pointy.GetPointer(result.UpdatedAt.UnixMilli()),
 		Name:          &result.Name,
 		Age:           pointy.GetPointer(int64(result.Age)),
 		AgeInt32:      &result.AgeInt32,
