@@ -41,10 +41,26 @@ func (tu *TeacherUpdate) SetName(s string) *TeacherUpdate {
 	return tu
 }
 
+// SetNillableName sets the "name" field if the given value is not nil.
+func (tu *TeacherUpdate) SetNillableName(s *string) *TeacherUpdate {
+	if s != nil {
+		tu.SetName(*s)
+	}
+	return tu
+}
+
 // SetAge sets the "age" field.
 func (tu *TeacherUpdate) SetAge(i int) *TeacherUpdate {
 	tu.mutation.ResetAge()
 	tu.mutation.SetAge(i)
+	return tu
+}
+
+// SetNillableAge sets the "age" field if the given value is not nil.
+func (tu *TeacherUpdate) SetNillableAge(i *int) *TeacherUpdate {
+	if i != nil {
+		tu.SetAge(*i)
+	}
 	return tu
 }
 
@@ -61,6 +77,14 @@ func (tu *TeacherUpdate) SetAgeInt32(i int32) *TeacherUpdate {
 	return tu
 }
 
+// SetNillableAgeInt32 sets the "age_int32" field if the given value is not nil.
+func (tu *TeacherUpdate) SetNillableAgeInt32(i *int32) *TeacherUpdate {
+	if i != nil {
+		tu.SetAgeInt32(*i)
+	}
+	return tu
+}
+
 // AddAgeInt32 adds i to the "age_int32" field.
 func (tu *TeacherUpdate) AddAgeInt32(i int32) *TeacherUpdate {
 	tu.mutation.AddAgeInt32(i)
@@ -71,6 +95,14 @@ func (tu *TeacherUpdate) AddAgeInt32(i int32) *TeacherUpdate {
 func (tu *TeacherUpdate) SetAgeInt64(i int64) *TeacherUpdate {
 	tu.mutation.ResetAgeInt64()
 	tu.mutation.SetAgeInt64(i)
+	return tu
+}
+
+// SetNillableAgeInt64 sets the "age_int64" field if the given value is not nil.
+func (tu *TeacherUpdate) SetNillableAgeInt64(i *int64) *TeacherUpdate {
+	if i != nil {
+		tu.SetAgeInt64(*i)
+	}
 	return tu
 }
 
@@ -87,6 +119,14 @@ func (tu *TeacherUpdate) SetAgeUint(u uint) *TeacherUpdate {
 	return tu
 }
 
+// SetNillableAgeUint sets the "age_uint" field if the given value is not nil.
+func (tu *TeacherUpdate) SetNillableAgeUint(u *uint) *TeacherUpdate {
+	if u != nil {
+		tu.SetAgeUint(*u)
+	}
+	return tu
+}
+
 // AddAgeUint adds u to the "age_uint" field.
 func (tu *TeacherUpdate) AddAgeUint(u int) *TeacherUpdate {
 	tu.mutation.AddAgeUint(u)
@@ -97,6 +137,14 @@ func (tu *TeacherUpdate) AddAgeUint(u int) *TeacherUpdate {
 func (tu *TeacherUpdate) SetAgeUint32(u uint32) *TeacherUpdate {
 	tu.mutation.ResetAgeUint32()
 	tu.mutation.SetAgeUint32(u)
+	return tu
+}
+
+// SetNillableAgeUint32 sets the "age_uint32" field if the given value is not nil.
+func (tu *TeacherUpdate) SetNillableAgeUint32(u *uint32) *TeacherUpdate {
+	if u != nil {
+		tu.SetAgeUint32(*u)
+	}
 	return tu
 }
 
@@ -113,6 +161,14 @@ func (tu *TeacherUpdate) SetAgeUint64(u uint64) *TeacherUpdate {
 	return tu
 }
 
+// SetNillableAgeUint64 sets the "age_uint64" field if the given value is not nil.
+func (tu *TeacherUpdate) SetNillableAgeUint64(u *uint64) *TeacherUpdate {
+	if u != nil {
+		tu.SetAgeUint64(*u)
+	}
+	return tu
+}
+
 // AddAgeUint64 adds u to the "age_uint64" field.
 func (tu *TeacherUpdate) AddAgeUint64(u int64) *TeacherUpdate {
 	tu.mutation.AddAgeUint64(u)
@@ -123,6 +179,14 @@ func (tu *TeacherUpdate) AddAgeUint64(u int64) *TeacherUpdate {
 func (tu *TeacherUpdate) SetWeightFloat(f float64) *TeacherUpdate {
 	tu.mutation.ResetWeightFloat()
 	tu.mutation.SetWeightFloat(f)
+	return tu
+}
+
+// SetNillableWeightFloat sets the "weight_float" field if the given value is not nil.
+func (tu *TeacherUpdate) SetNillableWeightFloat(f *float64) *TeacherUpdate {
+	if f != nil {
+		tu.SetWeightFloat(*f)
+	}
 	return tu
 }
 
@@ -139,6 +203,14 @@ func (tu *TeacherUpdate) SetWeightFloat32(f float32) *TeacherUpdate {
 	return tu
 }
 
+// SetNillableWeightFloat32 sets the "weight_float32" field if the given value is not nil.
+func (tu *TeacherUpdate) SetNillableWeightFloat32(f *float32) *TeacherUpdate {
+	if f != nil {
+		tu.SetWeightFloat32(*f)
+	}
+	return tu
+}
+
 // AddWeightFloat32 adds f to the "weight_float32" field.
 func (tu *TeacherUpdate) AddWeightFloat32(f float32) *TeacherUpdate {
 	tu.mutation.AddWeightFloat32(f)
@@ -151,15 +223,39 @@ func (tu *TeacherUpdate) SetClassID(u uuid.UUID) *TeacherUpdate {
 	return tu
 }
 
+// SetNillableClassID sets the "class_id" field if the given value is not nil.
+func (tu *TeacherUpdate) SetNillableClassID(u *uuid.UUID) *TeacherUpdate {
+	if u != nil {
+		tu.SetClassID(*u)
+	}
+	return tu
+}
+
 // SetEnrollAt sets the "enroll_at" field.
 func (tu *TeacherUpdate) SetEnrollAt(t time.Time) *TeacherUpdate {
 	tu.mutation.SetEnrollAt(t)
 	return tu
 }
 
+// SetNillableEnrollAt sets the "enroll_at" field if the given value is not nil.
+func (tu *TeacherUpdate) SetNillableEnrollAt(t *time.Time) *TeacherUpdate {
+	if t != nil {
+		tu.SetEnrollAt(*t)
+	}
+	return tu
+}
+
 // SetStatusBool sets the "status_bool" field.
 func (tu *TeacherUpdate) SetStatusBool(b bool) *TeacherUpdate {
 	tu.mutation.SetStatusBool(b)
+	return tu
+}
+
+// SetNillableStatusBool sets the "status_bool" field if the given value is not nil.
+func (tu *TeacherUpdate) SetNillableStatusBool(b *bool) *TeacherUpdate {
+	if b != nil {
+		tu.SetStatusBool(*b)
+	}
 	return tu
 }
 
@@ -308,10 +404,26 @@ func (tuo *TeacherUpdateOne) SetName(s string) *TeacherUpdateOne {
 	return tuo
 }
 
+// SetNillableName sets the "name" field if the given value is not nil.
+func (tuo *TeacherUpdateOne) SetNillableName(s *string) *TeacherUpdateOne {
+	if s != nil {
+		tuo.SetName(*s)
+	}
+	return tuo
+}
+
 // SetAge sets the "age" field.
 func (tuo *TeacherUpdateOne) SetAge(i int) *TeacherUpdateOne {
 	tuo.mutation.ResetAge()
 	tuo.mutation.SetAge(i)
+	return tuo
+}
+
+// SetNillableAge sets the "age" field if the given value is not nil.
+func (tuo *TeacherUpdateOne) SetNillableAge(i *int) *TeacherUpdateOne {
+	if i != nil {
+		tuo.SetAge(*i)
+	}
 	return tuo
 }
 
@@ -328,6 +440,14 @@ func (tuo *TeacherUpdateOne) SetAgeInt32(i int32) *TeacherUpdateOne {
 	return tuo
 }
 
+// SetNillableAgeInt32 sets the "age_int32" field if the given value is not nil.
+func (tuo *TeacherUpdateOne) SetNillableAgeInt32(i *int32) *TeacherUpdateOne {
+	if i != nil {
+		tuo.SetAgeInt32(*i)
+	}
+	return tuo
+}
+
 // AddAgeInt32 adds i to the "age_int32" field.
 func (tuo *TeacherUpdateOne) AddAgeInt32(i int32) *TeacherUpdateOne {
 	tuo.mutation.AddAgeInt32(i)
@@ -338,6 +458,14 @@ func (tuo *TeacherUpdateOne) AddAgeInt32(i int32) *TeacherUpdateOne {
 func (tuo *TeacherUpdateOne) SetAgeInt64(i int64) *TeacherUpdateOne {
 	tuo.mutation.ResetAgeInt64()
 	tuo.mutation.SetAgeInt64(i)
+	return tuo
+}
+
+// SetNillableAgeInt64 sets the "age_int64" field if the given value is not nil.
+func (tuo *TeacherUpdateOne) SetNillableAgeInt64(i *int64) *TeacherUpdateOne {
+	if i != nil {
+		tuo.SetAgeInt64(*i)
+	}
 	return tuo
 }
 
@@ -354,6 +482,14 @@ func (tuo *TeacherUpdateOne) SetAgeUint(u uint) *TeacherUpdateOne {
 	return tuo
 }
 
+// SetNillableAgeUint sets the "age_uint" field if the given value is not nil.
+func (tuo *TeacherUpdateOne) SetNillableAgeUint(u *uint) *TeacherUpdateOne {
+	if u != nil {
+		tuo.SetAgeUint(*u)
+	}
+	return tuo
+}
+
 // AddAgeUint adds u to the "age_uint" field.
 func (tuo *TeacherUpdateOne) AddAgeUint(u int) *TeacherUpdateOne {
 	tuo.mutation.AddAgeUint(u)
@@ -364,6 +500,14 @@ func (tuo *TeacherUpdateOne) AddAgeUint(u int) *TeacherUpdateOne {
 func (tuo *TeacherUpdateOne) SetAgeUint32(u uint32) *TeacherUpdateOne {
 	tuo.mutation.ResetAgeUint32()
 	tuo.mutation.SetAgeUint32(u)
+	return tuo
+}
+
+// SetNillableAgeUint32 sets the "age_uint32" field if the given value is not nil.
+func (tuo *TeacherUpdateOne) SetNillableAgeUint32(u *uint32) *TeacherUpdateOne {
+	if u != nil {
+		tuo.SetAgeUint32(*u)
+	}
 	return tuo
 }
 
@@ -380,6 +524,14 @@ func (tuo *TeacherUpdateOne) SetAgeUint64(u uint64) *TeacherUpdateOne {
 	return tuo
 }
 
+// SetNillableAgeUint64 sets the "age_uint64" field if the given value is not nil.
+func (tuo *TeacherUpdateOne) SetNillableAgeUint64(u *uint64) *TeacherUpdateOne {
+	if u != nil {
+		tuo.SetAgeUint64(*u)
+	}
+	return tuo
+}
+
 // AddAgeUint64 adds u to the "age_uint64" field.
 func (tuo *TeacherUpdateOne) AddAgeUint64(u int64) *TeacherUpdateOne {
 	tuo.mutation.AddAgeUint64(u)
@@ -390,6 +542,14 @@ func (tuo *TeacherUpdateOne) AddAgeUint64(u int64) *TeacherUpdateOne {
 func (tuo *TeacherUpdateOne) SetWeightFloat(f float64) *TeacherUpdateOne {
 	tuo.mutation.ResetWeightFloat()
 	tuo.mutation.SetWeightFloat(f)
+	return tuo
+}
+
+// SetNillableWeightFloat sets the "weight_float" field if the given value is not nil.
+func (tuo *TeacherUpdateOne) SetNillableWeightFloat(f *float64) *TeacherUpdateOne {
+	if f != nil {
+		tuo.SetWeightFloat(*f)
+	}
 	return tuo
 }
 
@@ -406,6 +566,14 @@ func (tuo *TeacherUpdateOne) SetWeightFloat32(f float32) *TeacherUpdateOne {
 	return tuo
 }
 
+// SetNillableWeightFloat32 sets the "weight_float32" field if the given value is not nil.
+func (tuo *TeacherUpdateOne) SetNillableWeightFloat32(f *float32) *TeacherUpdateOne {
+	if f != nil {
+		tuo.SetWeightFloat32(*f)
+	}
+	return tuo
+}
+
 // AddWeightFloat32 adds f to the "weight_float32" field.
 func (tuo *TeacherUpdateOne) AddWeightFloat32(f float32) *TeacherUpdateOne {
 	tuo.mutation.AddWeightFloat32(f)
@@ -418,15 +586,39 @@ func (tuo *TeacherUpdateOne) SetClassID(u uuid.UUID) *TeacherUpdateOne {
 	return tuo
 }
 
+// SetNillableClassID sets the "class_id" field if the given value is not nil.
+func (tuo *TeacherUpdateOne) SetNillableClassID(u *uuid.UUID) *TeacherUpdateOne {
+	if u != nil {
+		tuo.SetClassID(*u)
+	}
+	return tuo
+}
+
 // SetEnrollAt sets the "enroll_at" field.
 func (tuo *TeacherUpdateOne) SetEnrollAt(t time.Time) *TeacherUpdateOne {
 	tuo.mutation.SetEnrollAt(t)
 	return tuo
 }
 
+// SetNillableEnrollAt sets the "enroll_at" field if the given value is not nil.
+func (tuo *TeacherUpdateOne) SetNillableEnrollAt(t *time.Time) *TeacherUpdateOne {
+	if t != nil {
+		tuo.SetEnrollAt(*t)
+	}
+	return tuo
+}
+
 // SetStatusBool sets the "status_bool" field.
 func (tuo *TeacherUpdateOne) SetStatusBool(b bool) *TeacherUpdateOne {
 	tuo.mutation.SetStatusBool(b)
+	return tuo
+}
+
+// SetNillableStatusBool sets the "status_bool" field if the given value is not nil.
+func (tuo *TeacherUpdateOne) SetNillableStatusBool(b *bool) *TeacherUpdateOne {
+	if b != nil {
+		tuo.SetStatusBool(*b)
+	}
 	return tuo
 }
 
