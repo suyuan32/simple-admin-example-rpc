@@ -43,21 +43,11 @@ func (l *GetTeacherListLogic) GetTeacherList(in *example.TeacherListReq) (*examp
 
 	for _, v := range result.List {
 		resp.Data = append(resp.Data, &example.TeacherInfo{
-			Id:            pointy.GetPointer(v.ID.String()),
-			CreatedAt:     pointy.GetPointer(v.CreatedAt.UnixMilli()),
-			UpdatedAt:     pointy.GetPointer(v.UpdatedAt.UnixMilli()),
-			Name:          &v.Name,
-			Age:           pointy.GetPointer(int64(v.Age)),
-			AgeInt32:      &v.AgeInt32,
-			AgeInt64:      &v.AgeInt64,
-			AgeUint:       pointy.GetPointer(uint64(v.AgeUint)),
-			AgeUint32:     &v.AgeUint32,
-			AgeUint64:     &v.AgeUint64,
-			WeightFloat:   &v.WeightFloat,
-			WeightFloat32: &v.WeightFloat32,
-			ClassId:       pointy.GetPointer(v.ClassID.String()),
-			EnrollAt:      pointy.GetPointer(v.EnrollAt.UnixMilli()),
-			StatusBool:    &v.StatusBool,
+			Id:        &v.ID,
+			CreatedAt: pointy.GetPointer(v.CreatedAt.UnixMilli()),
+			UpdatedAt: pointy.GetPointer(v.UpdatedAt.UnixMilli()),
+			Name:      &v.Name,
+			Age:       pointy.GetPointer(int32(v.Age)),
 		})
 	}
 

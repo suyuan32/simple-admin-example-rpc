@@ -4,14 +4,14 @@ import (
 	"github.com/suyuan32/simple-admin-example-rpc/ent"
 	"github.com/suyuan32/simple-admin-example-rpc/internal/config"
 
+	"github.com/redis/go-redis/v9"
 	"github.com/zeromicro/go-zero/core/logx"
-	"github.com/zeromicro/go-zero/core/stores/redis"
 )
 
 type ServiceContext struct {
 	Config config.Config
 	DB     *ent.Client
-	Redis  *redis.Redis
+	Redis  redis.UniversalClient
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -24,6 +24,6 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	return &ServiceContext{
 		Config: c,
 		DB:     db,
-		Redis:  redis.MustNewRedis(c.RedisConf),
+		Redis:  c.RedisConf.MustNewUniversalRedis(),
 	}
 }

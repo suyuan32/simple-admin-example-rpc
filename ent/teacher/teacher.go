@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"entgo.io/ent/dialect/sql"
-	uuid "github.com/gofrs/uuid/v5"
+	"entgo.io/ent/dialect/sql/sqlgraph"
 )
 
 const (
@@ -22,28 +22,15 @@ const (
 	FieldName = "name"
 	// FieldAge holds the string denoting the age field in the database.
 	FieldAge = "age"
-	// FieldAgeInt32 holds the string denoting the age_int32 field in the database.
-	FieldAgeInt32 = "age_int32"
-	// FieldAgeInt64 holds the string denoting the age_int64 field in the database.
-	FieldAgeInt64 = "age_int64"
-	// FieldAgeUint holds the string denoting the age_uint field in the database.
-	FieldAgeUint = "age_uint"
-	// FieldAgeUint32 holds the string denoting the age_uint32 field in the database.
-	FieldAgeUint32 = "age_uint32"
-	// FieldAgeUint64 holds the string denoting the age_uint64 field in the database.
-	FieldAgeUint64 = "age_uint64"
-	// FieldWeightFloat holds the string denoting the weight_float field in the database.
-	FieldWeightFloat = "weight_float"
-	// FieldWeightFloat32 holds the string denoting the weight_float32 field in the database.
-	FieldWeightFloat32 = "weight_float32"
-	// FieldClassID holds the string denoting the class_id field in the database.
-	FieldClassID = "class_id"
-	// FieldEnrollAt holds the string denoting the enroll_at field in the database.
-	FieldEnrollAt = "enroll_at"
-	// FieldStatusBool holds the string denoting the status_bool field in the database.
-	FieldStatusBool = "status_bool"
+	// EdgeStudents holds the string denoting the students edge name in mutations.
+	EdgeStudents = "students"
 	// Table holds the table name of the teacher in the database.
 	Table = "teachers"
+	// StudentsTable is the table that holds the students relation/edge. The primary key declared below.
+	StudentsTable = "teacher_students"
+	// StudentsInverseTable is the table name for the Student entity.
+	// It exists in this package in order to avoid circular dependency with the "student" package.
+	StudentsInverseTable = "students"
 )
 
 // Columns holds all SQL columns for teacher fields.
@@ -53,17 +40,13 @@ var Columns = []string{
 	FieldUpdatedAt,
 	FieldName,
 	FieldAge,
-	FieldAgeInt32,
-	FieldAgeInt64,
-	FieldAgeUint,
-	FieldAgeUint32,
-	FieldAgeUint64,
-	FieldWeightFloat,
-	FieldWeightFloat32,
-	FieldClassID,
-	FieldEnrollAt,
-	FieldStatusBool,
 }
+
+var (
+	// StudentsPrimaryKey and StudentsColumn2 are the table columns denoting the
+	// primary key for the students relation (M2M).
+	StudentsPrimaryKey = []string{"teacher_id", "student_id"}
+)
 
 // ValidColumn reports if the column name is valid (part of the table columns).
 func ValidColumn(column string) bool {
@@ -82,8 +65,6 @@ var (
 	DefaultUpdatedAt func() time.Time
 	// UpdateDefaultUpdatedAt holds the default value on update for the "updated_at" field.
 	UpdateDefaultUpdatedAt func() time.Time
-	// DefaultID holds the default value on creation for the "id" field.
-	DefaultID func() uuid.UUID
 )
 
 // OrderOption defines the ordering options for the Teacher queries.
@@ -114,52 +95,23 @@ func ByAge(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldAge, opts...).ToFunc()
 }
 
-// ByAgeInt32 orders the results by the age_int32 field.
-func ByAgeInt32(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldAgeInt32, opts...).ToFunc()
+// ByStudentsCount orders the results by students count.
+func ByStudentsCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newStudentsStep(), opts...)
+	}
 }
 
-// ByAgeInt64 orders the results by the age_int64 field.
-func ByAgeInt64(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldAgeInt64, opts...).ToFunc()
+// ByStudents orders the results by students terms.
+func ByStudents(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newStudentsStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
 }
-
-// ByAgeUint orders the results by the age_uint field.
-func ByAgeUint(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldAgeUint, opts...).ToFunc()
-}
-
-// ByAgeUint32 orders the results by the age_uint32 field.
-func ByAgeUint32(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldAgeUint32, opts...).ToFunc()
-}
-
-// ByAgeUint64 orders the results by the age_uint64 field.
-func ByAgeUint64(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldAgeUint64, opts...).ToFunc()
-}
-
-// ByWeightFloat orders the results by the weight_float field.
-func ByWeightFloat(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldWeightFloat, opts...).ToFunc()
-}
-
-// ByWeightFloat32 orders the results by the weight_float32 field.
-func ByWeightFloat32(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldWeightFloat32, opts...).ToFunc()
-}
-
-// ByClassID orders the results by the class_id field.
-func ByClassID(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldClassID, opts...).ToFunc()
-}
-
-// ByEnrollAt orders the results by the enroll_at field.
-func ByEnrollAt(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldEnrollAt, opts...).ToFunc()
-}
-
-// ByStatusBool orders the results by the status_bool field.
-func ByStatusBool(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldStatusBool, opts...).ToFunc()
+func newStudentsStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(StudentsInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.M2M, false, StudentsTable, StudentsPrimaryKey...),
+	)
 }

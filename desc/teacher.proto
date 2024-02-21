@@ -3,21 +3,13 @@ syntax = "proto3";
 // Teacher message
 
 message TeacherInfo {
-  optional string id = 1;
+  optional uint64 id = 1;
   optional int64 created_at = 2;
   optional int64 updated_at = 3;
+  // Teacher's name | 教师姓名
   optional string name = 4;
-  optional int64 age = 5;
-  optional int32 age_int32 = 6;
-  optional int64 age_int64 = 7;
-  optional uint64 age_uint = 8;
-  optional uint32 age_uint32 = 9;
-  optional uint64 age_uint64 = 10;
-  optional double weight_float = 11;
-  optional float weight_float32 = 12;
-  optional string class_id = 13;
-  optional int64  enroll_at = 14;
-  optional bool status_bool = 15;
+  // Teacher's age | 教师年龄
+  optional int32 age = 5;
 }
 
 message TeacherListResp {
@@ -36,15 +28,15 @@ service Example {
 
   // Teacher management
   // group: teacher
-  rpc createTeacher (TeacherInfo) returns (BaseUUIDResp);
+  rpc createTeacher (TeacherInfo) returns (BaseIDResp);
   // group: teacher
   rpc updateTeacher (TeacherInfo) returns (BaseResp);
   // group: teacher
   rpc getTeacherList (TeacherListReq) returns (TeacherListResp);
   // group: teacher
-  rpc getTeacherById (UUIDReq) returns (TeacherInfo);
+  rpc getTeacherById (IDReq) returns (TeacherInfo);
   // group: teacher
-  rpc deleteTeacher (UUIDsReq) returns (BaseResp);
+  rpc deleteTeacher (IDsReq) returns (BaseResp);
 
 
 }

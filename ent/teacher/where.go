@@ -6,52 +6,52 @@ import (
 	"time"
 
 	"entgo.io/ent/dialect/sql"
-	uuid "github.com/gofrs/uuid/v5"
+	"entgo.io/ent/dialect/sql/sqlgraph"
 	"github.com/suyuan32/simple-admin-example-rpc/ent/predicate"
 )
 
 // ID filters vertices based on their ID field.
-func ID(id uuid.UUID) predicate.Teacher {
+func ID(id uint64) predicate.Teacher {
 	return predicate.Teacher(sql.FieldEQ(FieldID, id))
 }
 
 // IDEQ applies the EQ predicate on the ID field.
-func IDEQ(id uuid.UUID) predicate.Teacher {
+func IDEQ(id uint64) predicate.Teacher {
 	return predicate.Teacher(sql.FieldEQ(FieldID, id))
 }
 
 // IDNEQ applies the NEQ predicate on the ID field.
-func IDNEQ(id uuid.UUID) predicate.Teacher {
+func IDNEQ(id uint64) predicate.Teacher {
 	return predicate.Teacher(sql.FieldNEQ(FieldID, id))
 }
 
 // IDIn applies the In predicate on the ID field.
-func IDIn(ids ...uuid.UUID) predicate.Teacher {
+func IDIn(ids ...uint64) predicate.Teacher {
 	return predicate.Teacher(sql.FieldIn(FieldID, ids...))
 }
 
 // IDNotIn applies the NotIn predicate on the ID field.
-func IDNotIn(ids ...uuid.UUID) predicate.Teacher {
+func IDNotIn(ids ...uint64) predicate.Teacher {
 	return predicate.Teacher(sql.FieldNotIn(FieldID, ids...))
 }
 
 // IDGT applies the GT predicate on the ID field.
-func IDGT(id uuid.UUID) predicate.Teacher {
+func IDGT(id uint64) predicate.Teacher {
 	return predicate.Teacher(sql.FieldGT(FieldID, id))
 }
 
 // IDGTE applies the GTE predicate on the ID field.
-func IDGTE(id uuid.UUID) predicate.Teacher {
+func IDGTE(id uint64) predicate.Teacher {
 	return predicate.Teacher(sql.FieldGTE(FieldID, id))
 }
 
 // IDLT applies the LT predicate on the ID field.
-func IDLT(id uuid.UUID) predicate.Teacher {
+func IDLT(id uint64) predicate.Teacher {
 	return predicate.Teacher(sql.FieldLT(FieldID, id))
 }
 
 // IDLTE applies the LTE predicate on the ID field.
-func IDLTE(id uuid.UUID) predicate.Teacher {
+func IDLTE(id uint64) predicate.Teacher {
 	return predicate.Teacher(sql.FieldLTE(FieldID, id))
 }
 
@@ -71,58 +71,8 @@ func Name(v string) predicate.Teacher {
 }
 
 // Age applies equality check predicate on the "age" field. It's identical to AgeEQ.
-func Age(v int) predicate.Teacher {
+func Age(v int16) predicate.Teacher {
 	return predicate.Teacher(sql.FieldEQ(FieldAge, v))
-}
-
-// AgeInt32 applies equality check predicate on the "age_int32" field. It's identical to AgeInt32EQ.
-func AgeInt32(v int32) predicate.Teacher {
-	return predicate.Teacher(sql.FieldEQ(FieldAgeInt32, v))
-}
-
-// AgeInt64 applies equality check predicate on the "age_int64" field. It's identical to AgeInt64EQ.
-func AgeInt64(v int64) predicate.Teacher {
-	return predicate.Teacher(sql.FieldEQ(FieldAgeInt64, v))
-}
-
-// AgeUint applies equality check predicate on the "age_uint" field. It's identical to AgeUintEQ.
-func AgeUint(v uint) predicate.Teacher {
-	return predicate.Teacher(sql.FieldEQ(FieldAgeUint, v))
-}
-
-// AgeUint32 applies equality check predicate on the "age_uint32" field. It's identical to AgeUint32EQ.
-func AgeUint32(v uint32) predicate.Teacher {
-	return predicate.Teacher(sql.FieldEQ(FieldAgeUint32, v))
-}
-
-// AgeUint64 applies equality check predicate on the "age_uint64" field. It's identical to AgeUint64EQ.
-func AgeUint64(v uint64) predicate.Teacher {
-	return predicate.Teacher(sql.FieldEQ(FieldAgeUint64, v))
-}
-
-// WeightFloat applies equality check predicate on the "weight_float" field. It's identical to WeightFloatEQ.
-func WeightFloat(v float64) predicate.Teacher {
-	return predicate.Teacher(sql.FieldEQ(FieldWeightFloat, v))
-}
-
-// WeightFloat32 applies equality check predicate on the "weight_float32" field. It's identical to WeightFloat32EQ.
-func WeightFloat32(v float32) predicate.Teacher {
-	return predicate.Teacher(sql.FieldEQ(FieldWeightFloat32, v))
-}
-
-// ClassID applies equality check predicate on the "class_id" field. It's identical to ClassIDEQ.
-func ClassID(v uuid.UUID) predicate.Teacher {
-	return predicate.Teacher(sql.FieldEQ(FieldClassID, v))
-}
-
-// EnrollAt applies equality check predicate on the "enroll_at" field. It's identical to EnrollAtEQ.
-func EnrollAt(v time.Time) predicate.Teacher {
-	return predicate.Teacher(sql.FieldEQ(FieldEnrollAt, v))
-}
-
-// StatusBool applies equality check predicate on the "status_bool" field. It's identical to StatusBoolEQ.
-func StatusBool(v bool) predicate.Teacher {
-	return predicate.Teacher(sql.FieldEQ(FieldStatusBool, v))
 }
 
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
@@ -271,413 +221,66 @@ func NameContainsFold(v string) predicate.Teacher {
 }
 
 // AgeEQ applies the EQ predicate on the "age" field.
-func AgeEQ(v int) predicate.Teacher {
+func AgeEQ(v int16) predicate.Teacher {
 	return predicate.Teacher(sql.FieldEQ(FieldAge, v))
 }
 
 // AgeNEQ applies the NEQ predicate on the "age" field.
-func AgeNEQ(v int) predicate.Teacher {
+func AgeNEQ(v int16) predicate.Teacher {
 	return predicate.Teacher(sql.FieldNEQ(FieldAge, v))
 }
 
 // AgeIn applies the In predicate on the "age" field.
-func AgeIn(vs ...int) predicate.Teacher {
+func AgeIn(vs ...int16) predicate.Teacher {
 	return predicate.Teacher(sql.FieldIn(FieldAge, vs...))
 }
 
 // AgeNotIn applies the NotIn predicate on the "age" field.
-func AgeNotIn(vs ...int) predicate.Teacher {
+func AgeNotIn(vs ...int16) predicate.Teacher {
 	return predicate.Teacher(sql.FieldNotIn(FieldAge, vs...))
 }
 
 // AgeGT applies the GT predicate on the "age" field.
-func AgeGT(v int) predicate.Teacher {
+func AgeGT(v int16) predicate.Teacher {
 	return predicate.Teacher(sql.FieldGT(FieldAge, v))
 }
 
 // AgeGTE applies the GTE predicate on the "age" field.
-func AgeGTE(v int) predicate.Teacher {
+func AgeGTE(v int16) predicate.Teacher {
 	return predicate.Teacher(sql.FieldGTE(FieldAge, v))
 }
 
 // AgeLT applies the LT predicate on the "age" field.
-func AgeLT(v int) predicate.Teacher {
+func AgeLT(v int16) predicate.Teacher {
 	return predicate.Teacher(sql.FieldLT(FieldAge, v))
 }
 
 // AgeLTE applies the LTE predicate on the "age" field.
-func AgeLTE(v int) predicate.Teacher {
+func AgeLTE(v int16) predicate.Teacher {
 	return predicate.Teacher(sql.FieldLTE(FieldAge, v))
 }
 
-// AgeInt32EQ applies the EQ predicate on the "age_int32" field.
-func AgeInt32EQ(v int32) predicate.Teacher {
-	return predicate.Teacher(sql.FieldEQ(FieldAgeInt32, v))
-}
-
-// AgeInt32NEQ applies the NEQ predicate on the "age_int32" field.
-func AgeInt32NEQ(v int32) predicate.Teacher {
-	return predicate.Teacher(sql.FieldNEQ(FieldAgeInt32, v))
-}
-
-// AgeInt32In applies the In predicate on the "age_int32" field.
-func AgeInt32In(vs ...int32) predicate.Teacher {
-	return predicate.Teacher(sql.FieldIn(FieldAgeInt32, vs...))
-}
-
-// AgeInt32NotIn applies the NotIn predicate on the "age_int32" field.
-func AgeInt32NotIn(vs ...int32) predicate.Teacher {
-	return predicate.Teacher(sql.FieldNotIn(FieldAgeInt32, vs...))
-}
-
-// AgeInt32GT applies the GT predicate on the "age_int32" field.
-func AgeInt32GT(v int32) predicate.Teacher {
-	return predicate.Teacher(sql.FieldGT(FieldAgeInt32, v))
-}
-
-// AgeInt32GTE applies the GTE predicate on the "age_int32" field.
-func AgeInt32GTE(v int32) predicate.Teacher {
-	return predicate.Teacher(sql.FieldGTE(FieldAgeInt32, v))
-}
-
-// AgeInt32LT applies the LT predicate on the "age_int32" field.
-func AgeInt32LT(v int32) predicate.Teacher {
-	return predicate.Teacher(sql.FieldLT(FieldAgeInt32, v))
-}
-
-// AgeInt32LTE applies the LTE predicate on the "age_int32" field.
-func AgeInt32LTE(v int32) predicate.Teacher {
-	return predicate.Teacher(sql.FieldLTE(FieldAgeInt32, v))
-}
-
-// AgeInt64EQ applies the EQ predicate on the "age_int64" field.
-func AgeInt64EQ(v int64) predicate.Teacher {
-	return predicate.Teacher(sql.FieldEQ(FieldAgeInt64, v))
-}
-
-// AgeInt64NEQ applies the NEQ predicate on the "age_int64" field.
-func AgeInt64NEQ(v int64) predicate.Teacher {
-	return predicate.Teacher(sql.FieldNEQ(FieldAgeInt64, v))
-}
-
-// AgeInt64In applies the In predicate on the "age_int64" field.
-func AgeInt64In(vs ...int64) predicate.Teacher {
-	return predicate.Teacher(sql.FieldIn(FieldAgeInt64, vs...))
-}
-
-// AgeInt64NotIn applies the NotIn predicate on the "age_int64" field.
-func AgeInt64NotIn(vs ...int64) predicate.Teacher {
-	return predicate.Teacher(sql.FieldNotIn(FieldAgeInt64, vs...))
-}
-
-// AgeInt64GT applies the GT predicate on the "age_int64" field.
-func AgeInt64GT(v int64) predicate.Teacher {
-	return predicate.Teacher(sql.FieldGT(FieldAgeInt64, v))
-}
-
-// AgeInt64GTE applies the GTE predicate on the "age_int64" field.
-func AgeInt64GTE(v int64) predicate.Teacher {
-	return predicate.Teacher(sql.FieldGTE(FieldAgeInt64, v))
-}
-
-// AgeInt64LT applies the LT predicate on the "age_int64" field.
-func AgeInt64LT(v int64) predicate.Teacher {
-	return predicate.Teacher(sql.FieldLT(FieldAgeInt64, v))
-}
-
-// AgeInt64LTE applies the LTE predicate on the "age_int64" field.
-func AgeInt64LTE(v int64) predicate.Teacher {
-	return predicate.Teacher(sql.FieldLTE(FieldAgeInt64, v))
-}
-
-// AgeUintEQ applies the EQ predicate on the "age_uint" field.
-func AgeUintEQ(v uint) predicate.Teacher {
-	return predicate.Teacher(sql.FieldEQ(FieldAgeUint, v))
-}
-
-// AgeUintNEQ applies the NEQ predicate on the "age_uint" field.
-func AgeUintNEQ(v uint) predicate.Teacher {
-	return predicate.Teacher(sql.FieldNEQ(FieldAgeUint, v))
-}
-
-// AgeUintIn applies the In predicate on the "age_uint" field.
-func AgeUintIn(vs ...uint) predicate.Teacher {
-	return predicate.Teacher(sql.FieldIn(FieldAgeUint, vs...))
-}
-
-// AgeUintNotIn applies the NotIn predicate on the "age_uint" field.
-func AgeUintNotIn(vs ...uint) predicate.Teacher {
-	return predicate.Teacher(sql.FieldNotIn(FieldAgeUint, vs...))
-}
-
-// AgeUintGT applies the GT predicate on the "age_uint" field.
-func AgeUintGT(v uint) predicate.Teacher {
-	return predicate.Teacher(sql.FieldGT(FieldAgeUint, v))
-}
-
-// AgeUintGTE applies the GTE predicate on the "age_uint" field.
-func AgeUintGTE(v uint) predicate.Teacher {
-	return predicate.Teacher(sql.FieldGTE(FieldAgeUint, v))
-}
-
-// AgeUintLT applies the LT predicate on the "age_uint" field.
-func AgeUintLT(v uint) predicate.Teacher {
-	return predicate.Teacher(sql.FieldLT(FieldAgeUint, v))
-}
-
-// AgeUintLTE applies the LTE predicate on the "age_uint" field.
-func AgeUintLTE(v uint) predicate.Teacher {
-	return predicate.Teacher(sql.FieldLTE(FieldAgeUint, v))
-}
-
-// AgeUint32EQ applies the EQ predicate on the "age_uint32" field.
-func AgeUint32EQ(v uint32) predicate.Teacher {
-	return predicate.Teacher(sql.FieldEQ(FieldAgeUint32, v))
-}
-
-// AgeUint32NEQ applies the NEQ predicate on the "age_uint32" field.
-func AgeUint32NEQ(v uint32) predicate.Teacher {
-	return predicate.Teacher(sql.FieldNEQ(FieldAgeUint32, v))
-}
-
-// AgeUint32In applies the In predicate on the "age_uint32" field.
-func AgeUint32In(vs ...uint32) predicate.Teacher {
-	return predicate.Teacher(sql.FieldIn(FieldAgeUint32, vs...))
-}
-
-// AgeUint32NotIn applies the NotIn predicate on the "age_uint32" field.
-func AgeUint32NotIn(vs ...uint32) predicate.Teacher {
-	return predicate.Teacher(sql.FieldNotIn(FieldAgeUint32, vs...))
-}
-
-// AgeUint32GT applies the GT predicate on the "age_uint32" field.
-func AgeUint32GT(v uint32) predicate.Teacher {
-	return predicate.Teacher(sql.FieldGT(FieldAgeUint32, v))
-}
-
-// AgeUint32GTE applies the GTE predicate on the "age_uint32" field.
-func AgeUint32GTE(v uint32) predicate.Teacher {
-	return predicate.Teacher(sql.FieldGTE(FieldAgeUint32, v))
-}
-
-// AgeUint32LT applies the LT predicate on the "age_uint32" field.
-func AgeUint32LT(v uint32) predicate.Teacher {
-	return predicate.Teacher(sql.FieldLT(FieldAgeUint32, v))
-}
-
-// AgeUint32LTE applies the LTE predicate on the "age_uint32" field.
-func AgeUint32LTE(v uint32) predicate.Teacher {
-	return predicate.Teacher(sql.FieldLTE(FieldAgeUint32, v))
-}
-
-// AgeUint64EQ applies the EQ predicate on the "age_uint64" field.
-func AgeUint64EQ(v uint64) predicate.Teacher {
-	return predicate.Teacher(sql.FieldEQ(FieldAgeUint64, v))
-}
-
-// AgeUint64NEQ applies the NEQ predicate on the "age_uint64" field.
-func AgeUint64NEQ(v uint64) predicate.Teacher {
-	return predicate.Teacher(sql.FieldNEQ(FieldAgeUint64, v))
-}
-
-// AgeUint64In applies the In predicate on the "age_uint64" field.
-func AgeUint64In(vs ...uint64) predicate.Teacher {
-	return predicate.Teacher(sql.FieldIn(FieldAgeUint64, vs...))
-}
-
-// AgeUint64NotIn applies the NotIn predicate on the "age_uint64" field.
-func AgeUint64NotIn(vs ...uint64) predicate.Teacher {
-	return predicate.Teacher(sql.FieldNotIn(FieldAgeUint64, vs...))
-}
-
-// AgeUint64GT applies the GT predicate on the "age_uint64" field.
-func AgeUint64GT(v uint64) predicate.Teacher {
-	return predicate.Teacher(sql.FieldGT(FieldAgeUint64, v))
-}
-
-// AgeUint64GTE applies the GTE predicate on the "age_uint64" field.
-func AgeUint64GTE(v uint64) predicate.Teacher {
-	return predicate.Teacher(sql.FieldGTE(FieldAgeUint64, v))
-}
-
-// AgeUint64LT applies the LT predicate on the "age_uint64" field.
-func AgeUint64LT(v uint64) predicate.Teacher {
-	return predicate.Teacher(sql.FieldLT(FieldAgeUint64, v))
-}
-
-// AgeUint64LTE applies the LTE predicate on the "age_uint64" field.
-func AgeUint64LTE(v uint64) predicate.Teacher {
-	return predicate.Teacher(sql.FieldLTE(FieldAgeUint64, v))
-}
-
-// WeightFloatEQ applies the EQ predicate on the "weight_float" field.
-func WeightFloatEQ(v float64) predicate.Teacher {
-	return predicate.Teacher(sql.FieldEQ(FieldWeightFloat, v))
-}
-
-// WeightFloatNEQ applies the NEQ predicate on the "weight_float" field.
-func WeightFloatNEQ(v float64) predicate.Teacher {
-	return predicate.Teacher(sql.FieldNEQ(FieldWeightFloat, v))
-}
-
-// WeightFloatIn applies the In predicate on the "weight_float" field.
-func WeightFloatIn(vs ...float64) predicate.Teacher {
-	return predicate.Teacher(sql.FieldIn(FieldWeightFloat, vs...))
-}
-
-// WeightFloatNotIn applies the NotIn predicate on the "weight_float" field.
-func WeightFloatNotIn(vs ...float64) predicate.Teacher {
-	return predicate.Teacher(sql.FieldNotIn(FieldWeightFloat, vs...))
-}
-
-// WeightFloatGT applies the GT predicate on the "weight_float" field.
-func WeightFloatGT(v float64) predicate.Teacher {
-	return predicate.Teacher(sql.FieldGT(FieldWeightFloat, v))
-}
-
-// WeightFloatGTE applies the GTE predicate on the "weight_float" field.
-func WeightFloatGTE(v float64) predicate.Teacher {
-	return predicate.Teacher(sql.FieldGTE(FieldWeightFloat, v))
-}
-
-// WeightFloatLT applies the LT predicate on the "weight_float" field.
-func WeightFloatLT(v float64) predicate.Teacher {
-	return predicate.Teacher(sql.FieldLT(FieldWeightFloat, v))
-}
-
-// WeightFloatLTE applies the LTE predicate on the "weight_float" field.
-func WeightFloatLTE(v float64) predicate.Teacher {
-	return predicate.Teacher(sql.FieldLTE(FieldWeightFloat, v))
-}
-
-// WeightFloat32EQ applies the EQ predicate on the "weight_float32" field.
-func WeightFloat32EQ(v float32) predicate.Teacher {
-	return predicate.Teacher(sql.FieldEQ(FieldWeightFloat32, v))
-}
-
-// WeightFloat32NEQ applies the NEQ predicate on the "weight_float32" field.
-func WeightFloat32NEQ(v float32) predicate.Teacher {
-	return predicate.Teacher(sql.FieldNEQ(FieldWeightFloat32, v))
-}
-
-// WeightFloat32In applies the In predicate on the "weight_float32" field.
-func WeightFloat32In(vs ...float32) predicate.Teacher {
-	return predicate.Teacher(sql.FieldIn(FieldWeightFloat32, vs...))
-}
-
-// WeightFloat32NotIn applies the NotIn predicate on the "weight_float32" field.
-func WeightFloat32NotIn(vs ...float32) predicate.Teacher {
-	return predicate.Teacher(sql.FieldNotIn(FieldWeightFloat32, vs...))
-}
-
-// WeightFloat32GT applies the GT predicate on the "weight_float32" field.
-func WeightFloat32GT(v float32) predicate.Teacher {
-	return predicate.Teacher(sql.FieldGT(FieldWeightFloat32, v))
-}
-
-// WeightFloat32GTE applies the GTE predicate on the "weight_float32" field.
-func WeightFloat32GTE(v float32) predicate.Teacher {
-	return predicate.Teacher(sql.FieldGTE(FieldWeightFloat32, v))
-}
-
-// WeightFloat32LT applies the LT predicate on the "weight_float32" field.
-func WeightFloat32LT(v float32) predicate.Teacher {
-	return predicate.Teacher(sql.FieldLT(FieldWeightFloat32, v))
-}
-
-// WeightFloat32LTE applies the LTE predicate on the "weight_float32" field.
-func WeightFloat32LTE(v float32) predicate.Teacher {
-	return predicate.Teacher(sql.FieldLTE(FieldWeightFloat32, v))
-}
-
-// ClassIDEQ applies the EQ predicate on the "class_id" field.
-func ClassIDEQ(v uuid.UUID) predicate.Teacher {
-	return predicate.Teacher(sql.FieldEQ(FieldClassID, v))
-}
-
-// ClassIDNEQ applies the NEQ predicate on the "class_id" field.
-func ClassIDNEQ(v uuid.UUID) predicate.Teacher {
-	return predicate.Teacher(sql.FieldNEQ(FieldClassID, v))
-}
-
-// ClassIDIn applies the In predicate on the "class_id" field.
-func ClassIDIn(vs ...uuid.UUID) predicate.Teacher {
-	return predicate.Teacher(sql.FieldIn(FieldClassID, vs...))
-}
-
-// ClassIDNotIn applies the NotIn predicate on the "class_id" field.
-func ClassIDNotIn(vs ...uuid.UUID) predicate.Teacher {
-	return predicate.Teacher(sql.FieldNotIn(FieldClassID, vs...))
-}
-
-// ClassIDGT applies the GT predicate on the "class_id" field.
-func ClassIDGT(v uuid.UUID) predicate.Teacher {
-	return predicate.Teacher(sql.FieldGT(FieldClassID, v))
-}
-
-// ClassIDGTE applies the GTE predicate on the "class_id" field.
-func ClassIDGTE(v uuid.UUID) predicate.Teacher {
-	return predicate.Teacher(sql.FieldGTE(FieldClassID, v))
-}
-
-// ClassIDLT applies the LT predicate on the "class_id" field.
-func ClassIDLT(v uuid.UUID) predicate.Teacher {
-	return predicate.Teacher(sql.FieldLT(FieldClassID, v))
-}
-
-// ClassIDLTE applies the LTE predicate on the "class_id" field.
-func ClassIDLTE(v uuid.UUID) predicate.Teacher {
-	return predicate.Teacher(sql.FieldLTE(FieldClassID, v))
-}
-
-// EnrollAtEQ applies the EQ predicate on the "enroll_at" field.
-func EnrollAtEQ(v time.Time) predicate.Teacher {
-	return predicate.Teacher(sql.FieldEQ(FieldEnrollAt, v))
-}
-
-// EnrollAtNEQ applies the NEQ predicate on the "enroll_at" field.
-func EnrollAtNEQ(v time.Time) predicate.Teacher {
-	return predicate.Teacher(sql.FieldNEQ(FieldEnrollAt, v))
-}
-
-// EnrollAtIn applies the In predicate on the "enroll_at" field.
-func EnrollAtIn(vs ...time.Time) predicate.Teacher {
-	return predicate.Teacher(sql.FieldIn(FieldEnrollAt, vs...))
-}
-
-// EnrollAtNotIn applies the NotIn predicate on the "enroll_at" field.
-func EnrollAtNotIn(vs ...time.Time) predicate.Teacher {
-	return predicate.Teacher(sql.FieldNotIn(FieldEnrollAt, vs...))
-}
-
-// EnrollAtGT applies the GT predicate on the "enroll_at" field.
-func EnrollAtGT(v time.Time) predicate.Teacher {
-	return predicate.Teacher(sql.FieldGT(FieldEnrollAt, v))
-}
-
-// EnrollAtGTE applies the GTE predicate on the "enroll_at" field.
-func EnrollAtGTE(v time.Time) predicate.Teacher {
-	return predicate.Teacher(sql.FieldGTE(FieldEnrollAt, v))
-}
-
-// EnrollAtLT applies the LT predicate on the "enroll_at" field.
-func EnrollAtLT(v time.Time) predicate.Teacher {
-	return predicate.Teacher(sql.FieldLT(FieldEnrollAt, v))
-}
-
-// EnrollAtLTE applies the LTE predicate on the "enroll_at" field.
-func EnrollAtLTE(v time.Time) predicate.Teacher {
-	return predicate.Teacher(sql.FieldLTE(FieldEnrollAt, v))
-}
-
-// StatusBoolEQ applies the EQ predicate on the "status_bool" field.
-func StatusBoolEQ(v bool) predicate.Teacher {
-	return predicate.Teacher(sql.FieldEQ(FieldStatusBool, v))
-}
-
-// StatusBoolNEQ applies the NEQ predicate on the "status_bool" field.
-func StatusBoolNEQ(v bool) predicate.Teacher {
-	return predicate.Teacher(sql.FieldNEQ(FieldStatusBool, v))
+// HasStudents applies the HasEdge predicate on the "students" edge.
+func HasStudents() predicate.Teacher {
+	return predicate.Teacher(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, false, StudentsTable, StudentsPrimaryKey...),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasStudentsWith applies the HasEdge predicate on the "students" edge with a given conditions (other predicates).
+func HasStudentsWith(preds ...predicate.Student) predicate.Teacher {
+	return predicate.Teacher(func(s *sql.Selector) {
+		step := newStudentsStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
 }
 
 // And groups predicates with the AND operator between them.

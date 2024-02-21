@@ -28,23 +28,12 @@ func NewUpdateStudentLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Upd
 }
 
 func (l *UpdateStudentLogic) UpdateStudent(in *example.StudentInfo) (*example.BaseResp, error) {
-	query := l.svcCtx.DB.Student.UpdateOneID(*in.Id).
+	query := l.svcCtx.DB.Student.UpdateOneID(uuidx.ParseUUIDString(*in.Id)).
 		SetNotNilName(in.Name).
-		SetNotNilAgeInt32(in.AgeInt32).
-		SetNotNilAgeInt64(in.AgeInt64).
-		SetNotNilAgeUint32(in.AgeUint32).
-		SetNotNilAgeUint64(in.AgeUint64).
-		SetNotNilWeightFloat(in.WeightFloat).
-		SetNotNilWeightFloat32(in.WeightFloat32).
-		SetNotNilClassID(uuidx.ParseUUIDStringToPointer(in.ClassId)).
-		SetNotNilEnrollAt(pointy.GetTimeMilliPointer(in.EnrollAt)).
-		SetNotNilStatusBool(in.StatusBool)
+		SetNotNilAddress(in.Address)
 
 	if in.Age != nil {
-		query.SetNotNilAge(pointy.GetPointer(int(*in.Age)))
-	}
-	if in.AgeUint != nil {
-		query.SetNotNilAgeUint(pointy.GetPointer(uint(*in.AgeUint)))
+		query.SetNotNilAge(pointy.GetPointer(int16(*in.Age)))
 	}
 
 	err := query.Exec(l.ctx)

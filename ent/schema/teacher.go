@@ -2,8 +2,10 @@ package schema
 
 import (
 	"entgo.io/ent"
+	"entgo.io/ent/dialect/entsql"
+	"entgo.io/ent/schema"
+	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
-	"github.com/gofrs/uuid/v5"
 	"github.com/suyuan32/simple-admin-common/orm/ent/mixins"
 )
 
@@ -15,34 +17,35 @@ type Teacher struct {
 // Fields of the Teacher.
 func (Teacher) Fields() []ent.Field {
 	return []ent.Field{
-		field.String("name"),
-		field.Int("age"),
-		field.Int32("age_int32"),
-		field.Int64("age_int64"),
-		field.Uint("age_uint"),
-		field.Uint32("age_uint32"),
-		field.Uint64("age_uint64"),
-		field.Float("weight_float"),
-		field.Float32("weight_float32"),
-		field.UUID("class_id", uuid.UUID{}),
-		field.Time("enroll_at"),
-		field.Bool("status_bool"),
-		// field.JSON("info", Info{}),
-	}
-}
-
-//type Info struct {
-//	BirthDay time.Time
-//	Address  string
-//}
-
-func (Teacher) Mixin() []ent.Mixin {
-	return []ent.Mixin{
-		mixins.UUIDMixin{},
+		field.String("name").
+			Annotations(entsql.WithComments(true)).
+			Comment("Teacher's name | 教师姓名"),
+		field.Int16("age").
+			Annotations(entsql.WithComments(true)).
+			Comment("Teacher's age | 教师年龄"),
 	}
 }
 
 // Edges of the Teacher.
 func (Teacher) Edges() []ent.Edge {
+	return []ent.Edge{
+		edge.To("students", Student.Type).Required(),
+	}
+}
+
+// Mixin of the Teacher.
+func (Teacher) Mixin() []ent.Mixin {
+	return []ent.Mixin{
+		mixins.IDMixin{},
+	}
+}
+
+// Indexes of the Teacher.
+func (Teacher) Indexes() []ent.Index {
+	return nil
+}
+
+// Annotations of the Teacher
+func (Teacher) Annotations() []schema.Annotation {
 	return nil
 }

@@ -3,55 +3,9 @@ syntax = "proto3";
 package example;
 option go_package="./example";
 
-message StudentInfo {
-  optional uint64 id = 1;
-  optional int64 created_at = 2;
-  optional int64 updated_at = 3;
-  //  姓名
-  optional string name = 4;
-  //  年龄
-  optional int64 age = 5;
-  optional int32 age_int32 = 6;
-  optional int64 age_int64 = 7;
-  optional uint64 age_uint = 8;
-  optional uint32 age_uint32 = 9;
-  optional uint64 age_uint64 = 10;
-  optional double weight_float = 11;
-  optional float weight_float32 = 12;
-  optional string class_id = 13;
-  optional int64 enroll_at = 14;
-  optional bool status_bool = 15;
-}
-
-message StudentListResp {
-  uint64 total = 1;
-  repeated StudentInfo data = 2;
-}
-
-message TeacherListResp {
-  uint64 total = 1;
-  repeated TeacherInfo data = 2;
-}
-
-//  base message
-message Empty {}
-
-message IDsReq {
-  repeated uint64 ids = 1;
-}
-
 message PageInfoReq {
   uint64 page = 1;
   uint64 page_size = 2;
-}
-
-message BaseResp {
-  string msg = 1;
-}
-
-message BaseIDResp {
-  uint64 id = 1;
-  string msg = 2;
 }
 
 message BaseUUIDResp {
@@ -59,28 +13,21 @@ message BaseUUIDResp {
   string msg = 2;
 }
 
-message StudentListReq {
-  uint64 page = 1;
-  uint64 page_size = 2;
-  optional string name = 3;
-}
-
-message TeacherInfo {
+message StudentInfo {
   optional string id = 1;
   optional int64 created_at = 2;
   optional int64 updated_at = 3;
+  //  Student name | 学生姓名
   optional string name = 4;
-  optional int64 age = 5;
-  optional int32 age_int32 = 6;
-  optional int64 age_int64 = 7;
-  optional uint64 age_uint = 8;
-  optional uint32 age_uint32 = 9;
-  optional uint64 age_uint64 = 10;
-  optional double weight_float = 11;
-  optional float weight_float32 = 12;
-  optional string class_id = 13;
-  optional int64 enroll_at = 14;
-  optional bool status_bool = 15;
+  //  Student age | 学生年龄
+  optional int32 age = 5;
+  //  Student's home address | 学生家庭住址 
+  optional string address = 6;
+}
+
+message StudentListResp {
+  uint64 total = 1;
+  repeated StudentInfo data = 2;
 }
 
 message TeacherListReq {
@@ -89,12 +36,50 @@ message TeacherListReq {
   optional string name = 3;
 }
 
+message UUIDsReq {
+  repeated string ids = 1;
+}
+
+message BaseResp {
+  string msg = 1;
+}
+
+message TeacherListResp {
+  uint64 total = 1;
+  repeated TeacherInfo data = 2;
+}
+
+message BaseIDResp {
+  uint64 id = 1;
+  string msg = 2;
+}
+
+message StudentListReq {
+  uint64 page = 1;
+  uint64 page_size = 2;
+  optional string name = 3;
+  optional string address = 4;
+}
+
+message TeacherInfo {
+  optional uint64 id = 1;
+  optional int64 created_at = 2;
+  optional int64 updated_at = 3;
+  //  Teacher's name | 教师姓名
+  optional string name = 4;
+  //  Teacher's age | 教师年龄
+  optional int32 age = 5;
+}
+
+//  base message
+message Empty {}
+
 message IDReq {
   uint64 id = 1;
 }
 
-message UUIDsReq {
-  repeated string ids = 1;
+message IDsReq {
+  repeated uint64 ids = 1;
 }
 
 message UUIDReq {
@@ -106,25 +91,25 @@ service Example {
   rpc initDatabase(Empty) returns (BaseResp);
   //  Student management
   //  group: student
-  rpc createStudent(StudentInfo) returns (BaseIDResp);
+  rpc createStudent(StudentInfo) returns (BaseUUIDResp);
   //  group: student
   rpc updateStudent(StudentInfo) returns (BaseResp);
   //  group: student
   rpc getStudentList(StudentListReq) returns (StudentListResp);
   //  group: student
-  rpc getStudentById(IDReq) returns (StudentInfo);
+  rpc getStudentById(UUIDReq) returns (StudentInfo);
   //  group: student
-  rpc deleteStudent(IDsReq) returns (BaseResp);
+  rpc deleteStudent(UUIDsReq) returns (BaseResp);
   //  Teacher management
   //  group: teacher
-  rpc createTeacher(TeacherInfo) returns (BaseUUIDResp);
+  rpc createTeacher(TeacherInfo) returns (BaseIDResp);
   //  group: teacher
   rpc updateTeacher(TeacherInfo) returns (BaseResp);
   //  group: teacher
   rpc getTeacherList(TeacherListReq) returns (TeacherListResp);
   //  group: teacher
-  rpc getTeacherById(UUIDReq) returns (TeacherInfo);
+  rpc getTeacherById(IDReq) returns (TeacherInfo);
   //  group: teacher
-  rpc deleteTeacher(UUIDsReq) returns (BaseResp);
+  rpc deleteTeacher(IDsReq) returns (BaseResp);
 }
 

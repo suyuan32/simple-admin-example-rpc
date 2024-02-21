@@ -2,11 +2,7 @@
 
 package ent
 
-import (
-	"time"
-
-	uuid "github.com/gofrs/uuid/v5"
-)
+import "time"
 
 // set field if value's pointer is not nil.
 func (s *StudentUpdate) SetNotNilUpdatedAt(value *time.Time) *StudentUpdate {
@@ -57,7 +53,7 @@ func (s *StudentCreate) SetNotNilName(value *string) *StudentCreate {
 }
 
 // set field if value's pointer is not nil.
-func (s *StudentUpdate) SetNotNilAge(value *int) *StudentUpdate {
+func (s *StudentUpdate) SetNotNilAge(value *int16) *StudentUpdate {
 	if value != nil {
 		return s.SetAge(*value)
 	}
@@ -65,7 +61,7 @@ func (s *StudentUpdate) SetNotNilAge(value *int) *StudentUpdate {
 }
 
 // set field if value's pointer is not nil.
-func (s *StudentUpdateOne) SetNotNilAge(value *int) *StudentUpdateOne {
+func (s *StudentUpdateOne) SetNotNilAge(value *int16) *StudentUpdateOne {
 	if value != nil {
 		return s.SetAge(*value)
 	}
@@ -73,7 +69,7 @@ func (s *StudentUpdateOne) SetNotNilAge(value *int) *StudentUpdateOne {
 }
 
 // set field if value's pointer is not nil.
-func (s *StudentCreate) SetNotNilAge(value *int) *StudentCreate {
+func (s *StudentCreate) SetNotNilAge(value *int16) *StudentCreate {
 	if value != nil {
 		return s.SetAge(*value)
 	}
@@ -81,241 +77,25 @@ func (s *StudentCreate) SetNotNilAge(value *int) *StudentCreate {
 }
 
 // set field if value's pointer is not nil.
-func (s *StudentUpdate) SetNotNilAgeInt32(value *int32) *StudentUpdate {
+func (s *StudentUpdate) SetNotNilAddress(value *string) *StudentUpdate {
 	if value != nil {
-		return s.SetAgeInt32(*value)
+		return s.SetAddress(*value)
 	}
 	return s
 }
 
 // set field if value's pointer is not nil.
-func (s *StudentUpdateOne) SetNotNilAgeInt32(value *int32) *StudentUpdateOne {
+func (s *StudentUpdateOne) SetNotNilAddress(value *string) *StudentUpdateOne {
 	if value != nil {
-		return s.SetAgeInt32(*value)
+		return s.SetAddress(*value)
 	}
 	return s
 }
 
 // set field if value's pointer is not nil.
-func (s *StudentCreate) SetNotNilAgeInt32(value *int32) *StudentCreate {
+func (s *StudentCreate) SetNotNilAddress(value *string) *StudentCreate {
 	if value != nil {
-		return s.SetAgeInt32(*value)
-	}
-	return s
-}
-
-// set field if value's pointer is not nil.
-func (s *StudentUpdate) SetNotNilAgeInt64(value *int64) *StudentUpdate {
-	if value != nil {
-		return s.SetAgeInt64(*value)
-	}
-	return s
-}
-
-// set field if value's pointer is not nil.
-func (s *StudentUpdateOne) SetNotNilAgeInt64(value *int64) *StudentUpdateOne {
-	if value != nil {
-		return s.SetAgeInt64(*value)
-	}
-	return s
-}
-
-// set field if value's pointer is not nil.
-func (s *StudentCreate) SetNotNilAgeInt64(value *int64) *StudentCreate {
-	if value != nil {
-		return s.SetAgeInt64(*value)
-	}
-	return s
-}
-
-// set field if value's pointer is not nil.
-func (s *StudentUpdate) SetNotNilAgeUint(value *uint) *StudentUpdate {
-	if value != nil {
-		return s.SetAgeUint(*value)
-	}
-	return s
-}
-
-// set field if value's pointer is not nil.
-func (s *StudentUpdateOne) SetNotNilAgeUint(value *uint) *StudentUpdateOne {
-	if value != nil {
-		return s.SetAgeUint(*value)
-	}
-	return s
-}
-
-// set field if value's pointer is not nil.
-func (s *StudentCreate) SetNotNilAgeUint(value *uint) *StudentCreate {
-	if value != nil {
-		return s.SetAgeUint(*value)
-	}
-	return s
-}
-
-// set field if value's pointer is not nil.
-func (s *StudentUpdate) SetNotNilAgeUint32(value *uint32) *StudentUpdate {
-	if value != nil {
-		return s.SetAgeUint32(*value)
-	}
-	return s
-}
-
-// set field if value's pointer is not nil.
-func (s *StudentUpdateOne) SetNotNilAgeUint32(value *uint32) *StudentUpdateOne {
-	if value != nil {
-		return s.SetAgeUint32(*value)
-	}
-	return s
-}
-
-// set field if value's pointer is not nil.
-func (s *StudentCreate) SetNotNilAgeUint32(value *uint32) *StudentCreate {
-	if value != nil {
-		return s.SetAgeUint32(*value)
-	}
-	return s
-}
-
-// set field if value's pointer is not nil.
-func (s *StudentUpdate) SetNotNilAgeUint64(value *uint64) *StudentUpdate {
-	if value != nil {
-		return s.SetAgeUint64(*value)
-	}
-	return s
-}
-
-// set field if value's pointer is not nil.
-func (s *StudentUpdateOne) SetNotNilAgeUint64(value *uint64) *StudentUpdateOne {
-	if value != nil {
-		return s.SetAgeUint64(*value)
-	}
-	return s
-}
-
-// set field if value's pointer is not nil.
-func (s *StudentCreate) SetNotNilAgeUint64(value *uint64) *StudentCreate {
-	if value != nil {
-		return s.SetAgeUint64(*value)
-	}
-	return s
-}
-
-// set field if value's pointer is not nil.
-func (s *StudentUpdate) SetNotNilWeightFloat(value *float64) *StudentUpdate {
-	if value != nil {
-		return s.SetWeightFloat(*value)
-	}
-	return s
-}
-
-// set field if value's pointer is not nil.
-func (s *StudentUpdateOne) SetNotNilWeightFloat(value *float64) *StudentUpdateOne {
-	if value != nil {
-		return s.SetWeightFloat(*value)
-	}
-	return s
-}
-
-// set field if value's pointer is not nil.
-func (s *StudentCreate) SetNotNilWeightFloat(value *float64) *StudentCreate {
-	if value != nil {
-		return s.SetWeightFloat(*value)
-	}
-	return s
-}
-
-// set field if value's pointer is not nil.
-func (s *StudentUpdate) SetNotNilWeightFloat32(value *float32) *StudentUpdate {
-	if value != nil {
-		return s.SetWeightFloat32(*value)
-	}
-	return s
-}
-
-// set field if value's pointer is not nil.
-func (s *StudentUpdateOne) SetNotNilWeightFloat32(value *float32) *StudentUpdateOne {
-	if value != nil {
-		return s.SetWeightFloat32(*value)
-	}
-	return s
-}
-
-// set field if value's pointer is not nil.
-func (s *StudentCreate) SetNotNilWeightFloat32(value *float32) *StudentCreate {
-	if value != nil {
-		return s.SetWeightFloat32(*value)
-	}
-	return s
-}
-
-// set field if value's pointer is not nil.
-func (s *StudentUpdate) SetNotNilClassID(value *uuid.UUID) *StudentUpdate {
-	if value != nil {
-		return s.SetClassID(*value)
-	}
-	return s
-}
-
-// set field if value's pointer is not nil.
-func (s *StudentUpdateOne) SetNotNilClassID(value *uuid.UUID) *StudentUpdateOne {
-	if value != nil {
-		return s.SetClassID(*value)
-	}
-	return s
-}
-
-// set field if value's pointer is not nil.
-func (s *StudentCreate) SetNotNilClassID(value *uuid.UUID) *StudentCreate {
-	if value != nil {
-		return s.SetClassID(*value)
-	}
-	return s
-}
-
-// set field if value's pointer is not nil.
-func (s *StudentUpdate) SetNotNilEnrollAt(value *time.Time) *StudentUpdate {
-	if value != nil {
-		return s.SetEnrollAt(*value)
-	}
-	return s
-}
-
-// set field if value's pointer is not nil.
-func (s *StudentUpdateOne) SetNotNilEnrollAt(value *time.Time) *StudentUpdateOne {
-	if value != nil {
-		return s.SetEnrollAt(*value)
-	}
-	return s
-}
-
-// set field if value's pointer is not nil.
-func (s *StudentCreate) SetNotNilEnrollAt(value *time.Time) *StudentCreate {
-	if value != nil {
-		return s.SetEnrollAt(*value)
-	}
-	return s
-}
-
-// set field if value's pointer is not nil.
-func (s *StudentUpdate) SetNotNilStatusBool(value *bool) *StudentUpdate {
-	if value != nil {
-		return s.SetStatusBool(*value)
-	}
-	return s
-}
-
-// set field if value's pointer is not nil.
-func (s *StudentUpdateOne) SetNotNilStatusBool(value *bool) *StudentUpdateOne {
-	if value != nil {
-		return s.SetStatusBool(*value)
-	}
-	return s
-}
-
-// set field if value's pointer is not nil.
-func (s *StudentCreate) SetNotNilStatusBool(value *bool) *StudentCreate {
-	if value != nil {
-		return s.SetStatusBool(*value)
+		return s.SetAddress(*value)
 	}
 	return s
 }
@@ -369,7 +149,7 @@ func (t *TeacherCreate) SetNotNilName(value *string) *TeacherCreate {
 }
 
 // set field if value's pointer is not nil.
-func (t *TeacherUpdate) SetNotNilAge(value *int) *TeacherUpdate {
+func (t *TeacherUpdate) SetNotNilAge(value *int16) *TeacherUpdate {
 	if value != nil {
 		return t.SetAge(*value)
 	}
@@ -377,7 +157,7 @@ func (t *TeacherUpdate) SetNotNilAge(value *int) *TeacherUpdate {
 }
 
 // set field if value's pointer is not nil.
-func (t *TeacherUpdateOne) SetNotNilAge(value *int) *TeacherUpdateOne {
+func (t *TeacherUpdateOne) SetNotNilAge(value *int16) *TeacherUpdateOne {
 	if value != nil {
 		return t.SetAge(*value)
 	}
@@ -385,249 +165,9 @@ func (t *TeacherUpdateOne) SetNotNilAge(value *int) *TeacherUpdateOne {
 }
 
 // set field if value's pointer is not nil.
-func (t *TeacherCreate) SetNotNilAge(value *int) *TeacherCreate {
+func (t *TeacherCreate) SetNotNilAge(value *int16) *TeacherCreate {
 	if value != nil {
 		return t.SetAge(*value)
-	}
-	return t
-}
-
-// set field if value's pointer is not nil.
-func (t *TeacherUpdate) SetNotNilAgeInt32(value *int32) *TeacherUpdate {
-	if value != nil {
-		return t.SetAgeInt32(*value)
-	}
-	return t
-}
-
-// set field if value's pointer is not nil.
-func (t *TeacherUpdateOne) SetNotNilAgeInt32(value *int32) *TeacherUpdateOne {
-	if value != nil {
-		return t.SetAgeInt32(*value)
-	}
-	return t
-}
-
-// set field if value's pointer is not nil.
-func (t *TeacherCreate) SetNotNilAgeInt32(value *int32) *TeacherCreate {
-	if value != nil {
-		return t.SetAgeInt32(*value)
-	}
-	return t
-}
-
-// set field if value's pointer is not nil.
-func (t *TeacherUpdate) SetNotNilAgeInt64(value *int64) *TeacherUpdate {
-	if value != nil {
-		return t.SetAgeInt64(*value)
-	}
-	return t
-}
-
-// set field if value's pointer is not nil.
-func (t *TeacherUpdateOne) SetNotNilAgeInt64(value *int64) *TeacherUpdateOne {
-	if value != nil {
-		return t.SetAgeInt64(*value)
-	}
-	return t
-}
-
-// set field if value's pointer is not nil.
-func (t *TeacherCreate) SetNotNilAgeInt64(value *int64) *TeacherCreate {
-	if value != nil {
-		return t.SetAgeInt64(*value)
-	}
-	return t
-}
-
-// set field if value's pointer is not nil.
-func (t *TeacherUpdate) SetNotNilAgeUint(value *uint) *TeacherUpdate {
-	if value != nil {
-		return t.SetAgeUint(*value)
-	}
-	return t
-}
-
-// set field if value's pointer is not nil.
-func (t *TeacherUpdateOne) SetNotNilAgeUint(value *uint) *TeacherUpdateOne {
-	if value != nil {
-		return t.SetAgeUint(*value)
-	}
-	return t
-}
-
-// set field if value's pointer is not nil.
-func (t *TeacherCreate) SetNotNilAgeUint(value *uint) *TeacherCreate {
-	if value != nil {
-		return t.SetAgeUint(*value)
-	}
-	return t
-}
-
-// set field if value's pointer is not nil.
-func (t *TeacherUpdate) SetNotNilAgeUint32(value *uint32) *TeacherUpdate {
-	if value != nil {
-		return t.SetAgeUint32(*value)
-	}
-	return t
-}
-
-// set field if value's pointer is not nil.
-func (t *TeacherUpdateOne) SetNotNilAgeUint32(value *uint32) *TeacherUpdateOne {
-	if value != nil {
-		return t.SetAgeUint32(*value)
-	}
-	return t
-}
-
-// set field if value's pointer is not nil.
-func (t *TeacherCreate) SetNotNilAgeUint32(value *uint32) *TeacherCreate {
-	if value != nil {
-		return t.SetAgeUint32(*value)
-	}
-	return t
-}
-
-// set field if value's pointer is not nil.
-func (t *TeacherUpdate) SetNotNilAgeUint64(value *uint64) *TeacherUpdate {
-	if value != nil {
-		return t.SetAgeUint64(*value)
-	}
-	return t
-}
-
-// set field if value's pointer is not nil.
-func (t *TeacherUpdateOne) SetNotNilAgeUint64(value *uint64) *TeacherUpdateOne {
-	if value != nil {
-		return t.SetAgeUint64(*value)
-	}
-	return t
-}
-
-// set field if value's pointer is not nil.
-func (t *TeacherCreate) SetNotNilAgeUint64(value *uint64) *TeacherCreate {
-	if value != nil {
-		return t.SetAgeUint64(*value)
-	}
-	return t
-}
-
-// set field if value's pointer is not nil.
-func (t *TeacherUpdate) SetNotNilWeightFloat(value *float64) *TeacherUpdate {
-	if value != nil {
-		return t.SetWeightFloat(*value)
-	}
-	return t
-}
-
-// set field if value's pointer is not nil.
-func (t *TeacherUpdateOne) SetNotNilWeightFloat(value *float64) *TeacherUpdateOne {
-	if value != nil {
-		return t.SetWeightFloat(*value)
-	}
-	return t
-}
-
-// set field if value's pointer is not nil.
-func (t *TeacherCreate) SetNotNilWeightFloat(value *float64) *TeacherCreate {
-	if value != nil {
-		return t.SetWeightFloat(*value)
-	}
-	return t
-}
-
-// set field if value's pointer is not nil.
-func (t *TeacherUpdate) SetNotNilWeightFloat32(value *float32) *TeacherUpdate {
-	if value != nil {
-		return t.SetWeightFloat32(*value)
-	}
-	return t
-}
-
-// set field if value's pointer is not nil.
-func (t *TeacherUpdateOne) SetNotNilWeightFloat32(value *float32) *TeacherUpdateOne {
-	if value != nil {
-		return t.SetWeightFloat32(*value)
-	}
-	return t
-}
-
-// set field if value's pointer is not nil.
-func (t *TeacherCreate) SetNotNilWeightFloat32(value *float32) *TeacherCreate {
-	if value != nil {
-		return t.SetWeightFloat32(*value)
-	}
-	return t
-}
-
-// set field if value's pointer is not nil.
-func (t *TeacherUpdate) SetNotNilClassID(value *uuid.UUID) *TeacherUpdate {
-	if value != nil {
-		return t.SetClassID(*value)
-	}
-	return t
-}
-
-// set field if value's pointer is not nil.
-func (t *TeacherUpdateOne) SetNotNilClassID(value *uuid.UUID) *TeacherUpdateOne {
-	if value != nil {
-		return t.SetClassID(*value)
-	}
-	return t
-}
-
-// set field if value's pointer is not nil.
-func (t *TeacherCreate) SetNotNilClassID(value *uuid.UUID) *TeacherCreate {
-	if value != nil {
-		return t.SetClassID(*value)
-	}
-	return t
-}
-
-// set field if value's pointer is not nil.
-func (t *TeacherUpdate) SetNotNilEnrollAt(value *time.Time) *TeacherUpdate {
-	if value != nil {
-		return t.SetEnrollAt(*value)
-	}
-	return t
-}
-
-// set field if value's pointer is not nil.
-func (t *TeacherUpdateOne) SetNotNilEnrollAt(value *time.Time) *TeacherUpdateOne {
-	if value != nil {
-		return t.SetEnrollAt(*value)
-	}
-	return t
-}
-
-// set field if value's pointer is not nil.
-func (t *TeacherCreate) SetNotNilEnrollAt(value *time.Time) *TeacherCreate {
-	if value != nil {
-		return t.SetEnrollAt(*value)
-	}
-	return t
-}
-
-// set field if value's pointer is not nil.
-func (t *TeacherUpdate) SetNotNilStatusBool(value *bool) *TeacherUpdate {
-	if value != nil {
-		return t.SetStatusBool(*value)
-	}
-	return t
-}
-
-// set field if value's pointer is not nil.
-func (t *TeacherUpdateOne) SetNotNilStatusBool(value *bool) *TeacherUpdateOne {
-	if value != nil {
-		return t.SetStatusBool(*value)
-	}
-	return t
-}
-
-// set field if value's pointer is not nil.
-func (t *TeacherCreate) SetNotNilStatusBool(value *bool) *TeacherCreate {
-	if value != nil {
-		return t.SetStatusBool(*value)
 	}
 	return t
 }

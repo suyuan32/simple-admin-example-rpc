@@ -15,6 +15,7 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"
+	"entgo.io/ent/dialect/sql/sqlgraph"
 	"github.com/suyuan32/simple-admin-example-rpc/ent/student"
 	"github.com/suyuan32/simple-admin-example-rpc/ent/teacher"
 
@@ -270,7 +271,7 @@ func (c *StudentClient) UpdateOne(s *Student) *StudentUpdateOne {
 }
 
 // UpdateOneID returns an update builder for the given id.
-func (c *StudentClient) UpdateOneID(id uint64) *StudentUpdateOne {
+func (c *StudentClient) UpdateOneID(id uuid.UUID) *StudentUpdateOne {
 	mutation := newStudentMutation(c.config, OpUpdateOne, withStudentID(id))
 	return &StudentUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
@@ -287,7 +288,7 @@ func (c *StudentClient) DeleteOne(s *Student) *StudentDeleteOne {
 }
 
 // DeleteOneID returns a builder for deleting the given entity by its id.
-func (c *StudentClient) DeleteOneID(id uint64) *StudentDeleteOne {
+func (c *StudentClient) DeleteOneID(id uuid.UUID) *StudentDeleteOne {
 	builder := c.Delete().Where(student.ID(id))
 	builder.mutation.id = &id
 	builder.mutation.op = OpDeleteOne
@@ -304,17 +305,33 @@ func (c *StudentClient) Query() *StudentQuery {
 }
 
 // Get returns a Student entity by its id.
-func (c *StudentClient) Get(ctx context.Context, id uint64) (*Student, error) {
+func (c *StudentClient) Get(ctx context.Context, id uuid.UUID) (*Student, error) {
 	return c.Query().Where(student.ID(id)).Only(ctx)
 }
 
 // GetX is like Get, but panics if an error occurs.
-func (c *StudentClient) GetX(ctx context.Context, id uint64) *Student {
+func (c *StudentClient) GetX(ctx context.Context, id uuid.UUID) *Student {
 	obj, err := c.Get(ctx, id)
 	if err != nil {
 		panic(err)
 	}
 	return obj
+}
+
+// QueryTeachers queries the teachers edge of a Student.
+func (c *StudentClient) QueryTeachers(s *Student) *TeacherQuery {
+	query := (&TeacherClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := s.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(student.Table, student.FieldID, id),
+			sqlgraph.To(teacher.Table, teacher.FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, true, student.TeachersTable, student.TeachersPrimaryKey...),
+		)
+		fromV = sqlgraph.Neighbors(s.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
 }
 
 // Hooks returns the client hooks.
@@ -403,7 +420,7 @@ func (c *TeacherClient) UpdateOne(t *Teacher) *TeacherUpdateOne {
 }
 
 // UpdateOneID returns an update builder for the given id.
-func (c *TeacherClient) UpdateOneID(id uuid.UUID) *TeacherUpdateOne {
+func (c *TeacherClient) UpdateOneID(id uint64) *TeacherUpdateOne {
 	mutation := newTeacherMutation(c.config, OpUpdateOne, withTeacherID(id))
 	return &TeacherUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
@@ -420,7 +437,7 @@ func (c *TeacherClient) DeleteOne(t *Teacher) *TeacherDeleteOne {
 }
 
 // DeleteOneID returns a builder for deleting the given entity by its id.
-func (c *TeacherClient) DeleteOneID(id uuid.UUID) *TeacherDeleteOne {
+func (c *TeacherClient) DeleteOneID(id uint64) *TeacherDeleteOne {
 	builder := c.Delete().Where(teacher.ID(id))
 	builder.mutation.id = &id
 	builder.mutation.op = OpDeleteOne
@@ -437,17 +454,33 @@ func (c *TeacherClient) Query() *TeacherQuery {
 }
 
 // Get returns a Teacher entity by its id.
-func (c *TeacherClient) Get(ctx context.Context, id uuid.UUID) (*Teacher, error) {
+func (c *TeacherClient) Get(ctx context.Context, id uint64) (*Teacher, error) {
 	return c.Query().Where(teacher.ID(id)).Only(ctx)
 }
 
 // GetX is like Get, but panics if an error occurs.
-func (c *TeacherClient) GetX(ctx context.Context, id uuid.UUID) *Teacher {
+func (c *TeacherClient) GetX(ctx context.Context, id uint64) *Teacher {
 	obj, err := c.Get(ctx, id)
 	if err != nil {
 		panic(err)
 	}
 	return obj
+}
+
+// QueryStudents queries the students edge of a Teacher.
+func (c *TeacherClient) QueryStudents(t *Teacher) *StudentQuery {
+	query := (&StudentClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := t.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(teacher.Table, teacher.FieldID, id),
+			sqlgraph.To(student.Table, student.FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, false, teacher.StudentsTable, teacher.StudentsPrimaryKey...),
+		)
+		fromV = sqlgraph.Neighbors(t.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
 }
 
 // Hooks returns the client hooks.

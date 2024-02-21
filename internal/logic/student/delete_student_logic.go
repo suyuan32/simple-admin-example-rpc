@@ -9,6 +9,7 @@ import (
 	"github.com/suyuan32/simple-admin-example-rpc/types/example"
 
 	"github.com/suyuan32/simple-admin-common/i18n"
+	"github.com/suyuan32/simple-admin-common/utils/uuidx"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -26,8 +27,8 @@ func NewDeleteStudentLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Del
 	}
 }
 
-func (l *DeleteStudentLogic) DeleteStudent(in *example.IDsReq) (*example.BaseResp, error) {
-	_, err := l.svcCtx.DB.Student.Delete().Where(student.IDIn(in.Ids...)).Exec(l.ctx)
+func (l *DeleteStudentLogic) DeleteStudent(in *example.UUIDsReq) (*example.BaseResp, error) {
+	_, err := l.svcCtx.DB.Student.Delete().Where(student.IDIn(uuidx.ParseUUIDSlice(in.Ids)...)).Exec(l.ctx)
 
 	if err != nil {
 		return nil, dberrorhandler.DefaultEntError(l.Logger, err, in)

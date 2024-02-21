@@ -1,14 +1,10 @@
 module github.com/suyuan32/simple-admin-example-rpc
 
-go 1.21.0
-
-toolchain go1.21.5
-
-replace github.com/zeromicro/go-zero v1.6.2 => github.com/suyuan32/simple-admin-tools v1.6.7
+go 1.22.0
 
 require (
 	entgo.io/ent v0.13.0
-	github.com/gofrs/uuid/v5 v5.0.0
+	github.com/redis/go-redis/v9 v9.5.1
 	github.com/suyuan32/simple-admin-common v1.3.8
 	github.com/zeromicro/go-zero v1.6.2
 	google.golang.org/grpc v1.61.1
@@ -33,8 +29,9 @@ require (
 	github.com/go-openapi/inflect v0.19.0 // indirect
 	github.com/go-openapi/jsonpointer v0.19.6 // indirect
 	github.com/go-openapi/jsonreference v0.20.2 // indirect
-	github.com/go-openapi/swag v0.22.3 // indirect
+	github.com/go-openapi/swag v0.22.4 // indirect
 	github.com/go-sql-driver/mysql v1.7.1 // indirect
+	github.com/gofrs/uuid/v5 v5.0.0 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang/mock v1.6.0 // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
@@ -64,7 +61,6 @@ require (
 	github.com/prometheus/client_model v0.5.0 // indirect
 	github.com/prometheus/common v0.45.0 // indirect
 	github.com/prometheus/procfs v0.12.0 // indirect
-	github.com/redis/go-redis/v9 v9.5.1 // indirect
 	github.com/spaolacci/murmur3 v1.1.0 // indirect
 	github.com/zclconf/go-cty v1.8.0 // indirect
 	go.etcd.io/etcd/api/v3 v3.5.12 // indirect
@@ -108,3 +104,5 @@ require (
 	sigs.k8s.io/structured-merge-diff/v4 v4.4.1 // indirect
 	sigs.k8s.io/yaml v1.3.0 // indirect
 )
+
+replace github.com/zeromicro/go-zero v1.6.2 => github.com/suyuan32/simple-admin-tools v1.6.7

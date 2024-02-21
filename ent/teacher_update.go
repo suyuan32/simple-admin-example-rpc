@@ -13,6 +13,7 @@ import (
 	"entgo.io/ent/schema/field"
 	uuid "github.com/gofrs/uuid/v5"
 	"github.com/suyuan32/simple-admin-example-rpc/ent/predicate"
+	"github.com/suyuan32/simple-admin-example-rpc/ent/student"
 	"github.com/suyuan32/simple-admin-example-rpc/ent/teacher"
 )
 
@@ -50,14 +51,14 @@ func (tu *TeacherUpdate) SetNillableName(s *string) *TeacherUpdate {
 }
 
 // SetAge sets the "age" field.
-func (tu *TeacherUpdate) SetAge(i int) *TeacherUpdate {
+func (tu *TeacherUpdate) SetAge(i int16) *TeacherUpdate {
 	tu.mutation.ResetAge()
 	tu.mutation.SetAge(i)
 	return tu
 }
 
 // SetNillableAge sets the "age" field if the given value is not nil.
-func (tu *TeacherUpdate) SetNillableAge(i *int) *TeacherUpdate {
+func (tu *TeacherUpdate) SetNillableAge(i *int16) *TeacherUpdate {
 	if i != nil {
 		tu.SetAge(*i)
 	}
@@ -65,203 +66,50 @@ func (tu *TeacherUpdate) SetNillableAge(i *int) *TeacherUpdate {
 }
 
 // AddAge adds i to the "age" field.
-func (tu *TeacherUpdate) AddAge(i int) *TeacherUpdate {
+func (tu *TeacherUpdate) AddAge(i int16) *TeacherUpdate {
 	tu.mutation.AddAge(i)
 	return tu
 }
 
-// SetAgeInt32 sets the "age_int32" field.
-func (tu *TeacherUpdate) SetAgeInt32(i int32) *TeacherUpdate {
-	tu.mutation.ResetAgeInt32()
-	tu.mutation.SetAgeInt32(i)
+// AddStudentIDs adds the "students" edge to the Student entity by IDs.
+func (tu *TeacherUpdate) AddStudentIDs(ids ...uuid.UUID) *TeacherUpdate {
+	tu.mutation.AddStudentIDs(ids...)
 	return tu
 }
 
-// SetNillableAgeInt32 sets the "age_int32" field if the given value is not nil.
-func (tu *TeacherUpdate) SetNillableAgeInt32(i *int32) *TeacherUpdate {
-	if i != nil {
-		tu.SetAgeInt32(*i)
+// AddStudents adds the "students" edges to the Student entity.
+func (tu *TeacherUpdate) AddStudents(s ...*Student) *TeacherUpdate {
+	ids := make([]uuid.UUID, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
 	}
-	return tu
-}
-
-// AddAgeInt32 adds i to the "age_int32" field.
-func (tu *TeacherUpdate) AddAgeInt32(i int32) *TeacherUpdate {
-	tu.mutation.AddAgeInt32(i)
-	return tu
-}
-
-// SetAgeInt64 sets the "age_int64" field.
-func (tu *TeacherUpdate) SetAgeInt64(i int64) *TeacherUpdate {
-	tu.mutation.ResetAgeInt64()
-	tu.mutation.SetAgeInt64(i)
-	return tu
-}
-
-// SetNillableAgeInt64 sets the "age_int64" field if the given value is not nil.
-func (tu *TeacherUpdate) SetNillableAgeInt64(i *int64) *TeacherUpdate {
-	if i != nil {
-		tu.SetAgeInt64(*i)
-	}
-	return tu
-}
-
-// AddAgeInt64 adds i to the "age_int64" field.
-func (tu *TeacherUpdate) AddAgeInt64(i int64) *TeacherUpdate {
-	tu.mutation.AddAgeInt64(i)
-	return tu
-}
-
-// SetAgeUint sets the "age_uint" field.
-func (tu *TeacherUpdate) SetAgeUint(u uint) *TeacherUpdate {
-	tu.mutation.ResetAgeUint()
-	tu.mutation.SetAgeUint(u)
-	return tu
-}
-
-// SetNillableAgeUint sets the "age_uint" field if the given value is not nil.
-func (tu *TeacherUpdate) SetNillableAgeUint(u *uint) *TeacherUpdate {
-	if u != nil {
-		tu.SetAgeUint(*u)
-	}
-	return tu
-}
-
-// AddAgeUint adds u to the "age_uint" field.
-func (tu *TeacherUpdate) AddAgeUint(u int) *TeacherUpdate {
-	tu.mutation.AddAgeUint(u)
-	return tu
-}
-
-// SetAgeUint32 sets the "age_uint32" field.
-func (tu *TeacherUpdate) SetAgeUint32(u uint32) *TeacherUpdate {
-	tu.mutation.ResetAgeUint32()
-	tu.mutation.SetAgeUint32(u)
-	return tu
-}
-
-// SetNillableAgeUint32 sets the "age_uint32" field if the given value is not nil.
-func (tu *TeacherUpdate) SetNillableAgeUint32(u *uint32) *TeacherUpdate {
-	if u != nil {
-		tu.SetAgeUint32(*u)
-	}
-	return tu
-}
-
-// AddAgeUint32 adds u to the "age_uint32" field.
-func (tu *TeacherUpdate) AddAgeUint32(u int32) *TeacherUpdate {
-	tu.mutation.AddAgeUint32(u)
-	return tu
-}
-
-// SetAgeUint64 sets the "age_uint64" field.
-func (tu *TeacherUpdate) SetAgeUint64(u uint64) *TeacherUpdate {
-	tu.mutation.ResetAgeUint64()
-	tu.mutation.SetAgeUint64(u)
-	return tu
-}
-
-// SetNillableAgeUint64 sets the "age_uint64" field if the given value is not nil.
-func (tu *TeacherUpdate) SetNillableAgeUint64(u *uint64) *TeacherUpdate {
-	if u != nil {
-		tu.SetAgeUint64(*u)
-	}
-	return tu
-}
-
-// AddAgeUint64 adds u to the "age_uint64" field.
-func (tu *TeacherUpdate) AddAgeUint64(u int64) *TeacherUpdate {
-	tu.mutation.AddAgeUint64(u)
-	return tu
-}
-
-// SetWeightFloat sets the "weight_float" field.
-func (tu *TeacherUpdate) SetWeightFloat(f float64) *TeacherUpdate {
-	tu.mutation.ResetWeightFloat()
-	tu.mutation.SetWeightFloat(f)
-	return tu
-}
-
-// SetNillableWeightFloat sets the "weight_float" field if the given value is not nil.
-func (tu *TeacherUpdate) SetNillableWeightFloat(f *float64) *TeacherUpdate {
-	if f != nil {
-		tu.SetWeightFloat(*f)
-	}
-	return tu
-}
-
-// AddWeightFloat adds f to the "weight_float" field.
-func (tu *TeacherUpdate) AddWeightFloat(f float64) *TeacherUpdate {
-	tu.mutation.AddWeightFloat(f)
-	return tu
-}
-
-// SetWeightFloat32 sets the "weight_float32" field.
-func (tu *TeacherUpdate) SetWeightFloat32(f float32) *TeacherUpdate {
-	tu.mutation.ResetWeightFloat32()
-	tu.mutation.SetWeightFloat32(f)
-	return tu
-}
-
-// SetNillableWeightFloat32 sets the "weight_float32" field if the given value is not nil.
-func (tu *TeacherUpdate) SetNillableWeightFloat32(f *float32) *TeacherUpdate {
-	if f != nil {
-		tu.SetWeightFloat32(*f)
-	}
-	return tu
-}
-
-// AddWeightFloat32 adds f to the "weight_float32" field.
-func (tu *TeacherUpdate) AddWeightFloat32(f float32) *TeacherUpdate {
-	tu.mutation.AddWeightFloat32(f)
-	return tu
-}
-
-// SetClassID sets the "class_id" field.
-func (tu *TeacherUpdate) SetClassID(u uuid.UUID) *TeacherUpdate {
-	tu.mutation.SetClassID(u)
-	return tu
-}
-
-// SetNillableClassID sets the "class_id" field if the given value is not nil.
-func (tu *TeacherUpdate) SetNillableClassID(u *uuid.UUID) *TeacherUpdate {
-	if u != nil {
-		tu.SetClassID(*u)
-	}
-	return tu
-}
-
-// SetEnrollAt sets the "enroll_at" field.
-func (tu *TeacherUpdate) SetEnrollAt(t time.Time) *TeacherUpdate {
-	tu.mutation.SetEnrollAt(t)
-	return tu
-}
-
-// SetNillableEnrollAt sets the "enroll_at" field if the given value is not nil.
-func (tu *TeacherUpdate) SetNillableEnrollAt(t *time.Time) *TeacherUpdate {
-	if t != nil {
-		tu.SetEnrollAt(*t)
-	}
-	return tu
-}
-
-// SetStatusBool sets the "status_bool" field.
-func (tu *TeacherUpdate) SetStatusBool(b bool) *TeacherUpdate {
-	tu.mutation.SetStatusBool(b)
-	return tu
-}
-
-// SetNillableStatusBool sets the "status_bool" field if the given value is not nil.
-func (tu *TeacherUpdate) SetNillableStatusBool(b *bool) *TeacherUpdate {
-	if b != nil {
-		tu.SetStatusBool(*b)
-	}
-	return tu
+	return tu.AddStudentIDs(ids...)
 }
 
 // Mutation returns the TeacherMutation object of the builder.
 func (tu *TeacherUpdate) Mutation() *TeacherMutation {
 	return tu.mutation
+}
+
+// ClearStudents clears all "students" edges to the Student entity.
+func (tu *TeacherUpdate) ClearStudents() *TeacherUpdate {
+	tu.mutation.ClearStudents()
+	return tu
+}
+
+// RemoveStudentIDs removes the "students" edge to Student entities by IDs.
+func (tu *TeacherUpdate) RemoveStudentIDs(ids ...uuid.UUID) *TeacherUpdate {
+	tu.mutation.RemoveStudentIDs(ids...)
+	return tu
+}
+
+// RemoveStudents removes "students" edges to Student entities.
+func (tu *TeacherUpdate) RemoveStudents(s ...*Student) *TeacherUpdate {
+	ids := make([]uuid.UUID, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return tu.RemoveStudentIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -301,7 +149,7 @@ func (tu *TeacherUpdate) defaults() {
 }
 
 func (tu *TeacherUpdate) sqlSave(ctx context.Context) (n int, err error) {
-	_spec := sqlgraph.NewUpdateSpec(teacher.Table, teacher.Columns, sqlgraph.NewFieldSpec(teacher.FieldID, field.TypeUUID))
+	_spec := sqlgraph.NewUpdateSpec(teacher.Table, teacher.Columns, sqlgraph.NewFieldSpec(teacher.FieldID, field.TypeUint64))
 	if ps := tu.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {
@@ -316,61 +164,55 @@ func (tu *TeacherUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		_spec.SetField(teacher.FieldName, field.TypeString, value)
 	}
 	if value, ok := tu.mutation.Age(); ok {
-		_spec.SetField(teacher.FieldAge, field.TypeInt, value)
+		_spec.SetField(teacher.FieldAge, field.TypeInt16, value)
 	}
 	if value, ok := tu.mutation.AddedAge(); ok {
-		_spec.AddField(teacher.FieldAge, field.TypeInt, value)
+		_spec.AddField(teacher.FieldAge, field.TypeInt16, value)
 	}
-	if value, ok := tu.mutation.AgeInt32(); ok {
-		_spec.SetField(teacher.FieldAgeInt32, field.TypeInt32, value)
+	if tu.mutation.StudentsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   teacher.StudentsTable,
+			Columns: teacher.StudentsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(student.FieldID, field.TypeUUID),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if value, ok := tu.mutation.AddedAgeInt32(); ok {
-		_spec.AddField(teacher.FieldAgeInt32, field.TypeInt32, value)
+	if nodes := tu.mutation.RemovedStudentsIDs(); len(nodes) > 0 && !tu.mutation.StudentsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   teacher.StudentsTable,
+			Columns: teacher.StudentsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(student.FieldID, field.TypeUUID),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if value, ok := tu.mutation.AgeInt64(); ok {
-		_spec.SetField(teacher.FieldAgeInt64, field.TypeInt64, value)
-	}
-	if value, ok := tu.mutation.AddedAgeInt64(); ok {
-		_spec.AddField(teacher.FieldAgeInt64, field.TypeInt64, value)
-	}
-	if value, ok := tu.mutation.AgeUint(); ok {
-		_spec.SetField(teacher.FieldAgeUint, field.TypeUint, value)
-	}
-	if value, ok := tu.mutation.AddedAgeUint(); ok {
-		_spec.AddField(teacher.FieldAgeUint, field.TypeUint, value)
-	}
-	if value, ok := tu.mutation.AgeUint32(); ok {
-		_spec.SetField(teacher.FieldAgeUint32, field.TypeUint32, value)
-	}
-	if value, ok := tu.mutation.AddedAgeUint32(); ok {
-		_spec.AddField(teacher.FieldAgeUint32, field.TypeUint32, value)
-	}
-	if value, ok := tu.mutation.AgeUint64(); ok {
-		_spec.SetField(teacher.FieldAgeUint64, field.TypeUint64, value)
-	}
-	if value, ok := tu.mutation.AddedAgeUint64(); ok {
-		_spec.AddField(teacher.FieldAgeUint64, field.TypeUint64, value)
-	}
-	if value, ok := tu.mutation.WeightFloat(); ok {
-		_spec.SetField(teacher.FieldWeightFloat, field.TypeFloat64, value)
-	}
-	if value, ok := tu.mutation.AddedWeightFloat(); ok {
-		_spec.AddField(teacher.FieldWeightFloat, field.TypeFloat64, value)
-	}
-	if value, ok := tu.mutation.WeightFloat32(); ok {
-		_spec.SetField(teacher.FieldWeightFloat32, field.TypeFloat32, value)
-	}
-	if value, ok := tu.mutation.AddedWeightFloat32(); ok {
-		_spec.AddField(teacher.FieldWeightFloat32, field.TypeFloat32, value)
-	}
-	if value, ok := tu.mutation.ClassID(); ok {
-		_spec.SetField(teacher.FieldClassID, field.TypeUUID, value)
-	}
-	if value, ok := tu.mutation.EnrollAt(); ok {
-		_spec.SetField(teacher.FieldEnrollAt, field.TypeTime, value)
-	}
-	if value, ok := tu.mutation.StatusBool(); ok {
-		_spec.SetField(teacher.FieldStatusBool, field.TypeBool, value)
+	if nodes := tu.mutation.StudentsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   teacher.StudentsTable,
+			Columns: teacher.StudentsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(student.FieldID, field.TypeUUID),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, tu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -413,14 +255,14 @@ func (tuo *TeacherUpdateOne) SetNillableName(s *string) *TeacherUpdateOne {
 }
 
 // SetAge sets the "age" field.
-func (tuo *TeacherUpdateOne) SetAge(i int) *TeacherUpdateOne {
+func (tuo *TeacherUpdateOne) SetAge(i int16) *TeacherUpdateOne {
 	tuo.mutation.ResetAge()
 	tuo.mutation.SetAge(i)
 	return tuo
 }
 
 // SetNillableAge sets the "age" field if the given value is not nil.
-func (tuo *TeacherUpdateOne) SetNillableAge(i *int) *TeacherUpdateOne {
+func (tuo *TeacherUpdateOne) SetNillableAge(i *int16) *TeacherUpdateOne {
 	if i != nil {
 		tuo.SetAge(*i)
 	}
@@ -428,203 +270,50 @@ func (tuo *TeacherUpdateOne) SetNillableAge(i *int) *TeacherUpdateOne {
 }
 
 // AddAge adds i to the "age" field.
-func (tuo *TeacherUpdateOne) AddAge(i int) *TeacherUpdateOne {
+func (tuo *TeacherUpdateOne) AddAge(i int16) *TeacherUpdateOne {
 	tuo.mutation.AddAge(i)
 	return tuo
 }
 
-// SetAgeInt32 sets the "age_int32" field.
-func (tuo *TeacherUpdateOne) SetAgeInt32(i int32) *TeacherUpdateOne {
-	tuo.mutation.ResetAgeInt32()
-	tuo.mutation.SetAgeInt32(i)
+// AddStudentIDs adds the "students" edge to the Student entity by IDs.
+func (tuo *TeacherUpdateOne) AddStudentIDs(ids ...uuid.UUID) *TeacherUpdateOne {
+	tuo.mutation.AddStudentIDs(ids...)
 	return tuo
 }
 
-// SetNillableAgeInt32 sets the "age_int32" field if the given value is not nil.
-func (tuo *TeacherUpdateOne) SetNillableAgeInt32(i *int32) *TeacherUpdateOne {
-	if i != nil {
-		tuo.SetAgeInt32(*i)
+// AddStudents adds the "students" edges to the Student entity.
+func (tuo *TeacherUpdateOne) AddStudents(s ...*Student) *TeacherUpdateOne {
+	ids := make([]uuid.UUID, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
 	}
-	return tuo
-}
-
-// AddAgeInt32 adds i to the "age_int32" field.
-func (tuo *TeacherUpdateOne) AddAgeInt32(i int32) *TeacherUpdateOne {
-	tuo.mutation.AddAgeInt32(i)
-	return tuo
-}
-
-// SetAgeInt64 sets the "age_int64" field.
-func (tuo *TeacherUpdateOne) SetAgeInt64(i int64) *TeacherUpdateOne {
-	tuo.mutation.ResetAgeInt64()
-	tuo.mutation.SetAgeInt64(i)
-	return tuo
-}
-
-// SetNillableAgeInt64 sets the "age_int64" field if the given value is not nil.
-func (tuo *TeacherUpdateOne) SetNillableAgeInt64(i *int64) *TeacherUpdateOne {
-	if i != nil {
-		tuo.SetAgeInt64(*i)
-	}
-	return tuo
-}
-
-// AddAgeInt64 adds i to the "age_int64" field.
-func (tuo *TeacherUpdateOne) AddAgeInt64(i int64) *TeacherUpdateOne {
-	tuo.mutation.AddAgeInt64(i)
-	return tuo
-}
-
-// SetAgeUint sets the "age_uint" field.
-func (tuo *TeacherUpdateOne) SetAgeUint(u uint) *TeacherUpdateOne {
-	tuo.mutation.ResetAgeUint()
-	tuo.mutation.SetAgeUint(u)
-	return tuo
-}
-
-// SetNillableAgeUint sets the "age_uint" field if the given value is not nil.
-func (tuo *TeacherUpdateOne) SetNillableAgeUint(u *uint) *TeacherUpdateOne {
-	if u != nil {
-		tuo.SetAgeUint(*u)
-	}
-	return tuo
-}
-
-// AddAgeUint adds u to the "age_uint" field.
-func (tuo *TeacherUpdateOne) AddAgeUint(u int) *TeacherUpdateOne {
-	tuo.mutation.AddAgeUint(u)
-	return tuo
-}
-
-// SetAgeUint32 sets the "age_uint32" field.
-func (tuo *TeacherUpdateOne) SetAgeUint32(u uint32) *TeacherUpdateOne {
-	tuo.mutation.ResetAgeUint32()
-	tuo.mutation.SetAgeUint32(u)
-	return tuo
-}
-
-// SetNillableAgeUint32 sets the "age_uint32" field if the given value is not nil.
-func (tuo *TeacherUpdateOne) SetNillableAgeUint32(u *uint32) *TeacherUpdateOne {
-	if u != nil {
-		tuo.SetAgeUint32(*u)
-	}
-	return tuo
-}
-
-// AddAgeUint32 adds u to the "age_uint32" field.
-func (tuo *TeacherUpdateOne) AddAgeUint32(u int32) *TeacherUpdateOne {
-	tuo.mutation.AddAgeUint32(u)
-	return tuo
-}
-
-// SetAgeUint64 sets the "age_uint64" field.
-func (tuo *TeacherUpdateOne) SetAgeUint64(u uint64) *TeacherUpdateOne {
-	tuo.mutation.ResetAgeUint64()
-	tuo.mutation.SetAgeUint64(u)
-	return tuo
-}
-
-// SetNillableAgeUint64 sets the "age_uint64" field if the given value is not nil.
-func (tuo *TeacherUpdateOne) SetNillableAgeUint64(u *uint64) *TeacherUpdateOne {
-	if u != nil {
-		tuo.SetAgeUint64(*u)
-	}
-	return tuo
-}
-
-// AddAgeUint64 adds u to the "age_uint64" field.
-func (tuo *TeacherUpdateOne) AddAgeUint64(u int64) *TeacherUpdateOne {
-	tuo.mutation.AddAgeUint64(u)
-	return tuo
-}
-
-// SetWeightFloat sets the "weight_float" field.
-func (tuo *TeacherUpdateOne) SetWeightFloat(f float64) *TeacherUpdateOne {
-	tuo.mutation.ResetWeightFloat()
-	tuo.mutation.SetWeightFloat(f)
-	return tuo
-}
-
-// SetNillableWeightFloat sets the "weight_float" field if the given value is not nil.
-func (tuo *TeacherUpdateOne) SetNillableWeightFloat(f *float64) *TeacherUpdateOne {
-	if f != nil {
-		tuo.SetWeightFloat(*f)
-	}
-	return tuo
-}
-
-// AddWeightFloat adds f to the "weight_float" field.
-func (tuo *TeacherUpdateOne) AddWeightFloat(f float64) *TeacherUpdateOne {
-	tuo.mutation.AddWeightFloat(f)
-	return tuo
-}
-
-// SetWeightFloat32 sets the "weight_float32" field.
-func (tuo *TeacherUpdateOne) SetWeightFloat32(f float32) *TeacherUpdateOne {
-	tuo.mutation.ResetWeightFloat32()
-	tuo.mutation.SetWeightFloat32(f)
-	return tuo
-}
-
-// SetNillableWeightFloat32 sets the "weight_float32" field if the given value is not nil.
-func (tuo *TeacherUpdateOne) SetNillableWeightFloat32(f *float32) *TeacherUpdateOne {
-	if f != nil {
-		tuo.SetWeightFloat32(*f)
-	}
-	return tuo
-}
-
-// AddWeightFloat32 adds f to the "weight_float32" field.
-func (tuo *TeacherUpdateOne) AddWeightFloat32(f float32) *TeacherUpdateOne {
-	tuo.mutation.AddWeightFloat32(f)
-	return tuo
-}
-
-// SetClassID sets the "class_id" field.
-func (tuo *TeacherUpdateOne) SetClassID(u uuid.UUID) *TeacherUpdateOne {
-	tuo.mutation.SetClassID(u)
-	return tuo
-}
-
-// SetNillableClassID sets the "class_id" field if the given value is not nil.
-func (tuo *TeacherUpdateOne) SetNillableClassID(u *uuid.UUID) *TeacherUpdateOne {
-	if u != nil {
-		tuo.SetClassID(*u)
-	}
-	return tuo
-}
-
-// SetEnrollAt sets the "enroll_at" field.
-func (tuo *TeacherUpdateOne) SetEnrollAt(t time.Time) *TeacherUpdateOne {
-	tuo.mutation.SetEnrollAt(t)
-	return tuo
-}
-
-// SetNillableEnrollAt sets the "enroll_at" field if the given value is not nil.
-func (tuo *TeacherUpdateOne) SetNillableEnrollAt(t *time.Time) *TeacherUpdateOne {
-	if t != nil {
-		tuo.SetEnrollAt(*t)
-	}
-	return tuo
-}
-
-// SetStatusBool sets the "status_bool" field.
-func (tuo *TeacherUpdateOne) SetStatusBool(b bool) *TeacherUpdateOne {
-	tuo.mutation.SetStatusBool(b)
-	return tuo
-}
-
-// SetNillableStatusBool sets the "status_bool" field if the given value is not nil.
-func (tuo *TeacherUpdateOne) SetNillableStatusBool(b *bool) *TeacherUpdateOne {
-	if b != nil {
-		tuo.SetStatusBool(*b)
-	}
-	return tuo
+	return tuo.AddStudentIDs(ids...)
 }
 
 // Mutation returns the TeacherMutation object of the builder.
 func (tuo *TeacherUpdateOne) Mutation() *TeacherMutation {
 	return tuo.mutation
+}
+
+// ClearStudents clears all "students" edges to the Student entity.
+func (tuo *TeacherUpdateOne) ClearStudents() *TeacherUpdateOne {
+	tuo.mutation.ClearStudents()
+	return tuo
+}
+
+// RemoveStudentIDs removes the "students" edge to Student entities by IDs.
+func (tuo *TeacherUpdateOne) RemoveStudentIDs(ids ...uuid.UUID) *TeacherUpdateOne {
+	tuo.mutation.RemoveStudentIDs(ids...)
+	return tuo
+}
+
+// RemoveStudents removes "students" edges to Student entities.
+func (tuo *TeacherUpdateOne) RemoveStudents(s ...*Student) *TeacherUpdateOne {
+	ids := make([]uuid.UUID, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return tuo.RemoveStudentIDs(ids...)
 }
 
 // Where appends a list predicates to the TeacherUpdate builder.
@@ -677,7 +366,7 @@ func (tuo *TeacherUpdateOne) defaults() {
 }
 
 func (tuo *TeacherUpdateOne) sqlSave(ctx context.Context) (_node *Teacher, err error) {
-	_spec := sqlgraph.NewUpdateSpec(teacher.Table, teacher.Columns, sqlgraph.NewFieldSpec(teacher.FieldID, field.TypeUUID))
+	_spec := sqlgraph.NewUpdateSpec(teacher.Table, teacher.Columns, sqlgraph.NewFieldSpec(teacher.FieldID, field.TypeUint64))
 	id, ok := tuo.mutation.ID()
 	if !ok {
 		return nil, &ValidationError{Name: "id", err: errors.New(`ent: missing "Teacher.id" for update`)}
@@ -709,61 +398,55 @@ func (tuo *TeacherUpdateOne) sqlSave(ctx context.Context) (_node *Teacher, err e
 		_spec.SetField(teacher.FieldName, field.TypeString, value)
 	}
 	if value, ok := tuo.mutation.Age(); ok {
-		_spec.SetField(teacher.FieldAge, field.TypeInt, value)
+		_spec.SetField(teacher.FieldAge, field.TypeInt16, value)
 	}
 	if value, ok := tuo.mutation.AddedAge(); ok {
-		_spec.AddField(teacher.FieldAge, field.TypeInt, value)
+		_spec.AddField(teacher.FieldAge, field.TypeInt16, value)
 	}
-	if value, ok := tuo.mutation.AgeInt32(); ok {
-		_spec.SetField(teacher.FieldAgeInt32, field.TypeInt32, value)
+	if tuo.mutation.StudentsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   teacher.StudentsTable,
+			Columns: teacher.StudentsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(student.FieldID, field.TypeUUID),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if value, ok := tuo.mutation.AddedAgeInt32(); ok {
-		_spec.AddField(teacher.FieldAgeInt32, field.TypeInt32, value)
+	if nodes := tuo.mutation.RemovedStudentsIDs(); len(nodes) > 0 && !tuo.mutation.StudentsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   teacher.StudentsTable,
+			Columns: teacher.StudentsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(student.FieldID, field.TypeUUID),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if value, ok := tuo.mutation.AgeInt64(); ok {
-		_spec.SetField(teacher.FieldAgeInt64, field.TypeInt64, value)
-	}
-	if value, ok := tuo.mutation.AddedAgeInt64(); ok {
-		_spec.AddField(teacher.FieldAgeInt64, field.TypeInt64, value)
-	}
-	if value, ok := tuo.mutation.AgeUint(); ok {
-		_spec.SetField(teacher.FieldAgeUint, field.TypeUint, value)
-	}
-	if value, ok := tuo.mutation.AddedAgeUint(); ok {
-		_spec.AddField(teacher.FieldAgeUint, field.TypeUint, value)
-	}
-	if value, ok := tuo.mutation.AgeUint32(); ok {
-		_spec.SetField(teacher.FieldAgeUint32, field.TypeUint32, value)
-	}
-	if value, ok := tuo.mutation.AddedAgeUint32(); ok {
-		_spec.AddField(teacher.FieldAgeUint32, field.TypeUint32, value)
-	}
-	if value, ok := tuo.mutation.AgeUint64(); ok {
-		_spec.SetField(teacher.FieldAgeUint64, field.TypeUint64, value)
-	}
-	if value, ok := tuo.mutation.AddedAgeUint64(); ok {
-		_spec.AddField(teacher.FieldAgeUint64, field.TypeUint64, value)
-	}
-	if value, ok := tuo.mutation.WeightFloat(); ok {
-		_spec.SetField(teacher.FieldWeightFloat, field.TypeFloat64, value)
-	}
-	if value, ok := tuo.mutation.AddedWeightFloat(); ok {
-		_spec.AddField(teacher.FieldWeightFloat, field.TypeFloat64, value)
-	}
-	if value, ok := tuo.mutation.WeightFloat32(); ok {
-		_spec.SetField(teacher.FieldWeightFloat32, field.TypeFloat32, value)
-	}
-	if value, ok := tuo.mutation.AddedWeightFloat32(); ok {
-		_spec.AddField(teacher.FieldWeightFloat32, field.TypeFloat32, value)
-	}
-	if value, ok := tuo.mutation.ClassID(); ok {
-		_spec.SetField(teacher.FieldClassID, field.TypeUUID, value)
-	}
-	if value, ok := tuo.mutation.EnrollAt(); ok {
-		_spec.SetField(teacher.FieldEnrollAt, field.TypeTime, value)
-	}
-	if value, ok := tuo.mutation.StatusBool(); ok {
-		_spec.SetField(teacher.FieldStatusBool, field.TypeBool, value)
+	if nodes := tuo.mutation.StudentsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   teacher.StudentsTable,
+			Columns: teacher.StudentsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(student.FieldID, field.TypeUUID),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	_node = &Teacher{config: tuo.config}
 	_spec.Assign = _node.assignValues

@@ -30,6 +30,10 @@ func init() {
 	student.DefaultUpdatedAt = studentDescUpdatedAt.Default.(func() time.Time)
 	// student.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
 	student.UpdateDefaultUpdatedAt = studentDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// studentDescID is the schema descriptor for id field.
+	studentDescID := studentMixinFields0[0].Descriptor()
+	// student.DefaultID holds the default value on creation for the id field.
+	student.DefaultID = studentDescID.Default.(func() uuid.UUID)
 	teacherMixin := schema.Teacher{}.Mixin()
 	teacherMixinFields0 := teacherMixin[0].Fields()
 	_ = teacherMixinFields0
@@ -45,8 +49,4 @@ func init() {
 	teacher.DefaultUpdatedAt = teacherDescUpdatedAt.Default.(func() time.Time)
 	// teacher.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
 	teacher.UpdateDefaultUpdatedAt = teacherDescUpdatedAt.UpdateDefault.(func() time.Time)
-	// teacherDescID is the schema descriptor for id field.
-	teacherDescID := teacherMixinFields0[0].Descriptor()
-	// teacher.DefaultID holds the default value on creation for the id field.
-	teacher.DefaultID = teacherDescID.Default.(func() uuid.UUID)
 }

@@ -8,7 +8,6 @@ import (
 	"github.com/suyuan32/simple-admin-example-rpc/types/example"
 
 	"github.com/suyuan32/simple-admin-common/i18n"
-	"github.com/suyuan32/simple-admin-common/utils/uuidx"
 
 	"github.com/suyuan32/simple-admin-common/utils/pointy"
 	"github.com/zeromicro/go-zero/core/logx"
@@ -28,24 +27,13 @@ func NewCreateStudentLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Cre
 	}
 }
 
-func (l *CreateStudentLogic) CreateStudent(in *example.StudentInfo) (*example.BaseIDResp, error) {
+func (l *CreateStudentLogic) CreateStudent(in *example.StudentInfo) (*example.BaseUUIDResp, error) {
 	query := l.svcCtx.DB.Student.Create().
 		SetNotNilName(in.Name).
-		SetNotNilAgeInt32(in.AgeInt32).
-		SetNotNilAgeInt64(in.AgeInt64).
-		SetNotNilAgeUint32(in.AgeUint32).
-		SetNotNilAgeUint64(in.AgeUint64).
-		SetNotNilWeightFloat(in.WeightFloat).
-		SetNotNilWeightFloat32(in.WeightFloat32).
-		SetNotNilClassID(uuidx.ParseUUIDStringToPointer(in.ClassId)).
-		SetNotNilEnrollAt(pointy.GetTimeMilliPointer(in.EnrollAt)).
-		SetNotNilStatusBool(in.StatusBool)
+		SetNotNilAddress(in.Address)
 
 	if in.Age != nil {
-		query.SetNotNilAge(pointy.GetPointer(int(*in.Age)))
-	}
-	if in.AgeUint != nil {
-		query.SetNotNilAgeUint(pointy.GetPointer(uint(*in.AgeUint)))
+		query.SetNotNilAge(pointy.GetPointer(int16(*in.Age)))
 	}
 
 	result, err := query.Save(l.ctx)
@@ -54,5 +42,5 @@ func (l *CreateStudentLogic) CreateStudent(in *example.StudentInfo) (*example.Ba
 		return nil, dberrorhandler.DefaultEntError(l.Logger, err, in)
 	}
 
-	return &example.BaseIDResp{Id: result.ID, Msg: i18n.CreateSuccess}, nil
+	return &example.BaseUUIDResp{Id: result.ID.String(), Msg: i18n.CreateSuccess}, nil
 }

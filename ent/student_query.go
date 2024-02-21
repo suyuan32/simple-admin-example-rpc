@@ -4,23 +4,27 @@ package ent
 
 import (
 	"context"
+	"database/sql/driver"
 	"fmt"
 	"math"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
+	uuid "github.com/gofrs/uuid/v5"
 	"github.com/suyuan32/simple-admin-example-rpc/ent/predicate"
 	"github.com/suyuan32/simple-admin-example-rpc/ent/student"
+	"github.com/suyuan32/simple-admin-example-rpc/ent/teacher"
 )
 
 // StudentQuery is the builder for querying Student entities.
 type StudentQuery struct {
 	config
-	ctx        *QueryContext
-	order      []student.OrderOption
-	inters     []Interceptor
-	predicates []predicate.Student
+	ctx          *QueryContext
+	order        []student.OrderOption
+	inters       []Interceptor
+	predicates   []predicate.Student
+	withTeachers *TeacherQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -57,6 +61,28 @@ func (sq *StudentQuery) Order(o ...student.OrderOption) *StudentQuery {
 	return sq
 }
 
+// QueryTeachers chains the current query on the "teachers" edge.
+func (sq *StudentQuery) QueryTeachers() *TeacherQuery {
+	query := (&TeacherClient{config: sq.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := sq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := sq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(student.Table, student.FieldID, selector),
+			sqlgraph.To(teacher.Table, teacher.FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, true, student.TeachersTable, student.TeachersPrimaryKey...),
+		)
+		fromU = sqlgraph.SetNeighbors(sq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
 // First returns the first Student entity from the query.
 // Returns a *NotFoundError when no Student was found.
 func (sq *StudentQuery) First(ctx context.Context) (*Student, error) {
@@ -81,8 +107,8 @@ func (sq *StudentQuery) FirstX(ctx context.Context) *Student {
 
 // FirstID returns the first Student ID from the query.
 // Returns a *NotFoundError when no Student ID was found.
-func (sq *StudentQuery) FirstID(ctx context.Context) (id uint64, err error) {
-	var ids []uint64
+func (sq *StudentQuery) FirstID(ctx context.Context) (id uuid.UUID, err error) {
+	var ids []uuid.UUID
 	if ids, err = sq.Limit(1).IDs(setContextOp(ctx, sq.ctx, "FirstID")); err != nil {
 		return
 	}
@@ -94,7 +120,7 @@ func (sq *StudentQuery) FirstID(ctx context.Context) (id uint64, err error) {
 }
 
 // FirstIDX is like FirstID, but panics if an error occurs.
-func (sq *StudentQuery) FirstIDX(ctx context.Context) uint64 {
+func (sq *StudentQuery) FirstIDX(ctx context.Context) uuid.UUID {
 	id, err := sq.FirstID(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
@@ -132,8 +158,8 @@ func (sq *StudentQuery) OnlyX(ctx context.Context) *Student {
 // OnlyID is like Only, but returns the only Student ID in the query.
 // Returns a *NotSingularError when more than one Student ID is found.
 // Returns a *NotFoundError when no entities are found.
-func (sq *StudentQuery) OnlyID(ctx context.Context) (id uint64, err error) {
-	var ids []uint64
+func (sq *StudentQuery) OnlyID(ctx context.Context) (id uuid.UUID, err error) {
+	var ids []uuid.UUID
 	if ids, err = sq.Limit(2).IDs(setContextOp(ctx, sq.ctx, "OnlyID")); err != nil {
 		return
 	}
@@ -149,7 +175,7 @@ func (sq *StudentQuery) OnlyID(ctx context.Context) (id uint64, err error) {
 }
 
 // OnlyIDX is like OnlyID, but panics if an error occurs.
-func (sq *StudentQuery) OnlyIDX(ctx context.Context) uint64 {
+func (sq *StudentQuery) OnlyIDX(ctx context.Context) uuid.UUID {
 	id, err := sq.OnlyID(ctx)
 	if err != nil {
 		panic(err)
@@ -177,7 +203,7 @@ func (sq *StudentQuery) AllX(ctx context.Context) []*Student {
 }
 
 // IDs executes the query and returns a list of Student IDs.
-func (sq *StudentQuery) IDs(ctx context.Context) (ids []uint64, err error) {
+func (sq *StudentQuery) IDs(ctx context.Context) (ids []uuid.UUID, err error) {
 	if sq.ctx.Unique == nil && sq.path != nil {
 		sq.Unique(true)
 	}
@@ -189,7 +215,7 @@ func (sq *StudentQuery) IDs(ctx context.Context) (ids []uint64, err error) {
 }
 
 // IDsX is like IDs, but panics if an error occurs.
-func (sq *StudentQuery) IDsX(ctx context.Context) []uint64 {
+func (sq *StudentQuery) IDsX(ctx context.Context) []uuid.UUID {
 	ids, err := sq.IDs(ctx)
 	if err != nil {
 		panic(err)
@@ -244,15 +270,27 @@ func (sq *StudentQuery) Clone() *StudentQuery {
 		return nil
 	}
 	return &StudentQuery{
-		config:     sq.config,
-		ctx:        sq.ctx.Clone(),
-		order:      append([]student.OrderOption{}, sq.order...),
-		inters:     append([]Interceptor{}, sq.inters...),
-		predicates: append([]predicate.Student{}, sq.predicates...),
+		config:       sq.config,
+		ctx:          sq.ctx.Clone(),
+		order:        append([]student.OrderOption{}, sq.order...),
+		inters:       append([]Interceptor{}, sq.inters...),
+		predicates:   append([]predicate.Student{}, sq.predicates...),
+		withTeachers: sq.withTeachers.Clone(),
 		// clone intermediate query.
 		sql:  sq.sql.Clone(),
 		path: sq.path,
 	}
+}
+
+// WithTeachers tells the query-builder to eager-load the nodes that are connected to
+// the "teachers" edge. The optional arguments are used to configure the query builder of the edge.
+func (sq *StudentQuery) WithTeachers(opts ...func(*TeacherQuery)) *StudentQuery {
+	query := (&TeacherClient{config: sq.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	sq.withTeachers = query
+	return sq
 }
 
 // GroupBy is used to group vertices by one or more fields/columns.
@@ -331,8 +369,11 @@ func (sq *StudentQuery) prepareQuery(ctx context.Context) error {
 
 func (sq *StudentQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Student, error) {
 	var (
-		nodes = []*Student{}
-		_spec = sq.querySpec()
+		nodes       = []*Student{}
+		_spec       = sq.querySpec()
+		loadedTypes = [1]bool{
+			sq.withTeachers != nil,
+		}
 	)
 	_spec.ScanValues = func(columns []string) ([]any, error) {
 		return (*Student).scanValues(nil, columns)
@@ -340,6 +381,7 @@ func (sq *StudentQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Stud
 	_spec.Assign = func(columns []string, values []any) error {
 		node := &Student{config: sq.config}
 		nodes = append(nodes, node)
+		node.Edges.loadedTypes = loadedTypes
 		return node.assignValues(columns, values)
 	}
 	for i := range hooks {
@@ -351,7 +393,76 @@ func (sq *StudentQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Stud
 	if len(nodes) == 0 {
 		return nodes, nil
 	}
+	if query := sq.withTeachers; query != nil {
+		if err := sq.loadTeachers(ctx, query, nodes,
+			func(n *Student) { n.Edges.Teachers = []*Teacher{} },
+			func(n *Student, e *Teacher) { n.Edges.Teachers = append(n.Edges.Teachers, e) }); err != nil {
+			return nil, err
+		}
+	}
 	return nodes, nil
+}
+
+func (sq *StudentQuery) loadTeachers(ctx context.Context, query *TeacherQuery, nodes []*Student, init func(*Student), assign func(*Student, *Teacher)) error {
+	edgeIDs := make([]driver.Value, len(nodes))
+	byID := make(map[uuid.UUID]*Student)
+	nids := make(map[uint64]map[*Student]struct{})
+	for i, node := range nodes {
+		edgeIDs[i] = node.ID
+		byID[node.ID] = node
+		if init != nil {
+			init(node)
+		}
+	}
+	query.Where(func(s *sql.Selector) {
+		joinT := sql.Table(student.TeachersTable)
+		s.Join(joinT).On(s.C(teacher.FieldID), joinT.C(student.TeachersPrimaryKey[0]))
+		s.Where(sql.InValues(joinT.C(student.TeachersPrimaryKey[1]), edgeIDs...))
+		columns := s.SelectedColumns()
+		s.Select(joinT.C(student.TeachersPrimaryKey[1]))
+		s.AppendSelect(columns...)
+		s.SetDistinct(false)
+	})
+	if err := query.prepareQuery(ctx); err != nil {
+		return err
+	}
+	qr := QuerierFunc(func(ctx context.Context, q Query) (Value, error) {
+		return query.sqlAll(ctx, func(_ context.Context, spec *sqlgraph.QuerySpec) {
+			assign := spec.Assign
+			values := spec.ScanValues
+			spec.ScanValues = func(columns []string) ([]any, error) {
+				values, err := values(columns[1:])
+				if err != nil {
+					return nil, err
+				}
+				return append([]any{new(uuid.UUID)}, values...), nil
+			}
+			spec.Assign = func(columns []string, values []any) error {
+				outValue := *values[0].(*uuid.UUID)
+				inValue := uint64(values[1].(*sql.NullInt64).Int64)
+				if nids[inValue] == nil {
+					nids[inValue] = map[*Student]struct{}{byID[outValue]: {}}
+					return assign(columns[1:], values[1:])
+				}
+				nids[inValue][byID[outValue]] = struct{}{}
+				return nil
+			}
+		})
+	})
+	neighbors, err := withInterceptors[[]*Teacher](ctx, query, qr, query.inters)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected "teachers" node returned %v`, n.ID)
+		}
+		for kn := range nodes {
+			assign(kn, n)
+		}
+	}
+	return nil
 }
 
 func (sq *StudentQuery) sqlCount(ctx context.Context) (int, error) {
@@ -364,7 +475,7 @@ func (sq *StudentQuery) sqlCount(ctx context.Context) (int, error) {
 }
 
 func (sq *StudentQuery) querySpec() *sqlgraph.QuerySpec {
-	_spec := sqlgraph.NewQuerySpec(student.Table, student.Columns, sqlgraph.NewFieldSpec(student.FieldID, field.TypeUint64))
+	_spec := sqlgraph.NewQuerySpec(student.Table, student.Columns, sqlgraph.NewFieldSpec(student.FieldID, field.TypeUUID))
 	_spec.From = sq.sql
 	if unique := sq.ctx.Unique; unique != nil {
 		_spec.Unique = *unique

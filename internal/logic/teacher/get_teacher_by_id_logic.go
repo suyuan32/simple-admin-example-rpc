@@ -8,7 +8,6 @@ import (
 	"github.com/suyuan32/simple-admin-example-rpc/types/example"
 
 	"github.com/suyuan32/simple-admin-common/utils/pointy"
-	"github.com/suyuan32/simple-admin-common/utils/uuidx"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -26,27 +25,17 @@ func NewGetTeacherByIdLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Ge
 	}
 }
 
-func (l *GetTeacherByIdLogic) GetTeacherById(in *example.UUIDReq) (*example.TeacherInfo, error) {
-	result, err := l.svcCtx.DB.Teacher.Get(l.ctx, uuidx.ParseUUIDString(in.Id))
+func (l *GetTeacherByIdLogic) GetTeacherById(in *example.IDReq) (*example.TeacherInfo, error) {
+	result, err := l.svcCtx.DB.Teacher.Get(l.ctx, in.Id)
 	if err != nil {
 		return nil, dberrorhandler.DefaultEntError(l.Logger, err, in)
 	}
 
 	return &example.TeacherInfo{
-		Id:            pointy.GetPointer(result.ID.String()),
-		CreatedAt:     pointy.GetPointer(result.CreatedAt.UnixMilli()),
-		UpdatedAt:     pointy.GetPointer(result.UpdatedAt.UnixMilli()),
-		Name:          &result.Name,
-		Age:           pointy.GetPointer(int64(result.Age)),
-		AgeInt32:      &result.AgeInt32,
-		AgeInt64:      &result.AgeInt64,
-		AgeUint:       pointy.GetPointer(uint64(result.AgeUint)),
-		AgeUint32:     &result.AgeUint32,
-		AgeUint64:     &result.AgeUint64,
-		WeightFloat:   &result.WeightFloat,
-		WeightFloat32: &result.WeightFloat32,
-		ClassId:       pointy.GetPointer(result.ClassID.String()),
-		EnrollAt:      pointy.GetPointer(result.EnrollAt.UnixMilli()),
-		StatusBool:    &result.StatusBool,
+		Id:        &result.ID,
+		CreatedAt: pointy.GetPointer(result.CreatedAt.UnixMilli()),
+		UpdatedAt: pointy.GetPointer(result.UpdatedAt.UnixMilli()),
+		Name:      &result.Name,
+		Age:       pointy.GetPointer(int32(result.Age)),
 	}, nil
 }

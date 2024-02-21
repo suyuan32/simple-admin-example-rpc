@@ -3,23 +3,15 @@ syntax = "proto3";
 // Student message
 
 message StudentInfo {
-  optional uint64 id = 1;
+  optional string id = 1;
   optional int64 created_at = 2;
   optional int64 updated_at = 3;
-  // 姓名
+  // Student name | 学生姓名
   optional string name = 4;
-  // 年龄
-  optional int64 age = 5;
-  optional int32 age_int32 = 6;
-  optional int64 age_int64 = 7;
-  optional uint64 age_uint = 8;
-  optional uint32 age_uint32 = 9;
-  optional uint64 age_uint64 = 10;
-  optional double weight_float = 11;
-  optional float weight_float32 = 12;
-  optional string class_id = 13;
-  optional int64  enroll_at = 14;
-  optional bool status_bool = 15;
+  // Student age | 学生年龄
+  optional int32 age = 5;
+  // Student's home address | 学生家庭住址 
+  optional string address = 6;
 }
 
 message StudentListResp {
@@ -31,6 +23,7 @@ message StudentListReq {
   uint64 page = 1;
   uint64 page_size = 2;
   optional string name = 3;
+  optional string address = 4;
 }
 
 
@@ -38,15 +31,15 @@ service Example {
 
   // Student management
   // group: student
-  rpc createStudent (StudentInfo) returns (BaseIDResp);
+  rpc createStudent (StudentInfo) returns (BaseUUIDResp);
   // group: student
   rpc updateStudent (StudentInfo) returns (BaseResp);
   // group: student
   rpc getStudentList (StudentListReq) returns (StudentListResp);
   // group: student
-  rpc getStudentById (IDReq) returns (StudentInfo);
+  rpc getStudentById (UUIDReq) returns (StudentInfo);
   // group: student
-  rpc deleteStudent (IDsReq) returns (BaseResp);
+  rpc deleteStudent (UUIDsReq) returns (BaseResp);
 
 
 }

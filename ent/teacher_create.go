@@ -11,6 +11,7 @@ import (
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 	uuid "github.com/gofrs/uuid/v5"
+	"github.com/suyuan32/simple-admin-example-rpc/ent/student"
 	"github.com/suyuan32/simple-admin-example-rpc/ent/teacher"
 )
 
@@ -56,83 +57,30 @@ func (tc *TeacherCreate) SetName(s string) *TeacherCreate {
 }
 
 // SetAge sets the "age" field.
-func (tc *TeacherCreate) SetAge(i int) *TeacherCreate {
+func (tc *TeacherCreate) SetAge(i int16) *TeacherCreate {
 	tc.mutation.SetAge(i)
 	return tc
 }
 
-// SetAgeInt32 sets the "age_int32" field.
-func (tc *TeacherCreate) SetAgeInt32(i int32) *TeacherCreate {
-	tc.mutation.SetAgeInt32(i)
-	return tc
-}
-
-// SetAgeInt64 sets the "age_int64" field.
-func (tc *TeacherCreate) SetAgeInt64(i int64) *TeacherCreate {
-	tc.mutation.SetAgeInt64(i)
-	return tc
-}
-
-// SetAgeUint sets the "age_uint" field.
-func (tc *TeacherCreate) SetAgeUint(u uint) *TeacherCreate {
-	tc.mutation.SetAgeUint(u)
-	return tc
-}
-
-// SetAgeUint32 sets the "age_uint32" field.
-func (tc *TeacherCreate) SetAgeUint32(u uint32) *TeacherCreate {
-	tc.mutation.SetAgeUint32(u)
-	return tc
-}
-
-// SetAgeUint64 sets the "age_uint64" field.
-func (tc *TeacherCreate) SetAgeUint64(u uint64) *TeacherCreate {
-	tc.mutation.SetAgeUint64(u)
-	return tc
-}
-
-// SetWeightFloat sets the "weight_float" field.
-func (tc *TeacherCreate) SetWeightFloat(f float64) *TeacherCreate {
-	tc.mutation.SetWeightFloat(f)
-	return tc
-}
-
-// SetWeightFloat32 sets the "weight_float32" field.
-func (tc *TeacherCreate) SetWeightFloat32(f float32) *TeacherCreate {
-	tc.mutation.SetWeightFloat32(f)
-	return tc
-}
-
-// SetClassID sets the "class_id" field.
-func (tc *TeacherCreate) SetClassID(u uuid.UUID) *TeacherCreate {
-	tc.mutation.SetClassID(u)
-	return tc
-}
-
-// SetEnrollAt sets the "enroll_at" field.
-func (tc *TeacherCreate) SetEnrollAt(t time.Time) *TeacherCreate {
-	tc.mutation.SetEnrollAt(t)
-	return tc
-}
-
-// SetStatusBool sets the "status_bool" field.
-func (tc *TeacherCreate) SetStatusBool(b bool) *TeacherCreate {
-	tc.mutation.SetStatusBool(b)
-	return tc
-}
-
 // SetID sets the "id" field.
-func (tc *TeacherCreate) SetID(u uuid.UUID) *TeacherCreate {
+func (tc *TeacherCreate) SetID(u uint64) *TeacherCreate {
 	tc.mutation.SetID(u)
 	return tc
 }
 
-// SetNillableID sets the "id" field if the given value is not nil.
-func (tc *TeacherCreate) SetNillableID(u *uuid.UUID) *TeacherCreate {
-	if u != nil {
-		tc.SetID(*u)
-	}
+// AddStudentIDs adds the "students" edge to the Student entity by IDs.
+func (tc *TeacherCreate) AddStudentIDs(ids ...uuid.UUID) *TeacherCreate {
+	tc.mutation.AddStudentIDs(ids...)
 	return tc
+}
+
+// AddStudents adds the "students" edges to the Student entity.
+func (tc *TeacherCreate) AddStudents(s ...*Student) *TeacherCreate {
+	ids := make([]uuid.UUID, len(s))
+	for i := range s {
+		ids[i] = s[i].ID
+	}
+	return tc.AddStudentIDs(ids...)
 }
 
 // Mutation returns the TeacherMutation object of the builder.
@@ -178,10 +126,6 @@ func (tc *TeacherCreate) defaults() {
 		v := teacher.DefaultUpdatedAt()
 		tc.mutation.SetUpdatedAt(v)
 	}
-	if _, ok := tc.mutation.ID(); !ok {
-		v := teacher.DefaultID()
-		tc.mutation.SetID(v)
-	}
 }
 
 // check runs all checks and user-defined validators on the builder.
@@ -198,35 +142,8 @@ func (tc *TeacherCreate) check() error {
 	if _, ok := tc.mutation.Age(); !ok {
 		return &ValidationError{Name: "age", err: errors.New(`ent: missing required field "Teacher.age"`)}
 	}
-	if _, ok := tc.mutation.AgeInt32(); !ok {
-		return &ValidationError{Name: "age_int32", err: errors.New(`ent: missing required field "Teacher.age_int32"`)}
-	}
-	if _, ok := tc.mutation.AgeInt64(); !ok {
-		return &ValidationError{Name: "age_int64", err: errors.New(`ent: missing required field "Teacher.age_int64"`)}
-	}
-	if _, ok := tc.mutation.AgeUint(); !ok {
-		return &ValidationError{Name: "age_uint", err: errors.New(`ent: missing required field "Teacher.age_uint"`)}
-	}
-	if _, ok := tc.mutation.AgeUint32(); !ok {
-		return &ValidationError{Name: "age_uint32", err: errors.New(`ent: missing required field "Teacher.age_uint32"`)}
-	}
-	if _, ok := tc.mutation.AgeUint64(); !ok {
-		return &ValidationError{Name: "age_uint64", err: errors.New(`ent: missing required field "Teacher.age_uint64"`)}
-	}
-	if _, ok := tc.mutation.WeightFloat(); !ok {
-		return &ValidationError{Name: "weight_float", err: errors.New(`ent: missing required field "Teacher.weight_float"`)}
-	}
-	if _, ok := tc.mutation.WeightFloat32(); !ok {
-		return &ValidationError{Name: "weight_float32", err: errors.New(`ent: missing required field "Teacher.weight_float32"`)}
-	}
-	if _, ok := tc.mutation.ClassID(); !ok {
-		return &ValidationError{Name: "class_id", err: errors.New(`ent: missing required field "Teacher.class_id"`)}
-	}
-	if _, ok := tc.mutation.EnrollAt(); !ok {
-		return &ValidationError{Name: "enroll_at", err: errors.New(`ent: missing required field "Teacher.enroll_at"`)}
-	}
-	if _, ok := tc.mutation.StatusBool(); !ok {
-		return &ValidationError{Name: "status_bool", err: errors.New(`ent: missing required field "Teacher.status_bool"`)}
+	if len(tc.mutation.StudentsIDs()) == 0 {
+		return &ValidationError{Name: "students", err: errors.New(`ent: missing required edge "Teacher.students"`)}
 	}
 	return nil
 }
@@ -242,12 +159,9 @@ func (tc *TeacherCreate) sqlSave(ctx context.Context) (*Teacher, error) {
 		}
 		return nil, err
 	}
-	if _spec.ID.Value != nil {
-		if id, ok := _spec.ID.Value.(*uuid.UUID); ok {
-			_node.ID = *id
-		} else if err := _node.ID.Scan(_spec.ID.Value); err != nil {
-			return nil, err
-		}
+	if _spec.ID.Value != _node.ID {
+		id := _spec.ID.Value.(int64)
+		_node.ID = uint64(id)
 	}
 	tc.mutation.id = &_node.ID
 	tc.mutation.done = true
@@ -257,11 +171,11 @@ func (tc *TeacherCreate) sqlSave(ctx context.Context) (*Teacher, error) {
 func (tc *TeacherCreate) createSpec() (*Teacher, *sqlgraph.CreateSpec) {
 	var (
 		_node = &Teacher{config: tc.config}
-		_spec = sqlgraph.NewCreateSpec(teacher.Table, sqlgraph.NewFieldSpec(teacher.FieldID, field.TypeUUID))
+		_spec = sqlgraph.NewCreateSpec(teacher.Table, sqlgraph.NewFieldSpec(teacher.FieldID, field.TypeUint64))
 	)
 	if id, ok := tc.mutation.ID(); ok {
 		_node.ID = id
-		_spec.ID.Value = &id
+		_spec.ID.Value = id
 	}
 	if value, ok := tc.mutation.CreatedAt(); ok {
 		_spec.SetField(teacher.FieldCreatedAt, field.TypeTime, value)
@@ -276,48 +190,24 @@ func (tc *TeacherCreate) createSpec() (*Teacher, *sqlgraph.CreateSpec) {
 		_node.Name = value
 	}
 	if value, ok := tc.mutation.Age(); ok {
-		_spec.SetField(teacher.FieldAge, field.TypeInt, value)
+		_spec.SetField(teacher.FieldAge, field.TypeInt16, value)
 		_node.Age = value
 	}
-	if value, ok := tc.mutation.AgeInt32(); ok {
-		_spec.SetField(teacher.FieldAgeInt32, field.TypeInt32, value)
-		_node.AgeInt32 = value
-	}
-	if value, ok := tc.mutation.AgeInt64(); ok {
-		_spec.SetField(teacher.FieldAgeInt64, field.TypeInt64, value)
-		_node.AgeInt64 = value
-	}
-	if value, ok := tc.mutation.AgeUint(); ok {
-		_spec.SetField(teacher.FieldAgeUint, field.TypeUint, value)
-		_node.AgeUint = value
-	}
-	if value, ok := tc.mutation.AgeUint32(); ok {
-		_spec.SetField(teacher.FieldAgeUint32, field.TypeUint32, value)
-		_node.AgeUint32 = value
-	}
-	if value, ok := tc.mutation.AgeUint64(); ok {
-		_spec.SetField(teacher.FieldAgeUint64, field.TypeUint64, value)
-		_node.AgeUint64 = value
-	}
-	if value, ok := tc.mutation.WeightFloat(); ok {
-		_spec.SetField(teacher.FieldWeightFloat, field.TypeFloat64, value)
-		_node.WeightFloat = value
-	}
-	if value, ok := tc.mutation.WeightFloat32(); ok {
-		_spec.SetField(teacher.FieldWeightFloat32, field.TypeFloat32, value)
-		_node.WeightFloat32 = value
-	}
-	if value, ok := tc.mutation.ClassID(); ok {
-		_spec.SetField(teacher.FieldClassID, field.TypeUUID, value)
-		_node.ClassID = value
-	}
-	if value, ok := tc.mutation.EnrollAt(); ok {
-		_spec.SetField(teacher.FieldEnrollAt, field.TypeTime, value)
-		_node.EnrollAt = value
-	}
-	if value, ok := tc.mutation.StatusBool(); ok {
-		_spec.SetField(teacher.FieldStatusBool, field.TypeBool, value)
-		_node.StatusBool = value
+	if nodes := tc.mutation.StudentsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   teacher.StudentsTable,
+			Columns: teacher.StudentsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(student.FieldID, field.TypeUUID),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec
 }
@@ -367,6 +257,10 @@ func (tcb *TeacherCreateBulk) Save(ctx context.Context) ([]*Teacher, error) {
 					return nil, err
 				}
 				mutation.id = &nodes[i].ID
+				if specs[i].ID.Value != nil && nodes[i].ID == 0 {
+					id := specs[i].ID.Value.(int64)
+					nodes[i].ID = uint64(id)
+				}
 				mutation.done = true
 				return nodes[i], nil
 			})

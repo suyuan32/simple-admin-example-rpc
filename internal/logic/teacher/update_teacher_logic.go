@@ -8,8 +8,8 @@ import (
 	"github.com/suyuan32/simple-admin-example-rpc/types/example"
 
 	"github.com/suyuan32/simple-admin-common/i18n"
+
 	"github.com/suyuan32/simple-admin-common/utils/pointy"
-	"github.com/suyuan32/simple-admin-common/utils/uuidx"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -28,23 +28,11 @@ func NewUpdateTeacherLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Upd
 }
 
 func (l *UpdateTeacherLogic) UpdateTeacher(in *example.TeacherInfo) (*example.BaseResp, error) {
-	query := l.svcCtx.DB.Teacher.UpdateOneID(uuidx.ParseUUIDString(*in.Id)).
-		SetNotNilName(in.Name).
-		SetNotNilAgeInt32(in.AgeInt32).
-		SetNotNilAgeInt64(in.AgeInt64).
-		SetNotNilAgeUint32(in.AgeUint32).
-		SetNotNilAgeUint64(in.AgeUint64).
-		SetNotNilWeightFloat(in.WeightFloat).
-		SetNotNilWeightFloat32(in.WeightFloat32).
-		SetNotNilClassID(uuidx.ParseUUIDStringToPointer(in.ClassId)).
-		SetNotNilEnrollAt(pointy.GetTimeMilliPointer(in.EnrollAt)).
-		SetNotNilStatusBool(in.StatusBool)
+	query := l.svcCtx.DB.Teacher.UpdateOneID(*in.Id).
+		SetNotNilName(in.Name)
 
 	if in.Age != nil {
-		query.SetNotNilAge(pointy.GetPointer(int(*in.Age)))
-	}
-	if in.AgeUint != nil {
-		query.SetNotNilAgeUint(pointy.GetPointer(uint(*in.AgeUint)))
+		query.SetNotNilAge(pointy.GetPointer(int16(*in.Age)))
 	}
 
 	err := query.Exec(l.ctx)

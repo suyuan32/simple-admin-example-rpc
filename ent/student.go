@@ -17,36 +17,40 @@ import (
 type Student struct {
 	config `json:"-"`
 	// ID of the ent.
-	ID uint64 `json:"id,omitempty"`
+	// UUID
+	ID uuid.UUID `json:"id,omitempty"`
 	// Create Time | 创建日期
 	CreatedAt time.Time `json:"created_at,omitempty"`
 	// Update Time | 修改日期
 	UpdatedAt time.Time `json:"updated_at,omitempty"`
-	// 姓名
+	// Student name | 学生姓名
 	Name string `json:"name,omitempty"`
-	// 年龄
-	Age int `json:"age,omitempty"`
-	// AgeInt32 holds the value of the "age_int32" field.
-	AgeInt32 int32 `json:"age_int32,omitempty"`
-	// AgeInt64 holds the value of the "age_int64" field.
-	AgeInt64 int64 `json:"age_int64,omitempty"`
-	// AgeUint holds the value of the "age_uint" field.
-	AgeUint uint `json:"age_uint,omitempty"`
-	// AgeUint32 holds the value of the "age_uint32" field.
-	AgeUint32 uint32 `json:"age_uint32,omitempty"`
-	// AgeUint64 holds the value of the "age_uint64" field.
-	AgeUint64 uint64 `json:"age_uint64,omitempty"`
-	// WeightFloat holds the value of the "weight_float" field.
-	WeightFloat float64 `json:"weight_float,omitempty"`
-	// WeightFloat32 holds the value of the "weight_float32" field.
-	WeightFloat32 float32 `json:"weight_float32,omitempty"`
-	// ClassID holds the value of the "class_id" field.
-	ClassID uuid.UUID `json:"class_id,omitempty"`
-	// EnrollAt holds the value of the "enroll_at" field.
-	EnrollAt time.Time `json:"enroll_at,omitempty"`
-	// StatusBool holds the value of the "status_bool" field.
-	StatusBool   bool `json:"status_bool,omitempty"`
+	// Student age | 学生年龄
+	Age int16 `json:"age,omitempty"`
+	// Student's home address | 学生家庭住址
+	Address string `json:"address,omitempty"`
+	// Edges holds the relations/edges for other nodes in the graph.
+	// The values are being populated by the StudentQuery when eager-loading is set.
+	Edges        StudentEdges `json:"edges"`
 	selectValues sql.SelectValues
+}
+
+// StudentEdges holds the relations/edges for other nodes in the graph.
+type StudentEdges struct {
+	// Teachers holds the value of the teachers edge.
+	Teachers []*Teacher `json:"teachers,omitempty"`
+	// loadedTypes holds the information for reporting if a
+	// type was loaded (or requested) in eager-loading or not.
+	loadedTypes [1]bool
+}
+
+// TeachersOrErr returns the Teachers value or an error if the edge
+// was not loaded in eager-loading.
+func (e StudentEdges) TeachersOrErr() ([]*Teacher, error) {
+	if e.loadedTypes[0] {
+		return e.Teachers, nil
+	}
+	return nil, &NotLoadedError{edge: "teachers"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -54,17 +58,13 @@ func (*Student) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case student.FieldStatusBool:
-			values[i] = new(sql.NullBool)
-		case student.FieldWeightFloat, student.FieldWeightFloat32:
-			values[i] = new(sql.NullFloat64)
-		case student.FieldID, student.FieldAge, student.FieldAgeInt32, student.FieldAgeInt64, student.FieldAgeUint, student.FieldAgeUint32, student.FieldAgeUint64:
+		case student.FieldAge:
 			values[i] = new(sql.NullInt64)
-		case student.FieldName:
+		case student.FieldName, student.FieldAddress:
 			values[i] = new(sql.NullString)
-		case student.FieldCreatedAt, student.FieldUpdatedAt, student.FieldEnrollAt:
+		case student.FieldCreatedAt, student.FieldUpdatedAt:
 			values[i] = new(sql.NullTime)
-		case student.FieldClassID:
+		case student.FieldID:
 			values[i] = new(uuid.UUID)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -82,11 +82,11 @@ func (s *Student) assignValues(columns []string, values []any) error {
 	for i := range columns {
 		switch columns[i] {
 		case student.FieldID:
-			value, ok := values[i].(*sql.NullInt64)
-			if !ok {
-				return fmt.Errorf("unexpected type %T for field id", value)
+			if value, ok := values[i].(*uuid.UUID); !ok {
+				return fmt.Errorf("unexpected type %T for field id", values[i])
+			} else if value != nil {
+				s.ID = *value
 			}
-			s.ID = uint64(value.Int64)
 		case student.FieldCreatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field created_at", values[i])
@@ -109,67 +109,13 @@ func (s *Student) assignValues(columns []string, values []any) error {
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field age", values[i])
 			} else if value.Valid {
-				s.Age = int(value.Int64)
+				s.Age = int16(value.Int64)
 			}
-		case student.FieldAgeInt32:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field age_int32", values[i])
+		case student.FieldAddress:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field address", values[i])
 			} else if value.Valid {
-				s.AgeInt32 = int32(value.Int64)
-			}
-		case student.FieldAgeInt64:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field age_int64", values[i])
-			} else if value.Valid {
-				s.AgeInt64 = value.Int64
-			}
-		case student.FieldAgeUint:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field age_uint", values[i])
-			} else if value.Valid {
-				s.AgeUint = uint(value.Int64)
-			}
-		case student.FieldAgeUint32:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field age_uint32", values[i])
-			} else if value.Valid {
-				s.AgeUint32 = uint32(value.Int64)
-			}
-		case student.FieldAgeUint64:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field age_uint64", values[i])
-			} else if value.Valid {
-				s.AgeUint64 = uint64(value.Int64)
-			}
-		case student.FieldWeightFloat:
-			if value, ok := values[i].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field weight_float", values[i])
-			} else if value.Valid {
-				s.WeightFloat = value.Float64
-			}
-		case student.FieldWeightFloat32:
-			if value, ok := values[i].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field weight_float32", values[i])
-			} else if value.Valid {
-				s.WeightFloat32 = float32(value.Float64)
-			}
-		case student.FieldClassID:
-			if value, ok := values[i].(*uuid.UUID); !ok {
-				return fmt.Errorf("unexpected type %T for field class_id", values[i])
-			} else if value != nil {
-				s.ClassID = *value
-			}
-		case student.FieldEnrollAt:
-			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field enroll_at", values[i])
-			} else if value.Valid {
-				s.EnrollAt = value.Time
-			}
-		case student.FieldStatusBool:
-			if value, ok := values[i].(*sql.NullBool); !ok {
-				return fmt.Errorf("unexpected type %T for field status_bool", values[i])
-			} else if value.Valid {
-				s.StatusBool = value.Bool
+				s.Address = value.String
 			}
 		default:
 			s.selectValues.Set(columns[i], values[i])
@@ -182,6 +128,11 @@ func (s *Student) assignValues(columns []string, values []any) error {
 // This includes values selected through modifiers, order, etc.
 func (s *Student) Value(name string) (ent.Value, error) {
 	return s.selectValues.Get(name)
+}
+
+// QueryTeachers queries the "teachers" edge of the Student entity.
+func (s *Student) QueryTeachers() *TeacherQuery {
+	return NewStudentClient(s.config).QueryTeachers(s)
 }
 
 // Update returns a builder for updating this Student.
@@ -219,35 +170,8 @@ func (s *Student) String() string {
 	builder.WriteString("age=")
 	builder.WriteString(fmt.Sprintf("%v", s.Age))
 	builder.WriteString(", ")
-	builder.WriteString("age_int32=")
-	builder.WriteString(fmt.Sprintf("%v", s.AgeInt32))
-	builder.WriteString(", ")
-	builder.WriteString("age_int64=")
-	builder.WriteString(fmt.Sprintf("%v", s.AgeInt64))
-	builder.WriteString(", ")
-	builder.WriteString("age_uint=")
-	builder.WriteString(fmt.Sprintf("%v", s.AgeUint))
-	builder.WriteString(", ")
-	builder.WriteString("age_uint32=")
-	builder.WriteString(fmt.Sprintf("%v", s.AgeUint32))
-	builder.WriteString(", ")
-	builder.WriteString("age_uint64=")
-	builder.WriteString(fmt.Sprintf("%v", s.AgeUint64))
-	builder.WriteString(", ")
-	builder.WriteString("weight_float=")
-	builder.WriteString(fmt.Sprintf("%v", s.WeightFloat))
-	builder.WriteString(", ")
-	builder.WriteString("weight_float32=")
-	builder.WriteString(fmt.Sprintf("%v", s.WeightFloat32))
-	builder.WriteString(", ")
-	builder.WriteString("class_id=")
-	builder.WriteString(fmt.Sprintf("%v", s.ClassID))
-	builder.WriteString(", ")
-	builder.WriteString("enroll_at=")
-	builder.WriteString(s.EnrollAt.Format(time.ANSIC))
-	builder.WriteString(", ")
-	builder.WriteString("status_bool=")
-	builder.WriteString(fmt.Sprintf("%v", s.StatusBool))
+	builder.WriteString("address=")
+	builder.WriteString(s.Address)
 	builder.WriteByte(')')
 	return builder.String()
 }
