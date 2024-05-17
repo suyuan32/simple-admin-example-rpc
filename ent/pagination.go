@@ -111,7 +111,9 @@ func (s *StudentQuery) Page(
 		Size: pageSize,
 	}
 
-	count, err := s.Clone().Count(ctx)
+	query := s.Clone()
+	query.ctx.Fields = nil
+	count, err := query.Count(ctx)
 
 	if err != nil {
 		return nil, err
@@ -190,7 +192,9 @@ func (t *TeacherQuery) Page(
 		Size: pageSize,
 	}
 
-	count, err := t.Clone().Count(ctx)
+	query := t.Clone()
+	query.ctx.Fields = nil
+	count, err := query.Count(ctx)
 
 	if err != nil {
 		return nil, err
