@@ -11,8 +11,8 @@ var (
 	// StudentsColumns holds the columns for the "students" table.
 	StudentsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeUUID},
-		{Name: "created_at", Type: field.TypeTime, Comment: "Create Time | 创建日期"},
-		{Name: "updated_at", Type: field.TypeTime, Comment: "Update Time | 修改日期"},
+		{Name: "created_at", Type: field.TypeTime},
+		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "name", Type: field.TypeString, Comment: "Student name | 学生姓名"},
 		{Name: "age", Type: field.TypeInt16, Comment: "Student age | 学生年龄"},
 		{Name: "address", Type: field.TypeString, Nullable: true, Comment: "Student's home address | 学生家庭住址 "},
@@ -26,8 +26,8 @@ var (
 	// TeachersColumns holds the columns for the "teachers" table.
 	TeachersColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeUint64, Increment: true},
-		{Name: "created_at", Type: field.TypeTime, Comment: "Create Time | 创建日期"},
-		{Name: "updated_at", Type: field.TypeTime, Comment: "Update Time | 修改日期"},
+		{Name: "created_at", Type: field.TypeTime},
+		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "name", Type: field.TypeString, Comment: "Teacher's name | 教师姓名"},
 		{Name: "age", Type: field.TypeInt16, Comment: "Teacher's age | 教师年龄"},
 	}
