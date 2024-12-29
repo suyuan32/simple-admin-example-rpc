@@ -3,6 +3,7 @@
 package migrate
 
 import (
+	"entgo.io/ent/dialect/entsql"
 	"entgo.io/ent/dialect/sql/schema"
 	"entgo.io/ent/schema/field"
 )
@@ -10,12 +11,17 @@ import (
 var (
 	// StudentsColumns holds the columns for the "students" table.
 	StudentsColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeUUID},
-		{Name: "created_at", Type: field.TypeTime},
-		{Name: "updated_at", Type: field.TypeTime},
+		{Name: "id", Type: field.TypeUUID, Comment: "UUID"},
+		{Name: "created_at", Type: field.TypeTime, Comment: "Create Time | 创建日期"},
+		{Name: "updated_at", Type: field.TypeTime, Comment: "Update Time | 修改日期"},
+		{Name: "status", Type: field.TypeUint8, Nullable: true, Comment: "Status 1: normal 2: ban | 状态 1 正常 2 禁用", Default: 1},
 		{Name: "name", Type: field.TypeString, Comment: "Student name | 学生姓名"},
 		{Name: "age", Type: field.TypeInt16, Comment: "Student age | 学生年龄"},
 		{Name: "address", Type: field.TypeString, Nullable: true, Comment: "Student's home address | 学生家庭住址 "},
+		{Name: "score", Type: field.TypeInt32, Nullable: true, Comment: "Student's score | 学生分数"},
+		{Name: "weight", Type: field.TypeUint32, Nullable: true, Comment: "Student's weight | 学生体重"},
+		{Name: "healthy", Type: field.TypeBool, Nullable: true, Comment: "Whether is healthy | 是否健康"},
+		{Name: "code", Type: field.TypeInt64, Nullable: true, Comment: "Student's code | 学生编码"},
 	}
 	// StudentsTable holds the schema information for the "students" table.
 	StudentsTable = &schema.Table{
@@ -71,6 +77,9 @@ var (
 )
 
 func init() {
+	StudentsTable.Annotation = &entsql.Annotation{
+		Table: "students",
+	}
 	TeacherStudentsTable.ForeignKeys[0].RefTable = TeachersTable
 	TeacherStudentsTable.ForeignKeys[1].RefTable = StudentsTable
 }

@@ -66,6 +66,11 @@ func UpdatedAt(v time.Time) predicate.Student {
 	return predicate.Student(sql.FieldEQ(FieldUpdatedAt, v))
 }
 
+// Status applies equality check predicate on the "status" field. It's identical to StatusEQ.
+func Status(v uint8) predicate.Student {
+	return predicate.Student(sql.FieldEQ(FieldStatus, v))
+}
+
 // Name applies equality check predicate on the "name" field. It's identical to NameEQ.
 func Name(v string) predicate.Student {
 	return predicate.Student(sql.FieldEQ(FieldName, v))
@@ -79,6 +84,26 @@ func Age(v int16) predicate.Student {
 // Address applies equality check predicate on the "address" field. It's identical to AddressEQ.
 func Address(v string) predicate.Student {
 	return predicate.Student(sql.FieldEQ(FieldAddress, v))
+}
+
+// Score applies equality check predicate on the "score" field. It's identical to ScoreEQ.
+func Score(v int32) predicate.Student {
+	return predicate.Student(sql.FieldEQ(FieldScore, v))
+}
+
+// Weight applies equality check predicate on the "weight" field. It's identical to WeightEQ.
+func Weight(v uint32) predicate.Student {
+	return predicate.Student(sql.FieldEQ(FieldWeight, v))
+}
+
+// Healthy applies equality check predicate on the "healthy" field. It's identical to HealthyEQ.
+func Healthy(v bool) predicate.Student {
+	return predicate.Student(sql.FieldEQ(FieldHealthy, v))
+}
+
+// Code applies equality check predicate on the "code" field. It's identical to CodeEQ.
+func Code(v int64) predicate.Student {
+	return predicate.Student(sql.FieldEQ(FieldCode, v))
 }
 
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
@@ -159,6 +184,56 @@ func UpdatedAtLT(v time.Time) predicate.Student {
 // UpdatedAtLTE applies the LTE predicate on the "updated_at" field.
 func UpdatedAtLTE(v time.Time) predicate.Student {
 	return predicate.Student(sql.FieldLTE(FieldUpdatedAt, v))
+}
+
+// StatusEQ applies the EQ predicate on the "status" field.
+func StatusEQ(v uint8) predicate.Student {
+	return predicate.Student(sql.FieldEQ(FieldStatus, v))
+}
+
+// StatusNEQ applies the NEQ predicate on the "status" field.
+func StatusNEQ(v uint8) predicate.Student {
+	return predicate.Student(sql.FieldNEQ(FieldStatus, v))
+}
+
+// StatusIn applies the In predicate on the "status" field.
+func StatusIn(vs ...uint8) predicate.Student {
+	return predicate.Student(sql.FieldIn(FieldStatus, vs...))
+}
+
+// StatusNotIn applies the NotIn predicate on the "status" field.
+func StatusNotIn(vs ...uint8) predicate.Student {
+	return predicate.Student(sql.FieldNotIn(FieldStatus, vs...))
+}
+
+// StatusGT applies the GT predicate on the "status" field.
+func StatusGT(v uint8) predicate.Student {
+	return predicate.Student(sql.FieldGT(FieldStatus, v))
+}
+
+// StatusGTE applies the GTE predicate on the "status" field.
+func StatusGTE(v uint8) predicate.Student {
+	return predicate.Student(sql.FieldGTE(FieldStatus, v))
+}
+
+// StatusLT applies the LT predicate on the "status" field.
+func StatusLT(v uint8) predicate.Student {
+	return predicate.Student(sql.FieldLT(FieldStatus, v))
+}
+
+// StatusLTE applies the LTE predicate on the "status" field.
+func StatusLTE(v uint8) predicate.Student {
+	return predicate.Student(sql.FieldLTE(FieldStatus, v))
+}
+
+// StatusIsNil applies the IsNil predicate on the "status" field.
+func StatusIsNil() predicate.Student {
+	return predicate.Student(sql.FieldIsNull(FieldStatus))
+}
+
+// StatusNotNil applies the NotNil predicate on the "status" field.
+func StatusNotNil() predicate.Student {
+	return predicate.Student(sql.FieldNotNull(FieldStatus))
 }
 
 // NameEQ applies the EQ predicate on the "name" field.
@@ -339,6 +414,176 @@ func AddressEqualFold(v string) predicate.Student {
 // AddressContainsFold applies the ContainsFold predicate on the "address" field.
 func AddressContainsFold(v string) predicate.Student {
 	return predicate.Student(sql.FieldContainsFold(FieldAddress, v))
+}
+
+// ScoreEQ applies the EQ predicate on the "score" field.
+func ScoreEQ(v int32) predicate.Student {
+	return predicate.Student(sql.FieldEQ(FieldScore, v))
+}
+
+// ScoreNEQ applies the NEQ predicate on the "score" field.
+func ScoreNEQ(v int32) predicate.Student {
+	return predicate.Student(sql.FieldNEQ(FieldScore, v))
+}
+
+// ScoreIn applies the In predicate on the "score" field.
+func ScoreIn(vs ...int32) predicate.Student {
+	return predicate.Student(sql.FieldIn(FieldScore, vs...))
+}
+
+// ScoreNotIn applies the NotIn predicate on the "score" field.
+func ScoreNotIn(vs ...int32) predicate.Student {
+	return predicate.Student(sql.FieldNotIn(FieldScore, vs...))
+}
+
+// ScoreGT applies the GT predicate on the "score" field.
+func ScoreGT(v int32) predicate.Student {
+	return predicate.Student(sql.FieldGT(FieldScore, v))
+}
+
+// ScoreGTE applies the GTE predicate on the "score" field.
+func ScoreGTE(v int32) predicate.Student {
+	return predicate.Student(sql.FieldGTE(FieldScore, v))
+}
+
+// ScoreLT applies the LT predicate on the "score" field.
+func ScoreLT(v int32) predicate.Student {
+	return predicate.Student(sql.FieldLT(FieldScore, v))
+}
+
+// ScoreLTE applies the LTE predicate on the "score" field.
+func ScoreLTE(v int32) predicate.Student {
+	return predicate.Student(sql.FieldLTE(FieldScore, v))
+}
+
+// ScoreIsNil applies the IsNil predicate on the "score" field.
+func ScoreIsNil() predicate.Student {
+	return predicate.Student(sql.FieldIsNull(FieldScore))
+}
+
+// ScoreNotNil applies the NotNil predicate on the "score" field.
+func ScoreNotNil() predicate.Student {
+	return predicate.Student(sql.FieldNotNull(FieldScore))
+}
+
+// WeightEQ applies the EQ predicate on the "weight" field.
+func WeightEQ(v uint32) predicate.Student {
+	return predicate.Student(sql.FieldEQ(FieldWeight, v))
+}
+
+// WeightNEQ applies the NEQ predicate on the "weight" field.
+func WeightNEQ(v uint32) predicate.Student {
+	return predicate.Student(sql.FieldNEQ(FieldWeight, v))
+}
+
+// WeightIn applies the In predicate on the "weight" field.
+func WeightIn(vs ...uint32) predicate.Student {
+	return predicate.Student(sql.FieldIn(FieldWeight, vs...))
+}
+
+// WeightNotIn applies the NotIn predicate on the "weight" field.
+func WeightNotIn(vs ...uint32) predicate.Student {
+	return predicate.Student(sql.FieldNotIn(FieldWeight, vs...))
+}
+
+// WeightGT applies the GT predicate on the "weight" field.
+func WeightGT(v uint32) predicate.Student {
+	return predicate.Student(sql.FieldGT(FieldWeight, v))
+}
+
+// WeightGTE applies the GTE predicate on the "weight" field.
+func WeightGTE(v uint32) predicate.Student {
+	return predicate.Student(sql.FieldGTE(FieldWeight, v))
+}
+
+// WeightLT applies the LT predicate on the "weight" field.
+func WeightLT(v uint32) predicate.Student {
+	return predicate.Student(sql.FieldLT(FieldWeight, v))
+}
+
+// WeightLTE applies the LTE predicate on the "weight" field.
+func WeightLTE(v uint32) predicate.Student {
+	return predicate.Student(sql.FieldLTE(FieldWeight, v))
+}
+
+// WeightIsNil applies the IsNil predicate on the "weight" field.
+func WeightIsNil() predicate.Student {
+	return predicate.Student(sql.FieldIsNull(FieldWeight))
+}
+
+// WeightNotNil applies the NotNil predicate on the "weight" field.
+func WeightNotNil() predicate.Student {
+	return predicate.Student(sql.FieldNotNull(FieldWeight))
+}
+
+// HealthyEQ applies the EQ predicate on the "healthy" field.
+func HealthyEQ(v bool) predicate.Student {
+	return predicate.Student(sql.FieldEQ(FieldHealthy, v))
+}
+
+// HealthyNEQ applies the NEQ predicate on the "healthy" field.
+func HealthyNEQ(v bool) predicate.Student {
+	return predicate.Student(sql.FieldNEQ(FieldHealthy, v))
+}
+
+// HealthyIsNil applies the IsNil predicate on the "healthy" field.
+func HealthyIsNil() predicate.Student {
+	return predicate.Student(sql.FieldIsNull(FieldHealthy))
+}
+
+// HealthyNotNil applies the NotNil predicate on the "healthy" field.
+func HealthyNotNil() predicate.Student {
+	return predicate.Student(sql.FieldNotNull(FieldHealthy))
+}
+
+// CodeEQ applies the EQ predicate on the "code" field.
+func CodeEQ(v int64) predicate.Student {
+	return predicate.Student(sql.FieldEQ(FieldCode, v))
+}
+
+// CodeNEQ applies the NEQ predicate on the "code" field.
+func CodeNEQ(v int64) predicate.Student {
+	return predicate.Student(sql.FieldNEQ(FieldCode, v))
+}
+
+// CodeIn applies the In predicate on the "code" field.
+func CodeIn(vs ...int64) predicate.Student {
+	return predicate.Student(sql.FieldIn(FieldCode, vs...))
+}
+
+// CodeNotIn applies the NotIn predicate on the "code" field.
+func CodeNotIn(vs ...int64) predicate.Student {
+	return predicate.Student(sql.FieldNotIn(FieldCode, vs...))
+}
+
+// CodeGT applies the GT predicate on the "code" field.
+func CodeGT(v int64) predicate.Student {
+	return predicate.Student(sql.FieldGT(FieldCode, v))
+}
+
+// CodeGTE applies the GTE predicate on the "code" field.
+func CodeGTE(v int64) predicate.Student {
+	return predicate.Student(sql.FieldGTE(FieldCode, v))
+}
+
+// CodeLT applies the LT predicate on the "code" field.
+func CodeLT(v int64) predicate.Student {
+	return predicate.Student(sql.FieldLT(FieldCode, v))
+}
+
+// CodeLTE applies the LTE predicate on the "code" field.
+func CodeLTE(v int64) predicate.Student {
+	return predicate.Student(sql.FieldLTE(FieldCode, v))
+}
+
+// CodeIsNil applies the IsNil predicate on the "code" field.
+func CodeIsNil() predicate.Student {
+	return predicate.Student(sql.FieldIsNull(FieldCode))
+}
+
+// CodeNotNil applies the NotNil predicate on the "code" field.
+func CodeNotNil() predicate.Student {
+	return predicate.Student(sql.FieldNotNull(FieldCode))
 }
 
 // HasTeachers applies the HasEdge predicate on the "teachers" edge.

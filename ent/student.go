@@ -23,12 +23,22 @@ type Student struct {
 	CreatedAt time.Time `json:"created_at,omitempty"`
 	// Update Time | 修改日期
 	UpdatedAt time.Time `json:"updated_at,omitempty"`
+	// Status 1: normal 2: ban | 状态 1 正常 2 禁用
+	Status uint8 `json:"status,omitempty"`
 	// Student name | 学生姓名
 	Name string `json:"name,omitempty"`
 	// Student age | 学生年龄
 	Age int16 `json:"age,omitempty"`
 	// Student's home address | 学生家庭住址
 	Address string `json:"address,omitempty"`
+	// Student's score | 学生分数
+	Score int32 `json:"score,omitempty"`
+	// Student's weight | 学生体重
+	Weight uint32 `json:"weight,omitempty"`
+	// Whether is healthy | 是否健康
+	Healthy bool `json:"healthy,omitempty"`
+	// Student's code | 学生编码
+	Code int64 `json:"code,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the StudentQuery when eager-loading is set.
 	Edges        StudentEdges `json:"edges"`
@@ -58,7 +68,9 @@ func (*Student) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case student.FieldAge:
+		case student.FieldHealthy:
+			values[i] = new(sql.NullBool)
+		case student.FieldStatus, student.FieldAge, student.FieldScore, student.FieldWeight, student.FieldCode:
 			values[i] = new(sql.NullInt64)
 		case student.FieldName, student.FieldAddress:
 			values[i] = new(sql.NullString)
@@ -99,6 +111,12 @@ func (s *Student) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				s.UpdatedAt = value.Time
 			}
+		case student.FieldStatus:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field status", values[i])
+			} else if value.Valid {
+				s.Status = uint8(value.Int64)
+			}
 		case student.FieldName:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field name", values[i])
@@ -116,6 +134,30 @@ func (s *Student) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field address", values[i])
 			} else if value.Valid {
 				s.Address = value.String
+			}
+		case student.FieldScore:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field score", values[i])
+			} else if value.Valid {
+				s.Score = int32(value.Int64)
+			}
+		case student.FieldWeight:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field weight", values[i])
+			} else if value.Valid {
+				s.Weight = uint32(value.Int64)
+			}
+		case student.FieldHealthy:
+			if value, ok := values[i].(*sql.NullBool); !ok {
+				return fmt.Errorf("unexpected type %T for field healthy", values[i])
+			} else if value.Valid {
+				s.Healthy = value.Bool
+			}
+		case student.FieldCode:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field code", values[i])
+			} else if value.Valid {
+				s.Code = value.Int64
 			}
 		default:
 			s.selectValues.Set(columns[i], values[i])
@@ -164,6 +206,9 @@ func (s *Student) String() string {
 	builder.WriteString("updated_at=")
 	builder.WriteString(s.UpdatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
+	builder.WriteString("status=")
+	builder.WriteString(fmt.Sprintf("%v", s.Status))
+	builder.WriteString(", ")
 	builder.WriteString("name=")
 	builder.WriteString(s.Name)
 	builder.WriteString(", ")
@@ -172,6 +217,18 @@ func (s *Student) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("address=")
 	builder.WriteString(s.Address)
+	builder.WriteString(", ")
+	builder.WriteString("score=")
+	builder.WriteString(fmt.Sprintf("%v", s.Score))
+	builder.WriteString(", ")
+	builder.WriteString("weight=")
+	builder.WriteString(fmt.Sprintf("%v", s.Weight))
+	builder.WriteString(", ")
+	builder.WriteString("healthy=")
+	builder.WriteString(fmt.Sprintf("%v", s.Healthy))
+	builder.WriteString(", ")
+	builder.WriteString("code=")
+	builder.WriteString(fmt.Sprintf("%v", s.Code))
 	builder.WriteByte(')')
 	return builder.String()
 }

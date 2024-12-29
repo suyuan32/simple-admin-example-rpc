@@ -35,6 +35,33 @@ func (su *StudentUpdate) SetUpdatedAt(t time.Time) *StudentUpdate {
 	return su
 }
 
+// SetStatus sets the "status" field.
+func (su *StudentUpdate) SetStatus(u uint8) *StudentUpdate {
+	su.mutation.ResetStatus()
+	su.mutation.SetStatus(u)
+	return su
+}
+
+// SetNillableStatus sets the "status" field if the given value is not nil.
+func (su *StudentUpdate) SetNillableStatus(u *uint8) *StudentUpdate {
+	if u != nil {
+		su.SetStatus(*u)
+	}
+	return su
+}
+
+// AddStatus adds u to the "status" field.
+func (su *StudentUpdate) AddStatus(u int8) *StudentUpdate {
+	su.mutation.AddStatus(u)
+	return su
+}
+
+// ClearStatus clears the value of the "status" field.
+func (su *StudentUpdate) ClearStatus() *StudentUpdate {
+	su.mutation.ClearStatus()
+	return su
+}
+
 // SetName sets the "name" field.
 func (su *StudentUpdate) SetName(s string) *StudentUpdate {
 	su.mutation.SetName(s)
@@ -87,6 +114,107 @@ func (su *StudentUpdate) SetNillableAddress(s *string) *StudentUpdate {
 // ClearAddress clears the value of the "address" field.
 func (su *StudentUpdate) ClearAddress() *StudentUpdate {
 	su.mutation.ClearAddress()
+	return su
+}
+
+// SetScore sets the "score" field.
+func (su *StudentUpdate) SetScore(i int32) *StudentUpdate {
+	su.mutation.ResetScore()
+	su.mutation.SetScore(i)
+	return su
+}
+
+// SetNillableScore sets the "score" field if the given value is not nil.
+func (su *StudentUpdate) SetNillableScore(i *int32) *StudentUpdate {
+	if i != nil {
+		su.SetScore(*i)
+	}
+	return su
+}
+
+// AddScore adds i to the "score" field.
+func (su *StudentUpdate) AddScore(i int32) *StudentUpdate {
+	su.mutation.AddScore(i)
+	return su
+}
+
+// ClearScore clears the value of the "score" field.
+func (su *StudentUpdate) ClearScore() *StudentUpdate {
+	su.mutation.ClearScore()
+	return su
+}
+
+// SetWeight sets the "weight" field.
+func (su *StudentUpdate) SetWeight(u uint32) *StudentUpdate {
+	su.mutation.ResetWeight()
+	su.mutation.SetWeight(u)
+	return su
+}
+
+// SetNillableWeight sets the "weight" field if the given value is not nil.
+func (su *StudentUpdate) SetNillableWeight(u *uint32) *StudentUpdate {
+	if u != nil {
+		su.SetWeight(*u)
+	}
+	return su
+}
+
+// AddWeight adds u to the "weight" field.
+func (su *StudentUpdate) AddWeight(u int32) *StudentUpdate {
+	su.mutation.AddWeight(u)
+	return su
+}
+
+// ClearWeight clears the value of the "weight" field.
+func (su *StudentUpdate) ClearWeight() *StudentUpdate {
+	su.mutation.ClearWeight()
+	return su
+}
+
+// SetHealthy sets the "healthy" field.
+func (su *StudentUpdate) SetHealthy(b bool) *StudentUpdate {
+	su.mutation.SetHealthy(b)
+	return su
+}
+
+// SetNillableHealthy sets the "healthy" field if the given value is not nil.
+func (su *StudentUpdate) SetNillableHealthy(b *bool) *StudentUpdate {
+	if b != nil {
+		su.SetHealthy(*b)
+	}
+	return su
+}
+
+// ClearHealthy clears the value of the "healthy" field.
+func (su *StudentUpdate) ClearHealthy() *StudentUpdate {
+	su.mutation.ClearHealthy()
+	return su
+}
+
+// SetCode sets the "code" field.
+func (su *StudentUpdate) SetCode(i int64) *StudentUpdate {
+	su.mutation.ResetCode()
+	su.mutation.SetCode(i)
+	return su
+}
+
+// SetNillableCode sets the "code" field if the given value is not nil.
+func (su *StudentUpdate) SetNillableCode(i *int64) *StudentUpdate {
+	if i != nil {
+		su.SetCode(*i)
+	}
+	return su
+}
+
+// AddCode adds i to the "code" field.
+func (su *StudentUpdate) AddCode(i int64) *StudentUpdate {
+	su.mutation.AddCode(i)
+	return su
+}
+
+// ClearCode clears the value of the "code" field.
+func (su *StudentUpdate) ClearCode() *StudentUpdate {
+	su.mutation.ClearCode()
 	return su
 }
 
@@ -179,6 +307,15 @@ func (su *StudentUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := su.mutation.UpdatedAt(); ok {
 		_spec.SetField(student.FieldUpdatedAt, field.TypeTime, value)
 	}
+	if value, ok := su.mutation.Status(); ok {
+		_spec.SetField(student.FieldStatus, field.TypeUint8, value)
+	}
+	if value, ok := su.mutation.AddedStatus(); ok {
+		_spec.AddField(student.FieldStatus, field.TypeUint8, value)
+	}
+	if su.mutation.StatusCleared() {
+		_spec.ClearField(student.FieldStatus, field.TypeUint8)
+	}
 	if value, ok := su.mutation.Name(); ok {
 		_spec.SetField(student.FieldName, field.TypeString, value)
 	}
@@ -193,6 +330,39 @@ func (su *StudentUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if su.mutation.AddressCleared() {
 		_spec.ClearField(student.FieldAddress, field.TypeString)
+	}
+	if value, ok := su.mutation.Score(); ok {
+		_spec.SetField(student.FieldScore, field.TypeInt32, value)
+	}
+	if value, ok := su.mutation.AddedScore(); ok {
+		_spec.AddField(student.FieldScore, field.TypeInt32, value)
+	}
+	if su.mutation.ScoreCleared() {
+		_spec.ClearField(student.FieldScore, field.TypeInt32)
+	}
+	if value, ok := su.mutation.Weight(); ok {
+		_spec.SetField(student.FieldWeight, field.TypeUint32, value)
+	}
+	if value, ok := su.mutation.AddedWeight(); ok {
+		_spec.AddField(student.FieldWeight, field.TypeUint32, value)
+	}
+	if su.mutation.WeightCleared() {
+		_spec.ClearField(student.FieldWeight, field.TypeUint32)
+	}
+	if value, ok := su.mutation.Healthy(); ok {
+		_spec.SetField(student.FieldHealthy, field.TypeBool, value)
+	}
+	if su.mutation.HealthyCleared() {
+		_spec.ClearField(student.FieldHealthy, field.TypeBool)
+	}
+	if value, ok := su.mutation.Code(); ok {
+		_spec.SetField(student.FieldCode, field.TypeInt64, value)
+	}
+	if value, ok := su.mutation.AddedCode(); ok {
+		_spec.AddField(student.FieldCode, field.TypeInt64, value)
+	}
+	if su.mutation.CodeCleared() {
+		_spec.ClearField(student.FieldCode, field.TypeInt64)
 	}
 	if su.mutation.TeachersCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -265,6 +435,33 @@ func (suo *StudentUpdateOne) SetUpdatedAt(t time.Time) *StudentUpdateOne {
 	return suo
 }
 
+// SetStatus sets the "status" field.
+func (suo *StudentUpdateOne) SetStatus(u uint8) *StudentUpdateOne {
+	suo.mutation.ResetStatus()
+	suo.mutation.SetStatus(u)
+	return suo
+}
+
+// SetNillableStatus sets the "status" field if the given value is not nil.
+func (suo *StudentUpdateOne) SetNillableStatus(u *uint8) *StudentUpdateOne {
+	if u != nil {
+		suo.SetStatus(*u)
+	}
+	return suo
+}
+
+// AddStatus adds u to the "status" field.
+func (suo *StudentUpdateOne) AddStatus(u int8) *StudentUpdateOne {
+	suo.mutation.AddStatus(u)
+	return suo
+}
+
+// ClearStatus clears the value of the "status" field.
+func (suo *StudentUpdateOne) ClearStatus() *StudentUpdateOne {
+	suo.mutation.ClearStatus()
+	return suo
+}
+
 // SetName sets the "name" field.
 func (suo *StudentUpdateOne) SetName(s string) *StudentUpdateOne {
 	suo.mutation.SetName(s)
@@ -317,6 +514,107 @@ func (suo *StudentUpdateOne) SetNillableAddress(s *string) *StudentUpdateOne {
 // ClearAddress clears the value of the "address" field.
 func (suo *StudentUpdateOne) ClearAddress() *StudentUpdateOne {
 	suo.mutation.ClearAddress()
+	return suo
+}
+
+// SetScore sets the "score" field.
+func (suo *StudentUpdateOne) SetScore(i int32) *StudentUpdateOne {
+	suo.mutation.ResetScore()
+	suo.mutation.SetScore(i)
+	return suo
+}
+
+// SetNillableScore sets the "score" field if the given value is not nil.
+func (suo *StudentUpdateOne) SetNillableScore(i *int32) *StudentUpdateOne {
+	if i != nil {
+		suo.SetScore(*i)
+	}
+	return suo
+}
+
+// AddScore adds i to the "score" field.
+func (suo *StudentUpdateOne) AddScore(i int32) *StudentUpdateOne {
+	suo.mutation.AddScore(i)
+	return suo
+}
+
+// ClearScore clears the value of the "score" field.
+func (suo *StudentUpdateOne) ClearScore() *StudentUpdateOne {
+	suo.mutation.ClearScore()
+	return suo
+}
+
+// SetWeight sets the "weight" field.
+func (suo *StudentUpdateOne) SetWeight(u uint32) *StudentUpdateOne {
+	suo.mutation.ResetWeight()
+	suo.mutation.SetWeight(u)
+	return suo
+}
+
+// SetNillableWeight sets the "weight" field if the given value is not nil.
+func (suo *StudentUpdateOne) SetNillableWeight(u *uint32) *StudentUpdateOne {
+	if u != nil {
+		suo.SetWeight(*u)
+	}
+	return suo
+}
+
+// AddWeight adds u to the "weight" field.
+func (suo *StudentUpdateOne) AddWeight(u int32) *StudentUpdateOne {
+	suo.mutation.AddWeight(u)
+	return suo
+}
+
+// ClearWeight clears the value of the "weight" field.
+func (suo *StudentUpdateOne) ClearWeight() *StudentUpdateOne {
+	suo.mutation.ClearWeight()
+	return suo
+}
+
+// SetHealthy sets the "healthy" field.
+func (suo *StudentUpdateOne) SetHealthy(b bool) *StudentUpdateOne {
+	suo.mutation.SetHealthy(b)
+	return suo
+}
+
+// SetNillableHealthy sets the "healthy" field if the given value is not nil.
+func (suo *StudentUpdateOne) SetNillableHealthy(b *bool) *StudentUpdateOne {
+	if b != nil {
+		suo.SetHealthy(*b)
+	}
+	return suo
+}
+
+// ClearHealthy clears the value of the "healthy" field.
+func (suo *StudentUpdateOne) ClearHealthy() *StudentUpdateOne {
+	suo.mutation.ClearHealthy()
+	return suo
+}
+
+// SetCode sets the "code" field.
+func (suo *StudentUpdateOne) SetCode(i int64) *StudentUpdateOne {
+	suo.mutation.ResetCode()
+	suo.mutation.SetCode(i)
+	return suo
+}
+
+// SetNillableCode sets the "code" field if the given value is not nil.
+func (suo *StudentUpdateOne) SetNillableCode(i *int64) *StudentUpdateOne {
+	if i != nil {
+		suo.SetCode(*i)
+	}
+	return suo
+}
+
+// AddCode adds i to the "code" field.
+func (suo *StudentUpdateOne) AddCode(i int64) *StudentUpdateOne {
+	suo.mutation.AddCode(i)
+	return suo
+}
+
+// ClearCode clears the value of the "code" field.
+func (suo *StudentUpdateOne) ClearCode() *StudentUpdateOne {
+	suo.mutation.ClearCode()
 	return suo
 }
 
@@ -439,6 +737,15 @@ func (suo *StudentUpdateOne) sqlSave(ctx context.Context) (_node *Student, err e
 	if value, ok := suo.mutation.UpdatedAt(); ok {
 		_spec.SetField(student.FieldUpdatedAt, field.TypeTime, value)
 	}
+	if value, ok := suo.mutation.Status(); ok {
+		_spec.SetField(student.FieldStatus, field.TypeUint8, value)
+	}
+	if value, ok := suo.mutation.AddedStatus(); ok {
+		_spec.AddField(student.FieldStatus, field.TypeUint8, value)
+	}
+	if suo.mutation.StatusCleared() {
+		_spec.ClearField(student.FieldStatus, field.TypeUint8)
+	}
 	if value, ok := suo.mutation.Name(); ok {
 		_spec.SetField(student.FieldName, field.TypeString, value)
 	}
@@ -453,6 +760,39 @@ func (suo *StudentUpdateOne) sqlSave(ctx context.Context) (_node *Student, err e
 	}
 	if suo.mutation.AddressCleared() {
 		_spec.ClearField(student.FieldAddress, field.TypeString)
+	}
+	if value, ok := suo.mutation.Score(); ok {
+		_spec.SetField(student.FieldScore, field.TypeInt32, value)
+	}
+	if value, ok := suo.mutation.AddedScore(); ok {
+		_spec.AddField(student.FieldScore, field.TypeInt32, value)
+	}
+	if suo.mutation.ScoreCleared() {
+		_spec.ClearField(student.FieldScore, field.TypeInt32)
+	}
+	if value, ok := suo.mutation.Weight(); ok {
+		_spec.SetField(student.FieldWeight, field.TypeUint32, value)
+	}
+	if value, ok := suo.mutation.AddedWeight(); ok {
+		_spec.AddField(student.FieldWeight, field.TypeUint32, value)
+	}
+	if suo.mutation.WeightCleared() {
+		_spec.ClearField(student.FieldWeight, field.TypeUint32)
+	}
+	if value, ok := suo.mutation.Healthy(); ok {
+		_spec.SetField(student.FieldHealthy, field.TypeBool, value)
+	}
+	if suo.mutation.HealthyCleared() {
+		_spec.ClearField(student.FieldHealthy, field.TypeBool)
+	}
+	if value, ok := suo.mutation.Code(); ok {
+		_spec.SetField(student.FieldCode, field.TypeInt64, value)
+	}
+	if value, ok := suo.mutation.AddedCode(); ok {
+		_spec.AddField(student.FieldCode, field.TypeInt64, value)
+	}
+	if suo.mutation.CodeCleared() {
+		_spec.ClearField(student.FieldCode, field.TypeInt64)
 	}
 	if suo.mutation.TeachersCleared() {
 		edge := &sqlgraph.EdgeSpec{

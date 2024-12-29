@@ -50,6 +50,20 @@ func (sc *StudentCreate) SetNillableUpdatedAt(t *time.Time) *StudentCreate {
 	return sc
 }
 
+// SetStatus sets the "status" field.
+func (sc *StudentCreate) SetStatus(u uint8) *StudentCreate {
+	sc.mutation.SetStatus(u)
+	return sc
+}
+
+// SetNillableStatus sets the "status" field if the given value is not nil.
+func (sc *StudentCreate) SetNillableStatus(u *uint8) *StudentCreate {
+	if u != nil {
+		sc.SetStatus(*u)
+	}
+	return sc
+}
+
 // SetName sets the "name" field.
 func (sc *StudentCreate) SetName(s string) *StudentCreate {
 	sc.mutation.SetName(s)
@@ -72,6 +86,62 @@ func (sc *StudentCreate) SetAddress(s string) *StudentCreate {
 func (sc *StudentCreate) SetNillableAddress(s *string) *StudentCreate {
 	if s != nil {
 		sc.SetAddress(*s)
+	}
+	return sc
+}
+
+// SetScore sets the "score" field.
+func (sc *StudentCreate) SetScore(i int32) *StudentCreate {
+	sc.mutation.SetScore(i)
+	return sc
+}
+
+// SetNillableScore sets the "score" field if the given value is not nil.
+func (sc *StudentCreate) SetNillableScore(i *int32) *StudentCreate {
+	if i != nil {
+		sc.SetScore(*i)
+	}
+	return sc
+}
+
+// SetWeight sets the "weight" field.
+func (sc *StudentCreate) SetWeight(u uint32) *StudentCreate {
+	sc.mutation.SetWeight(u)
+	return sc
+}
+
+// SetNillableWeight sets the "weight" field if the given value is not nil.
+func (sc *StudentCreate) SetNillableWeight(u *uint32) *StudentCreate {
+	if u != nil {
+		sc.SetWeight(*u)
+	}
+	return sc
+}
+
+// SetHealthy sets the "healthy" field.
+func (sc *StudentCreate) SetHealthy(b bool) *StudentCreate {
+	sc.mutation.SetHealthy(b)
+	return sc
+}
+
+// SetNillableHealthy sets the "healthy" field if the given value is not nil.
+func (sc *StudentCreate) SetNillableHealthy(b *bool) *StudentCreate {
+	if b != nil {
+		sc.SetHealthy(*b)
+	}
+	return sc
+}
+
+// SetCode sets the "code" field.
+func (sc *StudentCreate) SetCode(i int64) *StudentCreate {
+	sc.mutation.SetCode(i)
+	return sc
+}
+
+// SetNillableCode sets the "code" field if the given value is not nil.
+func (sc *StudentCreate) SetNillableCode(i *int64) *StudentCreate {
+	if i != nil {
+		sc.SetCode(*i)
 	}
 	return sc
 }
@@ -148,6 +218,10 @@ func (sc *StudentCreate) defaults() {
 		v := student.DefaultUpdatedAt()
 		sc.mutation.SetUpdatedAt(v)
 	}
+	if _, ok := sc.mutation.Status(); !ok {
+		v := student.DefaultStatus
+		sc.mutation.SetStatus(v)
+	}
 	if _, ok := sc.mutation.ID(); !ok {
 		v := student.DefaultID()
 		sc.mutation.SetID(v)
@@ -211,6 +285,10 @@ func (sc *StudentCreate) createSpec() (*Student, *sqlgraph.CreateSpec) {
 		_spec.SetField(student.FieldUpdatedAt, field.TypeTime, value)
 		_node.UpdatedAt = value
 	}
+	if value, ok := sc.mutation.Status(); ok {
+		_spec.SetField(student.FieldStatus, field.TypeUint8, value)
+		_node.Status = value
+	}
 	if value, ok := sc.mutation.Name(); ok {
 		_spec.SetField(student.FieldName, field.TypeString, value)
 		_node.Name = value
@@ -222,6 +300,22 @@ func (sc *StudentCreate) createSpec() (*Student, *sqlgraph.CreateSpec) {
 	if value, ok := sc.mutation.Address(); ok {
 		_spec.SetField(student.FieldAddress, field.TypeString, value)
 		_node.Address = value
+	}
+	if value, ok := sc.mutation.Score(); ok {
+		_spec.SetField(student.FieldScore, field.TypeInt32, value)
+		_node.Score = value
+	}
+	if value, ok := sc.mutation.Weight(); ok {
+		_spec.SetField(student.FieldWeight, field.TypeUint32, value)
+		_node.Weight = value
+	}
+	if value, ok := sc.mutation.Healthy(); ok {
+		_spec.SetField(student.FieldHealthy, field.TypeBool, value)
+		_node.Healthy = value
+	}
+	if value, ok := sc.mutation.Code(); ok {
+		_spec.SetField(student.FieldCode, field.TypeInt64, value)
+		_node.Code = value
 	}
 	if nodes := sc.mutation.TeachersIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{

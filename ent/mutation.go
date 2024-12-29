@@ -38,10 +38,19 @@ type StudentMutation struct {
 	id              *uuid.UUID
 	created_at      *time.Time
 	updated_at      *time.Time
+	status          *uint8
+	addstatus       *int8
 	name            *string
 	age             *int16
 	addage          *int16
 	address         *string
+	score           *int32
+	addscore        *int32
+	weight          *uint32
+	addweight       *int32
+	healthy         *bool
+	code            *int64
+	addcode         *int64
 	clearedFields   map[string]struct{}
 	teachers        map[uint64]struct{}
 	removedteachers map[uint64]struct{}
@@ -227,6 +236,76 @@ func (m *StudentMutation) ResetUpdatedAt() {
 	m.updated_at = nil
 }
 
+// SetStatus sets the "status" field.
+func (m *StudentMutation) SetStatus(u uint8) {
+	m.status = &u
+	m.addstatus = nil
+}
+
+// Status returns the value of the "status" field in the mutation.
+func (m *StudentMutation) Status() (r uint8, exists bool) {
+	v := m.status
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldStatus returns the old "status" field's value of the Student entity.
+// If the Student object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *StudentMutation) OldStatus(ctx context.Context) (v uint8, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldStatus is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldStatus requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldStatus: %w", err)
+	}
+	return oldValue.Status, nil
+}
+
+// AddStatus adds u to the "status" field.
+func (m *StudentMutation) AddStatus(u int8) {
+	if m.addstatus != nil {
+		*m.addstatus += u
+	} else {
+		m.addstatus = &u
+	}
+}
+
+// AddedStatus returns the value that was added to the "status" field in this mutation.
+func (m *StudentMutation) AddedStatus() (r int8, exists bool) {
+	v := m.addstatus
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearStatus clears the value of the "status" field.
+func (m *StudentMutation) ClearStatus() {
+	m.status = nil
+	m.addstatus = nil
+	m.clearedFields[student.FieldStatus] = struct{}{}
+}
+
+// StatusCleared returns if the "status" field was cleared in this mutation.
+func (m *StudentMutation) StatusCleared() bool {
+	_, ok := m.clearedFields[student.FieldStatus]
+	return ok
+}
+
+// ResetStatus resets all changes to the "status" field.
+func (m *StudentMutation) ResetStatus() {
+	m.status = nil
+	m.addstatus = nil
+	delete(m.clearedFields, student.FieldStatus)
+}
+
 // SetName sets the "name" field.
 func (m *StudentMutation) SetName(s string) {
 	m.name = &s
@@ -368,6 +447,265 @@ func (m *StudentMutation) ResetAddress() {
 	delete(m.clearedFields, student.FieldAddress)
 }
 
+// SetScore sets the "score" field.
+func (m *StudentMutation) SetScore(i int32) {
+	m.score = &i
+	m.addscore = nil
+}
+
+// Score returns the value of the "score" field in the mutation.
+func (m *StudentMutation) Score() (r int32, exists bool) {
+	v := m.score
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldScore returns the old "score" field's value of the Student entity.
+// If the Student object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *StudentMutation) OldScore(ctx context.Context) (v int32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldScore is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldScore requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldScore: %w", err)
+	}
+	return oldValue.Score, nil
+}
+
+// AddScore adds i to the "score" field.
+func (m *StudentMutation) AddScore(i int32) {
+	if m.addscore != nil {
+		*m.addscore += i
+	} else {
+		m.addscore = &i
+	}
+}
+
+// AddedScore returns the value that was added to the "score" field in this mutation.
+func (m *StudentMutation) AddedScore() (r int32, exists bool) {
+	v := m.addscore
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearScore clears the value of the "score" field.
+func (m *StudentMutation) ClearScore() {
+	m.score = nil
+	m.addscore = nil
+	m.clearedFields[student.FieldScore] = struct{}{}
+}
+
+// ScoreCleared returns if the "score" field was cleared in this mutation.
+func (m *StudentMutation) ScoreCleared() bool {
+	_, ok := m.clearedFields[student.FieldScore]
+	return ok
+}
+
+// ResetScore resets all changes to the "score" field.
+func (m *StudentMutation) ResetScore() {
+	m.score = nil
+	m.addscore = nil
+	delete(m.clearedFields, student.FieldScore)
+}
+
+// SetWeight sets the "weight" field.
+func (m *StudentMutation) SetWeight(u uint32) {
+	m.weight = &u
+	m.addweight = nil
+}
+
+// Weight returns the value of the "weight" field in the mutation.
+func (m *StudentMutation) Weight() (r uint32, exists bool) {
+	v := m.weight
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldWeight returns the old "weight" field's value of the Student entity.
+// If the Student object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *StudentMutation) OldWeight(ctx context.Context) (v uint32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldWeight is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldWeight requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldWeight: %w", err)
+	}
+	return oldValue.Weight, nil
+}
+
+// AddWeight adds u to the "weight" field.
+func (m *StudentMutation) AddWeight(u int32) {
+	if m.addweight != nil {
+		*m.addweight += u
+	} else {
+		m.addweight = &u
+	}
+}
+
+// AddedWeight returns the value that was added to the "weight" field in this mutation.
+func (m *StudentMutation) AddedWeight() (r int32, exists bool) {
+	v := m.addweight
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearWeight clears the value of the "weight" field.
+func (m *StudentMutation) ClearWeight() {
+	m.weight = nil
+	m.addweight = nil
+	m.clearedFields[student.FieldWeight] = struct{}{}
+}
+
+// WeightCleared returns if the "weight" field was cleared in this mutation.
+func (m *StudentMutation) WeightCleared() bool {
+	_, ok := m.clearedFields[student.FieldWeight]
+	return ok
+}
+
+// ResetWeight resets all changes to the "weight" field.
+func (m *StudentMutation) ResetWeight() {
+	m.weight = nil
+	m.addweight = nil
+	delete(m.clearedFields, student.FieldWeight)
+}
+
+// SetHealthy sets the "healthy" field.
+func (m *StudentMutation) SetHealthy(b bool) {
+	m.healthy = &b
+}
+
+// Healthy returns the value of the "healthy" field in the mutation.
+func (m *StudentMutation) Healthy() (r bool, exists bool) {
+	v := m.healthy
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldHealthy returns the old "healthy" field's value of the Student entity.
+// If the Student object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *StudentMutation) OldHealthy(ctx context.Context) (v bool, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldHealthy is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldHealthy requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldHealthy: %w", err)
+	}
+	return oldValue.Healthy, nil
+}
+
+// ClearHealthy clears the value of the "healthy" field.
+func (m *StudentMutation) ClearHealthy() {
+	m.healthy = nil
+	m.clearedFields[student.FieldHealthy] = struct{}{}
+}
+
+// HealthyCleared returns if the "healthy" field was cleared in this mutation.
+func (m *StudentMutation) HealthyCleared() bool {
+	_, ok := m.clearedFields[student.FieldHealthy]
+	return ok
+}
+
+// ResetHealthy resets all changes to the "healthy" field.
+func (m *StudentMutation) ResetHealthy() {
+	m.healthy = nil
+	delete(m.clearedFields, student.FieldHealthy)
+}
+
+// SetCode sets the "code" field.
+func (m *StudentMutation) SetCode(i int64) {
+	m.code = &i
+	m.addcode = nil
+}
+
+// Code returns the value of the "code" field in the mutation.
+func (m *StudentMutation) Code() (r int64, exists bool) {
+	v := m.code
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCode returns the old "code" field's value of the Student entity.
+// If the Student object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *StudentMutation) OldCode(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCode is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCode requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCode: %w", err)
+	}
+	return oldValue.Code, nil
+}
+
+// AddCode adds i to the "code" field.
+func (m *StudentMutation) AddCode(i int64) {
+	if m.addcode != nil {
+		*m.addcode += i
+	} else {
+		m.addcode = &i
+	}
+}
+
+// AddedCode returns the value that was added to the "code" field in this mutation.
+func (m *StudentMutation) AddedCode() (r int64, exists bool) {
+	v := m.addcode
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearCode clears the value of the "code" field.
+func (m *StudentMutation) ClearCode() {
+	m.code = nil
+	m.addcode = nil
+	m.clearedFields[student.FieldCode] = struct{}{}
+}
+
+// CodeCleared returns if the "code" field was cleared in this mutation.
+func (m *StudentMutation) CodeCleared() bool {
+	_, ok := m.clearedFields[student.FieldCode]
+	return ok
+}
+
+// ResetCode resets all changes to the "code" field.
+func (m *StudentMutation) ResetCode() {
+	m.code = nil
+	m.addcode = nil
+	delete(m.clearedFields, student.FieldCode)
+}
+
 // AddTeacherIDs adds the "teachers" edge to the Teacher entity by ids.
 func (m *StudentMutation) AddTeacherIDs(ids ...uint64) {
 	if m.teachers == nil {
@@ -456,12 +794,15 @@ func (m *StudentMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *StudentMutation) Fields() []string {
-	fields := make([]string, 0, 5)
+	fields := make([]string, 0, 10)
 	if m.created_at != nil {
 		fields = append(fields, student.FieldCreatedAt)
 	}
 	if m.updated_at != nil {
 		fields = append(fields, student.FieldUpdatedAt)
+	}
+	if m.status != nil {
+		fields = append(fields, student.FieldStatus)
 	}
 	if m.name != nil {
 		fields = append(fields, student.FieldName)
@@ -471,6 +812,18 @@ func (m *StudentMutation) Fields() []string {
 	}
 	if m.address != nil {
 		fields = append(fields, student.FieldAddress)
+	}
+	if m.score != nil {
+		fields = append(fields, student.FieldScore)
+	}
+	if m.weight != nil {
+		fields = append(fields, student.FieldWeight)
+	}
+	if m.healthy != nil {
+		fields = append(fields, student.FieldHealthy)
+	}
+	if m.code != nil {
+		fields = append(fields, student.FieldCode)
 	}
 	return fields
 }
@@ -484,12 +837,22 @@ func (m *StudentMutation) Field(name string) (ent.Value, bool) {
 		return m.CreatedAt()
 	case student.FieldUpdatedAt:
 		return m.UpdatedAt()
+	case student.FieldStatus:
+		return m.Status()
 	case student.FieldName:
 		return m.Name()
 	case student.FieldAge:
 		return m.Age()
 	case student.FieldAddress:
 		return m.Address()
+	case student.FieldScore:
+		return m.Score()
+	case student.FieldWeight:
+		return m.Weight()
+	case student.FieldHealthy:
+		return m.Healthy()
+	case student.FieldCode:
+		return m.Code()
 	}
 	return nil, false
 }
@@ -503,12 +866,22 @@ func (m *StudentMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldCreatedAt(ctx)
 	case student.FieldUpdatedAt:
 		return m.OldUpdatedAt(ctx)
+	case student.FieldStatus:
+		return m.OldStatus(ctx)
 	case student.FieldName:
 		return m.OldName(ctx)
 	case student.FieldAge:
 		return m.OldAge(ctx)
 	case student.FieldAddress:
 		return m.OldAddress(ctx)
+	case student.FieldScore:
+		return m.OldScore(ctx)
+	case student.FieldWeight:
+		return m.OldWeight(ctx)
+	case student.FieldHealthy:
+		return m.OldHealthy(ctx)
+	case student.FieldCode:
+		return m.OldCode(ctx)
 	}
 	return nil, fmt.Errorf("unknown Student field %s", name)
 }
@@ -532,6 +905,13 @@ func (m *StudentMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetUpdatedAt(v)
 		return nil
+	case student.FieldStatus:
+		v, ok := value.(uint8)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetStatus(v)
+		return nil
 	case student.FieldName:
 		v, ok := value.(string)
 		if !ok {
@@ -553,6 +933,34 @@ func (m *StudentMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetAddress(v)
 		return nil
+	case student.FieldScore:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetScore(v)
+		return nil
+	case student.FieldWeight:
+		v, ok := value.(uint32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetWeight(v)
+		return nil
+	case student.FieldHealthy:
+		v, ok := value.(bool)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetHealthy(v)
+		return nil
+	case student.FieldCode:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCode(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Student field %s", name)
 }
@@ -561,8 +969,20 @@ func (m *StudentMutation) SetField(name string, value ent.Value) error {
 // this mutation.
 func (m *StudentMutation) AddedFields() []string {
 	var fields []string
+	if m.addstatus != nil {
+		fields = append(fields, student.FieldStatus)
+	}
 	if m.addage != nil {
 		fields = append(fields, student.FieldAge)
+	}
+	if m.addscore != nil {
+		fields = append(fields, student.FieldScore)
+	}
+	if m.addweight != nil {
+		fields = append(fields, student.FieldWeight)
+	}
+	if m.addcode != nil {
+		fields = append(fields, student.FieldCode)
 	}
 	return fields
 }
@@ -572,8 +992,16 @@ func (m *StudentMutation) AddedFields() []string {
 // was not set, or was not defined in the schema.
 func (m *StudentMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
+	case student.FieldStatus:
+		return m.AddedStatus()
 	case student.FieldAge:
 		return m.AddedAge()
+	case student.FieldScore:
+		return m.AddedScore()
+	case student.FieldWeight:
+		return m.AddedWeight()
+	case student.FieldCode:
+		return m.AddedCode()
 	}
 	return nil, false
 }
@@ -583,12 +1011,40 @@ func (m *StudentMutation) AddedField(name string) (ent.Value, bool) {
 // type.
 func (m *StudentMutation) AddField(name string, value ent.Value) error {
 	switch name {
+	case student.FieldStatus:
+		v, ok := value.(int8)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddStatus(v)
+		return nil
 	case student.FieldAge:
 		v, ok := value.(int16)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddAge(v)
+		return nil
+	case student.FieldScore:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddScore(v)
+		return nil
+	case student.FieldWeight:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddWeight(v)
+		return nil
+	case student.FieldCode:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddCode(v)
 		return nil
 	}
 	return fmt.Errorf("unknown Student numeric field %s", name)
@@ -598,8 +1054,23 @@ func (m *StudentMutation) AddField(name string, value ent.Value) error {
 // mutation.
 func (m *StudentMutation) ClearedFields() []string {
 	var fields []string
+	if m.FieldCleared(student.FieldStatus) {
+		fields = append(fields, student.FieldStatus)
+	}
 	if m.FieldCleared(student.FieldAddress) {
 		fields = append(fields, student.FieldAddress)
+	}
+	if m.FieldCleared(student.FieldScore) {
+		fields = append(fields, student.FieldScore)
+	}
+	if m.FieldCleared(student.FieldWeight) {
+		fields = append(fields, student.FieldWeight)
+	}
+	if m.FieldCleared(student.FieldHealthy) {
+		fields = append(fields, student.FieldHealthy)
+	}
+	if m.FieldCleared(student.FieldCode) {
+		fields = append(fields, student.FieldCode)
 	}
 	return fields
 }
@@ -615,8 +1086,23 @@ func (m *StudentMutation) FieldCleared(name string) bool {
 // error if the field is not defined in the schema.
 func (m *StudentMutation) ClearField(name string) error {
 	switch name {
+	case student.FieldStatus:
+		m.ClearStatus()
+		return nil
 	case student.FieldAddress:
 		m.ClearAddress()
+		return nil
+	case student.FieldScore:
+		m.ClearScore()
+		return nil
+	case student.FieldWeight:
+		m.ClearWeight()
+		return nil
+	case student.FieldHealthy:
+		m.ClearHealthy()
+		return nil
+	case student.FieldCode:
+		m.ClearCode()
 		return nil
 	}
 	return fmt.Errorf("unknown Student nullable field %s", name)
@@ -632,6 +1118,9 @@ func (m *StudentMutation) ResetField(name string) error {
 	case student.FieldUpdatedAt:
 		m.ResetUpdatedAt()
 		return nil
+	case student.FieldStatus:
+		m.ResetStatus()
+		return nil
 	case student.FieldName:
 		m.ResetName()
 		return nil
@@ -640,6 +1129,18 @@ func (m *StudentMutation) ResetField(name string) error {
 		return nil
 	case student.FieldAddress:
 		m.ResetAddress()
+		return nil
+	case student.FieldScore:
+		m.ResetScore()
+		return nil
+	case student.FieldWeight:
+		m.ResetWeight()
+		return nil
+	case student.FieldHealthy:
+		m.ResetHealthy()
+		return nil
+	case student.FieldCode:
+		m.ResetCode()
 		return nil
 	}
 	return fmt.Errorf("unknown Student field %s", name)

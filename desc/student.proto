@@ -12,6 +12,14 @@ message StudentInfo {
   optional int32 age = 5;
   // Student's home address | 学生家庭住址 
   optional string address = 6;
+  // Student's score | 学生分数
+  optional int32 score = 7;
+  // Student's weight | 学生体重
+  optional uint32 weight = 8;
+  // Whether is healthy | 是否健康
+  optional bool healthy = 9;
+  // Student's code | 学生编码
+  optional int64 code = 10;
 }
 
 message StudentListResp {

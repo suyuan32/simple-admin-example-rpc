@@ -52,6 +52,10 @@ func (l *GetStudentListLogic) GetStudentList(in *example.StudentListReq) (*examp
 			Name:      &v.Name,
 			Age:       pointy.GetPointer(int32(v.Age)),
 			Address:   &v.Address,
+			Score:     &v.Score,
+			Weight:    &v.Weight,
+			Healthy:   &v.Healthy,
+			Code:      &v.Code,
 		})
 	}
 

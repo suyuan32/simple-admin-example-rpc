@@ -29,6 +29,30 @@ func (s *StudentCreate) SetNotNilUpdatedAt(value *time.Time) *StudentCreate {
 }
 
 // set field if value's pointer is not nil.
+func (s *StudentUpdate) SetNotNilStatus(value *uint8) *StudentUpdate {
+	if value != nil {
+		return s.SetStatus(*value)
+	}
+	return s
+}
+
+// set field if value's pointer is not nil.
+func (s *StudentUpdateOne) SetNotNilStatus(value *uint8) *StudentUpdateOne {
+	if value != nil {
+		return s.SetStatus(*value)
+	}
+	return s
+}
+
+// set field if value's pointer is not nil.
+func (s *StudentCreate) SetNotNilStatus(value *uint8) *StudentCreate {
+	if value != nil {
+		return s.SetStatus(*value)
+	}
+	return s
+}
+
+// set field if value's pointer is not nil.
 func (s *StudentUpdate) SetNotNilName(value *string) *StudentUpdate {
 	if value != nil {
 		return s.SetName(*value)
@@ -96,6 +120,102 @@ func (s *StudentUpdateOne) SetNotNilAddress(value *string) *StudentUpdateOne {
 func (s *StudentCreate) SetNotNilAddress(value *string) *StudentCreate {
 	if value != nil {
 		return s.SetAddress(*value)
+	}
+	return s
+}
+
+// set field if value's pointer is not nil.
+func (s *StudentUpdate) SetNotNilScore(value *int32) *StudentUpdate {
+	if value != nil {
+		return s.SetScore(*value)
+	}
+	return s
+}
+
+// set field if value's pointer is not nil.
+func (s *StudentUpdateOne) SetNotNilScore(value *int32) *StudentUpdateOne {
+	if value != nil {
+		return s.SetScore(*value)
+	}
+	return s
+}
+
+// set field if value's pointer is not nil.
+func (s *StudentCreate) SetNotNilScore(value *int32) *StudentCreate {
+	if value != nil {
+		return s.SetScore(*value)
+	}
+	return s
+}
+
+// set field if value's pointer is not nil.
+func (s *StudentUpdate) SetNotNilWeight(value *uint32) *StudentUpdate {
+	if value != nil {
+		return s.SetWeight(*value)
+	}
+	return s
+}
+
+// set field if value's pointer is not nil.
+func (s *StudentUpdateOne) SetNotNilWeight(value *uint32) *StudentUpdateOne {
+	if value != nil {
+		return s.SetWeight(*value)
+	}
+	return s
+}
+
+// set field if value's pointer is not nil.
+func (s *StudentCreate) SetNotNilWeight(value *uint32) *StudentCreate {
+	if value != nil {
+		return s.SetWeight(*value)
+	}
+	return s
+}
+
+// set field if value's pointer is not nil.
+func (s *StudentUpdate) SetNotNilHealthy(value *bool) *StudentUpdate {
+	if value != nil {
+		return s.SetHealthy(*value)
+	}
+	return s
+}
+
+// set field if value's pointer is not nil.
+func (s *StudentUpdateOne) SetNotNilHealthy(value *bool) *StudentUpdateOne {
+	if value != nil {
+		return s.SetHealthy(*value)
+	}
+	return s
+}
+
+// set field if value's pointer is not nil.
+func (s *StudentCreate) SetNotNilHealthy(value *bool) *StudentCreate {
+	if value != nil {
+		return s.SetHealthy(*value)
+	}
+	return s
+}
+
+// set field if value's pointer is not nil.
+func (s *StudentUpdate) SetNotNilCode(value *int64) *StudentUpdate {
+	if value != nil {
+		return s.SetCode(*value)
+	}
+	return s
+}
+
+// set field if value's pointer is not nil.
+func (s *StudentUpdateOne) SetNotNilCode(value *int64) *StudentUpdateOne {
+	if value != nil {
+		return s.SetCode(*value)
+	}
+	return s
+}
+
+// set field if value's pointer is not nil.
+func (s *StudentCreate) SetNotNilCode(value *int64) *StudentCreate {
+	if value != nil {
+		return s.SetCode(*value)
 	}
 	return s
 }

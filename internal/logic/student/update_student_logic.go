@@ -30,7 +30,11 @@ func NewUpdateStudentLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Upd
 func (l *UpdateStudentLogic) UpdateStudent(in *example.StudentInfo) (*example.BaseResp, error) {
 	query := l.svcCtx.DB.Student.UpdateOneID(uuidx.ParseUUIDString(*in.Id)).
 		SetNotNilName(in.Name).
-		SetNotNilAddress(in.Address)
+		SetNotNilAddress(in.Address).
+		SetNotNilScore(in.Score).
+		SetNotNilWeight(in.Weight).
+		SetNotNilHealthy(in.Healthy).
+		SetNotNilCode(in.Code)
 
 	if in.Age != nil {
 		query.SetNotNilAge(pointy.GetPointer(int16(*in.Age)))
