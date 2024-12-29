@@ -32,6 +32,9 @@ func (l *GetTeacherListLogic) GetTeacherList(in *example.TeacherListReq) (*examp
 	if in.Name != nil {
 		predicates = append(predicates, teacher.NameContains(*in.Name))
 	}
+	if in.Age != nil {
+		predicates = append(predicates, teacher.AgeEQ(int16(*in.Age)))
+	}
 	result, err := l.svcCtx.DB.Teacher.Query().Where(predicates...).Page(l.ctx, in.Page, in.PageSize)
 
 	if err != nil {

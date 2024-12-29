@@ -29,11 +29,32 @@ func NewGetStudentListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Ge
 
 func (l *GetStudentListLogic) GetStudentList(in *example.StudentListReq) (*example.StudentListResp, error) {
 	var predicates []predicate.Student
+	if in.Status != nil {
+		predicates = append(predicates, student.StatusEQ(uint8(*in.Status)))
+	}
 	if in.Name != nil {
 		predicates = append(predicates, student.NameContains(*in.Name))
 	}
+	if in.Age != nil {
+		predicates = append(predicates, student.AgeEQ(int16(*in.Age)))
+	}
 	if in.Address != nil {
 		predicates = append(predicates, student.AddressContains(*in.Address))
+	}
+	if in.Score != nil {
+		predicates = append(predicates, student.ScoreEQ(*in.Score))
+	}
+	if in.Weight != nil {
+		predicates = append(predicates, student.WeightEQ(*in.Weight))
+	}
+	if in.Healthy != nil {
+		predicates = append(predicates, student.HealthyEQ(*in.Healthy))
+	}
+	if in.Code != nil {
+		predicates = append(predicates, student.CodeEQ(*in.Code))
+	}
+	if in.IdentifyId != nil {
+		predicates = append(predicates, student.IdentifyIDContains(*in.IdentifyId))
 	}
 	result, err := l.svcCtx.DB.Student.Query().Where(predicates...).Page(l.ctx, in.Page, in.PageSize)
 
@@ -46,16 +67,18 @@ func (l *GetStudentListLogic) GetStudentList(in *example.StudentListReq) (*examp
 
 	for _, v := range result.List {
 		resp.Data = append(resp.Data, &example.StudentInfo{
-			Id:        pointy.GetPointer(v.ID.String()),
-			CreatedAt: pointy.GetPointer(v.CreatedAt.UnixMilli()),
-			UpdatedAt: pointy.GetPointer(v.UpdatedAt.UnixMilli()),
-			Name:      &v.Name,
-			Age:       pointy.GetPointer(int32(v.Age)),
-			Address:   &v.Address,
-			Score:     &v.Score,
-			Weight:    &v.Weight,
-			Healthy:   &v.Healthy,
-			Code:      &v.Code,
+			Id:         pointy.GetPointer(v.ID.String()),
+			CreatedAt:  pointy.GetPointer(v.CreatedAt.UnixMilli()),
+			UpdatedAt:  pointy.GetPointer(v.UpdatedAt.UnixMilli()),
+			Status:     pointy.GetPointer(uint32(v.Status)),
+			Name:       &v.Name,
+			Age:        pointy.GetPointer(int32(v.Age)),
+			Address:    &v.Address,
+			Score:      &v.Score,
+			Weight:     &v.Weight,
+			Healthy:    &v.Healthy,
+			Code:       &v.Code,
+			IdentifyId: &v.IdentifyID,
 		})
 	}
 

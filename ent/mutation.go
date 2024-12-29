@@ -51,6 +51,7 @@ type StudentMutation struct {
 	healthy         *bool
 	code            *int64
 	addcode         *int64
+	identify_id     *string
 	clearedFields   map[string]struct{}
 	teachers        map[uint64]struct{}
 	removedteachers map[uint64]struct{}
@@ -706,6 +707,55 @@ func (m *StudentMutation) ResetCode() {
 	delete(m.clearedFields, student.FieldCode)
 }
 
+// SetIdentifyID sets the "identify_id" field.
+func (m *StudentMutation) SetIdentifyID(s string) {
+	m.identify_id = &s
+}
+
+// IdentifyID returns the value of the "identify_id" field in the mutation.
+func (m *StudentMutation) IdentifyID() (r string, exists bool) {
+	v := m.identify_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldIdentifyID returns the old "identify_id" field's value of the Student entity.
+// If the Student object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *StudentMutation) OldIdentifyID(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldIdentifyID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldIdentifyID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldIdentifyID: %w", err)
+	}
+	return oldValue.IdentifyID, nil
+}
+
+// ClearIdentifyID clears the value of the "identify_id" field.
+func (m *StudentMutation) ClearIdentifyID() {
+	m.identify_id = nil
+	m.clearedFields[student.FieldIdentifyID] = struct{}{}
+}
+
+// IdentifyIDCleared returns if the "identify_id" field was cleared in this mutation.
+func (m *StudentMutation) IdentifyIDCleared() bool {
+	_, ok := m.clearedFields[student.FieldIdentifyID]
+	return ok
+}
+
+// ResetIdentifyID resets all changes to the "identify_id" field.
+func (m *StudentMutation) ResetIdentifyID() {
+	m.identify_id = nil
+	delete(m.clearedFields, student.FieldIdentifyID)
+}
+
 // AddTeacherIDs adds the "teachers" edge to the Teacher entity by ids.
 func (m *StudentMutation) AddTeacherIDs(ids ...uint64) {
 	if m.teachers == nil {
@@ -794,7 +844,7 @@ func (m *StudentMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *StudentMutation) Fields() []string {
-	fields := make([]string, 0, 10)
+	fields := make([]string, 0, 11)
 	if m.created_at != nil {
 		fields = append(fields, student.FieldCreatedAt)
 	}
@@ -825,6 +875,9 @@ func (m *StudentMutation) Fields() []string {
 	if m.code != nil {
 		fields = append(fields, student.FieldCode)
 	}
+	if m.identify_id != nil {
+		fields = append(fields, student.FieldIdentifyID)
+	}
 	return fields
 }
 
@@ -853,6 +906,8 @@ func (m *StudentMutation) Field(name string) (ent.Value, bool) {
 		return m.Healthy()
 	case student.FieldCode:
 		return m.Code()
+	case student.FieldIdentifyID:
+		return m.IdentifyID()
 	}
 	return nil, false
 }
@@ -882,6 +937,8 @@ func (m *StudentMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldHealthy(ctx)
 	case student.FieldCode:
 		return m.OldCode(ctx)
+	case student.FieldIdentifyID:
+		return m.OldIdentifyID(ctx)
 	}
 	return nil, fmt.Errorf("unknown Student field %s", name)
 }
@@ -960,6 +1017,13 @@ func (m *StudentMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetCode(v)
+		return nil
+	case student.FieldIdentifyID:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetIdentifyID(v)
 		return nil
 	}
 	return fmt.Errorf("unknown Student field %s", name)
@@ -1072,6 +1136,9 @@ func (m *StudentMutation) ClearedFields() []string {
 	if m.FieldCleared(student.FieldCode) {
 		fields = append(fields, student.FieldCode)
 	}
+	if m.FieldCleared(student.FieldIdentifyID) {
+		fields = append(fields, student.FieldIdentifyID)
+	}
 	return fields
 }
 
@@ -1103,6 +1170,9 @@ func (m *StudentMutation) ClearField(name string) error {
 		return nil
 	case student.FieldCode:
 		m.ClearCode()
+		return nil
+	case student.FieldIdentifyID:
+		m.ClearIdentifyID()
 		return nil
 	}
 	return fmt.Errorf("unknown Student nullable field %s", name)
@@ -1141,6 +1211,9 @@ func (m *StudentMutation) ResetField(name string) error {
 		return nil
 	case student.FieldCode:
 		m.ResetCode()
+		return nil
+	case student.FieldIdentifyID:
+		m.ResetIdentifyID()
 		return nil
 	}
 	return fmt.Errorf("unknown Student field %s", name)

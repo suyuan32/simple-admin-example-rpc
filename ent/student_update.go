@@ -218,6 +218,26 @@ func (su *StudentUpdate) ClearCode() *StudentUpdate {
 	return su
 }
 
+// SetIdentifyID sets the "identify_id" field.
+func (su *StudentUpdate) SetIdentifyID(s string) *StudentUpdate {
+	su.mutation.SetIdentifyID(s)
+	return su
+}
+
+// SetNillableIdentifyID sets the "identify_id" field if the given value is not nil.
+func (su *StudentUpdate) SetNillableIdentifyID(s *string) *StudentUpdate {
+	if s != nil {
+		su.SetIdentifyID(*s)
+	}
+	return su
+}
+
+// ClearIdentifyID clears the value of the "identify_id" field.
+func (su *StudentUpdate) ClearIdentifyID() *StudentUpdate {
+	su.mutation.ClearIdentifyID()
+	return su
+}
+
 // AddTeacherIDs adds the "teachers" edge to the Teacher entity by IDs.
 func (su *StudentUpdate) AddTeacherIDs(ids ...uint64) *StudentUpdate {
 	su.mutation.AddTeacherIDs(ids...)
@@ -363,6 +383,12 @@ func (su *StudentUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if su.mutation.CodeCleared() {
 		_spec.ClearField(student.FieldCode, field.TypeInt64)
+	}
+	if value, ok := su.mutation.IdentifyID(); ok {
+		_spec.SetField(student.FieldIdentifyID, field.TypeString, value)
+	}
+	if su.mutation.IdentifyIDCleared() {
+		_spec.ClearField(student.FieldIdentifyID, field.TypeString)
 	}
 	if su.mutation.TeachersCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -618,6 +644,26 @@ func (suo *StudentUpdateOne) ClearCode() *StudentUpdateOne {
 	return suo
 }
 
+// SetIdentifyID sets the "identify_id" field.
+func (suo *StudentUpdateOne) SetIdentifyID(s string) *StudentUpdateOne {
+	suo.mutation.SetIdentifyID(s)
+	return suo
+}
+
+// SetNillableIdentifyID sets the "identify_id" field if the given value is not nil.
+func (suo *StudentUpdateOne) SetNillableIdentifyID(s *string) *StudentUpdateOne {
+	if s != nil {
+		suo.SetIdentifyID(*s)
+	}
+	return suo
+}
+
+// ClearIdentifyID clears the value of the "identify_id" field.
+func (suo *StudentUpdateOne) ClearIdentifyID() *StudentUpdateOne {
+	suo.mutation.ClearIdentifyID()
+	return suo
+}
+
 // AddTeacherIDs adds the "teachers" edge to the Teacher entity by IDs.
 func (suo *StudentUpdateOne) AddTeacherIDs(ids ...uint64) *StudentUpdateOne {
 	suo.mutation.AddTeacherIDs(ids...)
@@ -793,6 +839,12 @@ func (suo *StudentUpdateOne) sqlSave(ctx context.Context) (_node *Student, err e
 	}
 	if suo.mutation.CodeCleared() {
 		_spec.ClearField(student.FieldCode, field.TypeInt64)
+	}
+	if value, ok := suo.mutation.IdentifyID(); ok {
+		_spec.SetField(student.FieldIdentifyID, field.TypeString, value)
+	}
+	if suo.mutation.IdentifyIDCleared() {
+		_spec.ClearField(student.FieldIdentifyID, field.TypeString)
 	}
 	if suo.mutation.TeachersCleared() {
 		edge := &sqlgraph.EdgeSpec{

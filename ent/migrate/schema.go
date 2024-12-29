@@ -22,6 +22,7 @@ var (
 		{Name: "weight", Type: field.TypeUint32, Nullable: true, Comment: "Student's weight | 学生体重"},
 		{Name: "healthy", Type: field.TypeBool, Nullable: true, Comment: "Whether is healthy | 是否健康"},
 		{Name: "code", Type: field.TypeInt64, Nullable: true, Comment: "Student's code | 学生编码"},
+		{Name: "identify_id", Type: field.TypeString, Nullable: true, Comment: "Student's identify_id | 学生身份证号"},
 	}
 	// StudentsTable holds the schema information for the "students" table.
 	StudentsTable = &schema.Table{

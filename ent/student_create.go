@@ -146,6 +146,20 @@ func (sc *StudentCreate) SetNillableCode(i *int64) *StudentCreate {
 	return sc
 }
 
+// SetIdentifyID sets the "identify_id" field.
+func (sc *StudentCreate) SetIdentifyID(s string) *StudentCreate {
+	sc.mutation.SetIdentifyID(s)
+	return sc
+}
+
+// SetNillableIdentifyID sets the "identify_id" field if the given value is not nil.
+func (sc *StudentCreate) SetNillableIdentifyID(s *string) *StudentCreate {
+	if s != nil {
+		sc.SetIdentifyID(*s)
+	}
+	return sc
+}
+
 // SetID sets the "id" field.
 func (sc *StudentCreate) SetID(u uuid.UUID) *StudentCreate {
 	sc.mutation.SetID(u)
@@ -316,6 +330,10 @@ func (sc *StudentCreate) createSpec() (*Student, *sqlgraph.CreateSpec) {
 	if value, ok := sc.mutation.Code(); ok {
 		_spec.SetField(student.FieldCode, field.TypeInt64, value)
 		_node.Code = value
+	}
+	if value, ok := sc.mutation.IdentifyID(); ok {
+		_spec.SetField(student.FieldIdentifyID, field.TypeString, value)
+		_node.IdentifyID = value
 	}
 	if nodes := sc.mutation.TeachersIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{

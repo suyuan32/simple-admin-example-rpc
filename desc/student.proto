@@ -6,20 +6,24 @@ message StudentInfo {
   optional string id = 1;
   optional int64 created_at = 2;
   optional int64 updated_at = 3;
+  // Status 1: normal 2: ban | 状态 1 正常 2 禁用
+  optional uint32 status = 4;
   // Student name | 学生姓名
-  optional string name = 4;
+  optional string name = 5;
   // Student age | 学生年龄
-  optional int32 age = 5;
+  optional int32 age = 6;
   // Student's home address | 学生家庭住址 
-  optional string address = 6;
+  optional string address = 7;
   // Student's score | 学生分数
-  optional int32 score = 7;
+  optional int32 score = 8;
   // Student's weight | 学生体重
-  optional uint32 weight = 8;
+  optional uint32 weight = 9;
   // Whether is healthy | 是否健康
-  optional bool healthy = 9;
+  optional bool healthy = 10;
   // Student's code | 学生编码
-  optional int64 code = 10;
+  optional int64 code = 11;
+  // Student's identify_id | 学生身份证号
+  optional string identify_id = 12;
 }
 
 message StudentListResp {
@@ -30,8 +34,15 @@ message StudentListResp {
 message StudentListReq {
   uint64 page = 1;
   uint64 page_size = 2;
-  optional string name = 3;
-  optional string address = 4;
+  optional uint32 status = 3;
+  optional string name = 4;
+  optional int32 age = 5;
+  optional string address = 6;
+  optional int32 score = 7;
+  optional uint32 weight = 8;
+  optional bool healthy = 9;
+  optional int64 code = 10;
+  optional string identify_id = 11;
 }
 
 

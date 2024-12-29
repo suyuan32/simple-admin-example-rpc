@@ -106,6 +106,11 @@ func Code(v int64) predicate.Student {
 	return predicate.Student(sql.FieldEQ(FieldCode, v))
 }
 
+// IdentifyID applies equality check predicate on the "identify_id" field. It's identical to IdentifyIDEQ.
+func IdentifyID(v string) predicate.Student {
+	return predicate.Student(sql.FieldEQ(FieldIdentifyID, v))
+}
+
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
 func CreatedAtEQ(v time.Time) predicate.Student {
 	return predicate.Student(sql.FieldEQ(FieldCreatedAt, v))
@@ -584,6 +589,81 @@ func CodeIsNil() predicate.Student {
 // CodeNotNil applies the NotNil predicate on the "code" field.
 func CodeNotNil() predicate.Student {
 	return predicate.Student(sql.FieldNotNull(FieldCode))
+}
+
+// IdentifyIDEQ applies the EQ predicate on the "identify_id" field.
+func IdentifyIDEQ(v string) predicate.Student {
+	return predicate.Student(sql.FieldEQ(FieldIdentifyID, v))
+}
+
+// IdentifyIDNEQ applies the NEQ predicate on the "identify_id" field.
+func IdentifyIDNEQ(v string) predicate.Student {
+	return predicate.Student(sql.FieldNEQ(FieldIdentifyID, v))
+}
+
+// IdentifyIDIn applies the In predicate on the "identify_id" field.
+func IdentifyIDIn(vs ...string) predicate.Student {
+	return predicate.Student(sql.FieldIn(FieldIdentifyID, vs...))
+}
+
+// IdentifyIDNotIn applies the NotIn predicate on the "identify_id" field.
+func IdentifyIDNotIn(vs ...string) predicate.Student {
+	return predicate.Student(sql.FieldNotIn(FieldIdentifyID, vs...))
+}
+
+// IdentifyIDGT applies the GT predicate on the "identify_id" field.
+func IdentifyIDGT(v string) predicate.Student {
+	return predicate.Student(sql.FieldGT(FieldIdentifyID, v))
+}
+
+// IdentifyIDGTE applies the GTE predicate on the "identify_id" field.
+func IdentifyIDGTE(v string) predicate.Student {
+	return predicate.Student(sql.FieldGTE(FieldIdentifyID, v))
+}
+
+// IdentifyIDLT applies the LT predicate on the "identify_id" field.
+func IdentifyIDLT(v string) predicate.Student {
+	return predicate.Student(sql.FieldLT(FieldIdentifyID, v))
+}
+
+// IdentifyIDLTE applies the LTE predicate on the "identify_id" field.
+func IdentifyIDLTE(v string) predicate.Student {
+	return predicate.Student(sql.FieldLTE(FieldIdentifyID, v))
+}
+
+// IdentifyIDContains applies the Contains predicate on the "identify_id" field.
+func IdentifyIDContains(v string) predicate.Student {
+	return predicate.Student(sql.FieldContains(FieldIdentifyID, v))
+}
+
+// IdentifyIDHasPrefix applies the HasPrefix predicate on the "identify_id" field.
+func IdentifyIDHasPrefix(v string) predicate.Student {
+	return predicate.Student(sql.FieldHasPrefix(FieldIdentifyID, v))
+}
+
+// IdentifyIDHasSuffix applies the HasSuffix predicate on the "identify_id" field.
+func IdentifyIDHasSuffix(v string) predicate.Student {
+	return predicate.Student(sql.FieldHasSuffix(FieldIdentifyID, v))
+}
+
+// IdentifyIDIsNil applies the IsNil predicate on the "identify_id" field.
+func IdentifyIDIsNil() predicate.Student {
+	return predicate.Student(sql.FieldIsNull(FieldIdentifyID))
+}
+
+// IdentifyIDNotNil applies the NotNil predicate on the "identify_id" field.
+func IdentifyIDNotNil() predicate.Student {
+	return predicate.Student(sql.FieldNotNull(FieldIdentifyID))
+}
+
+// IdentifyIDEqualFold applies the EqualFold predicate on the "identify_id" field.
+func IdentifyIDEqualFold(v string) predicate.Student {
+	return predicate.Student(sql.FieldEqualFold(FieldIdentifyID, v))
+}
+
+// IdentifyIDContainsFold applies the ContainsFold predicate on the "identify_id" field.
+func IdentifyIDContainsFold(v string) predicate.Student {
+	return predicate.Student(sql.FieldContainsFold(FieldIdentifyID, v))
 }
 
 // HasTeachers applies the HasEdge predicate on the "teachers" edge.

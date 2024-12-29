@@ -33,15 +33,17 @@ func (l *GetStudentByIdLogic) GetStudentById(in *example.UUIDReq) (*example.Stud
 	}
 
 	return &example.StudentInfo{
-		Id:        pointy.GetPointer(result.ID.String()),
-		CreatedAt: pointy.GetPointer(result.CreatedAt.UnixMilli()),
-		UpdatedAt: pointy.GetPointer(result.UpdatedAt.UnixMilli()),
-		Name:      &result.Name,
-		Age:       pointy.GetPointer(int32(result.Age)),
-		Address:   &result.Address,
-		Score:     &result.Score,
-		Weight:    &result.Weight,
-		Healthy:   &result.Healthy,
-		Code:      &result.Code,
+		Id:         pointy.GetPointer(result.ID.String()),
+		CreatedAt:  pointy.GetPointer(result.CreatedAt.UnixMilli()),
+		UpdatedAt:  pointy.GetPointer(result.UpdatedAt.UnixMilli()),
+		Status:     pointy.GetPointer(uint32(result.Status)),
+		Name:       &result.Name,
+		Age:        pointy.GetPointer(int32(result.Age)),
+		Address:    &result.Address,
+		Score:      &result.Score,
+		Weight:     &result.Weight,
+		Healthy:    &result.Healthy,
+		Code:       &result.Code,
+		IdentifyId: &result.IdentifyID,
 	}, nil
 }

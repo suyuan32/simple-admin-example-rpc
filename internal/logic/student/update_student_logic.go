@@ -7,7 +7,7 @@ import (
 	"github.com/suyuan32/simple-admin-example-rpc/internal/utils/dberrorhandler"
 	"github.com/suyuan32/simple-admin-example-rpc/types/example"
 
-	"github.com/suyuan32/simple-admin-common/i18n"
+	"github.com/suyuan32/simple-admin-common/msg/errormsg"
 	"github.com/suyuan32/simple-admin-common/utils/pointy"
 	"github.com/suyuan32/simple-admin-common/utils/uuidx"
 	"github.com/zeromicro/go-zero/core/logx"
@@ -34,8 +34,12 @@ func (l *UpdateStudentLogic) UpdateStudent(in *example.StudentInfo) (*example.Ba
 		SetNotNilScore(in.Score).
 		SetNotNilWeight(in.Weight).
 		SetNotNilHealthy(in.Healthy).
-		SetNotNilCode(in.Code)
+		SetNotNilCode(in.Code).
+		SetNotNilIdentifyID(in.IdentifyId)
 
+	if in.Status != nil {
+		query.SetNotNilStatus(pointy.GetPointer(uint8(*in.Status)))
+	}
 	if in.Age != nil {
 		query.SetNotNilAge(pointy.GetPointer(int16(*in.Age)))
 	}
@@ -46,5 +50,5 @@ func (l *UpdateStudentLogic) UpdateStudent(in *example.StudentInfo) (*example.Ba
 		return nil, dberrorhandler.DefaultEntError(l.Logger, err, in)
 	}
 
-	return &example.BaseResp{Msg: i18n.UpdateSuccess}, nil
+	return &example.BaseResp{Msg: errormsg.UpdateSuccess}, nil
 }

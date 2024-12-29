@@ -39,6 +39,8 @@ type Student struct {
 	Healthy bool `json:"healthy,omitempty"`
 	// Student's code | 学生编码
 	Code int64 `json:"code,omitempty"`
+	// Student's identify_id | 学生身份证号
+	IdentifyID string `json:"identify_id,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the StudentQuery when eager-loading is set.
 	Edges        StudentEdges `json:"edges"`
@@ -72,7 +74,7 @@ func (*Student) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullBool)
 		case student.FieldStatus, student.FieldAge, student.FieldScore, student.FieldWeight, student.FieldCode:
 			values[i] = new(sql.NullInt64)
-		case student.FieldName, student.FieldAddress:
+		case student.FieldName, student.FieldAddress, student.FieldIdentifyID:
 			values[i] = new(sql.NullString)
 		case student.FieldCreatedAt, student.FieldUpdatedAt:
 			values[i] = new(sql.NullTime)
@@ -159,6 +161,12 @@ func (s *Student) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				s.Code = value.Int64
 			}
+		case student.FieldIdentifyID:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field identify_id", values[i])
+			} else if value.Valid {
+				s.IdentifyID = value.String
+			}
 		default:
 			s.selectValues.Set(columns[i], values[i])
 		}
@@ -229,6 +237,9 @@ func (s *Student) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("code=")
 	builder.WriteString(fmt.Sprintf("%v", s.Code))
+	builder.WriteString(", ")
+	builder.WriteString("identify_id=")
+	builder.WriteString(s.IdentifyID)
 	builder.WriteByte(')')
 	return builder.String()
 }

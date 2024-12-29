@@ -21,6 +21,7 @@ message TeacherListReq {
   uint64 page = 1;
   uint64 page_size = 2;
   optional string name = 3;
+  optional int32 age = 4;
 }
 
 

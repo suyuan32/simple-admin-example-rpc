@@ -221,6 +221,30 @@ func (s *StudentCreate) SetNotNilCode(value *int64) *StudentCreate {
 }
 
 // set field if value's pointer is not nil.
+func (s *StudentUpdate) SetNotNilIdentifyID(value *string) *StudentUpdate {
+	if value != nil {
+		return s.SetIdentifyID(*value)
+	}
+	return s
+}
+
+// set field if value's pointer is not nil.
+func (s *StudentUpdateOne) SetNotNilIdentifyID(value *string) *StudentUpdateOne {
+	if value != nil {
+		return s.SetIdentifyID(*value)
+	}
+	return s
+}
+
+// set field if value's pointer is not nil.
+func (s *StudentCreate) SetNotNilIdentifyID(value *string) *StudentCreate {
+	if value != nil {
+		return s.SetIdentifyID(*value)
+	}
+	return s
+}
+
+// set field if value's pointer is not nil.
 func (t *TeacherUpdate) SetNotNilUpdatedAt(value *time.Time) *TeacherUpdate {
 	if value != nil {
 		return t.SetUpdatedAt(*value)
