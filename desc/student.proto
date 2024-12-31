@@ -24,6 +24,8 @@ message StudentInfo {
   optional int64 code = 11;
   // Student's identify_id | 学生身份证号
   optional string identify_id = 12;
+  // Student's height | 身高
+  optional int64 height = 13;
 }
 
 message StudentListResp {
@@ -43,6 +45,7 @@ message StudentListReq {
   optional bool healthy = 9;
   optional int64 code = 10;
   optional string identify_id = 11;
+  optional int64 height = 12;
 }
 
 

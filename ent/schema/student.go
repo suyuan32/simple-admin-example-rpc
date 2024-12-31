@@ -26,6 +26,7 @@ func (Student) Fields() []ent.Field {
 		field.Bool("healthy").Optional().Comment("Whether is healthy | 是否健康"),
 		field.Int64("code").Optional().Comment("Student's code | 学生编码"),
 		field.String("identify_id").Optional().Comment("Student's identify_id | 学生身份证号"),
+		field.Int("height").Optional().Comment("Student's height | 身高"),
 	}
 }
 

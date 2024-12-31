@@ -56,6 +56,9 @@ func (l *GetStudentListLogic) GetStudentList(in *example.StudentListReq) (*examp
 	if in.IdentifyId != nil {
 		predicates = append(predicates, student.IdentifyIDContains(*in.IdentifyId))
 	}
+	if in.Height != nil {
+		predicates = append(predicates, student.HeightEQ(int(*in.Height)))
+	}
 	result, err := l.svcCtx.DB.Student.Query().Where(predicates...).Page(l.ctx, in.Page, in.PageSize)
 
 	if err != nil {
@@ -79,6 +82,7 @@ func (l *GetStudentListLogic) GetStudentList(in *example.StudentListReq) (*examp
 			Healthy:    &v.Healthy,
 			Code:       &v.Code,
 			IdentifyId: &v.IdentifyID,
+			Height:     pointy.GetPointer(int64(v.Height)),
 		})
 	}
 

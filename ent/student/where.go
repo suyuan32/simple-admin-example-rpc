@@ -111,6 +111,11 @@ func IdentifyID(v string) predicate.Student {
 	return predicate.Student(sql.FieldEQ(FieldIdentifyID, v))
 }
 
+// Height applies equality check predicate on the "height" field. It's identical to HeightEQ.
+func Height(v int) predicate.Student {
+	return predicate.Student(sql.FieldEQ(FieldHeight, v))
+}
+
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
 func CreatedAtEQ(v time.Time) predicate.Student {
 	return predicate.Student(sql.FieldEQ(FieldCreatedAt, v))
@@ -664,6 +669,56 @@ func IdentifyIDEqualFold(v string) predicate.Student {
 // IdentifyIDContainsFold applies the ContainsFold predicate on the "identify_id" field.
 func IdentifyIDContainsFold(v string) predicate.Student {
 	return predicate.Student(sql.FieldContainsFold(FieldIdentifyID, v))
+}
+
+// HeightEQ applies the EQ predicate on the "height" field.
+func HeightEQ(v int) predicate.Student {
+	return predicate.Student(sql.FieldEQ(FieldHeight, v))
+}
+
+// HeightNEQ applies the NEQ predicate on the "height" field.
+func HeightNEQ(v int) predicate.Student {
+	return predicate.Student(sql.FieldNEQ(FieldHeight, v))
+}
+
+// HeightIn applies the In predicate on the "height" field.
+func HeightIn(vs ...int) predicate.Student {
+	return predicate.Student(sql.FieldIn(FieldHeight, vs...))
+}
+
+// HeightNotIn applies the NotIn predicate on the "height" field.
+func HeightNotIn(vs ...int) predicate.Student {
+	return predicate.Student(sql.FieldNotIn(FieldHeight, vs...))
+}
+
+// HeightGT applies the GT predicate on the "height" field.
+func HeightGT(v int) predicate.Student {
+	return predicate.Student(sql.FieldGT(FieldHeight, v))
+}
+
+// HeightGTE applies the GTE predicate on the "height" field.
+func HeightGTE(v int) predicate.Student {
+	return predicate.Student(sql.FieldGTE(FieldHeight, v))
+}
+
+// HeightLT applies the LT predicate on the "height" field.
+func HeightLT(v int) predicate.Student {
+	return predicate.Student(sql.FieldLT(FieldHeight, v))
+}
+
+// HeightLTE applies the LTE predicate on the "height" field.
+func HeightLTE(v int) predicate.Student {
+	return predicate.Student(sql.FieldLTE(FieldHeight, v))
+}
+
+// HeightIsNil applies the IsNil predicate on the "height" field.
+func HeightIsNil() predicate.Student {
+	return predicate.Student(sql.FieldIsNull(FieldHeight))
+}
+
+// HeightNotNil applies the NotNil predicate on the "height" field.
+func HeightNotNil() predicate.Student {
+	return predicate.Student(sql.FieldNotNull(FieldHeight))
 }
 
 // HasTeachers applies the HasEdge predicate on the "teachers" edge.

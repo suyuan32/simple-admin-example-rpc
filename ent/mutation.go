@@ -52,6 +52,8 @@ type StudentMutation struct {
 	code            *int64
 	addcode         *int64
 	identify_id     *string
+	height          *int
+	addheight       *int
 	clearedFields   map[string]struct{}
 	teachers        map[uint64]struct{}
 	removedteachers map[uint64]struct{}
@@ -756,6 +758,76 @@ func (m *StudentMutation) ResetIdentifyID() {
 	delete(m.clearedFields, student.FieldIdentifyID)
 }
 
+// SetHeight sets the "height" field.
+func (m *StudentMutation) SetHeight(i int) {
+	m.height = &i
+	m.addheight = nil
+}
+
+// Height returns the value of the "height" field in the mutation.
+func (m *StudentMutation) Height() (r int, exists bool) {
+	v := m.height
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldHeight returns the old "height" field's value of the Student entity.
+// If the Student object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *StudentMutation) OldHeight(ctx context.Context) (v int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldHeight is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldHeight requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldHeight: %w", err)
+	}
+	return oldValue.Height, nil
+}
+
+// AddHeight adds i to the "height" field.
+func (m *StudentMutation) AddHeight(i int) {
+	if m.addheight != nil {
+		*m.addheight += i
+	} else {
+		m.addheight = &i
+	}
+}
+
+// AddedHeight returns the value that was added to the "height" field in this mutation.
+func (m *StudentMutation) AddedHeight() (r int, exists bool) {
+	v := m.addheight
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearHeight clears the value of the "height" field.
+func (m *StudentMutation) ClearHeight() {
+	m.height = nil
+	m.addheight = nil
+	m.clearedFields[student.FieldHeight] = struct{}{}
+}
+
+// HeightCleared returns if the "height" field was cleared in this mutation.
+func (m *StudentMutation) HeightCleared() bool {
+	_, ok := m.clearedFields[student.FieldHeight]
+	return ok
+}
+
+// ResetHeight resets all changes to the "height" field.
+func (m *StudentMutation) ResetHeight() {
+	m.height = nil
+	m.addheight = nil
+	delete(m.clearedFields, student.FieldHeight)
+}
+
 // AddTeacherIDs adds the "teachers" edge to the Teacher entity by ids.
 func (m *StudentMutation) AddTeacherIDs(ids ...uint64) {
 	if m.teachers == nil {
@@ -844,7 +916,7 @@ func (m *StudentMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *StudentMutation) Fields() []string {
-	fields := make([]string, 0, 11)
+	fields := make([]string, 0, 12)
 	if m.created_at != nil {
 		fields = append(fields, student.FieldCreatedAt)
 	}
@@ -878,6 +950,9 @@ func (m *StudentMutation) Fields() []string {
 	if m.identify_id != nil {
 		fields = append(fields, student.FieldIdentifyID)
 	}
+	if m.height != nil {
+		fields = append(fields, student.FieldHeight)
+	}
 	return fields
 }
 
@@ -908,6 +983,8 @@ func (m *StudentMutation) Field(name string) (ent.Value, bool) {
 		return m.Code()
 	case student.FieldIdentifyID:
 		return m.IdentifyID()
+	case student.FieldHeight:
+		return m.Height()
 	}
 	return nil, false
 }
@@ -939,6 +1016,8 @@ func (m *StudentMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldCode(ctx)
 	case student.FieldIdentifyID:
 		return m.OldIdentifyID(ctx)
+	case student.FieldHeight:
+		return m.OldHeight(ctx)
 	}
 	return nil, fmt.Errorf("unknown Student field %s", name)
 }
@@ -1025,6 +1104,13 @@ func (m *StudentMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetIdentifyID(v)
 		return nil
+	case student.FieldHeight:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetHeight(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Student field %s", name)
 }
@@ -1048,6 +1134,9 @@ func (m *StudentMutation) AddedFields() []string {
 	if m.addcode != nil {
 		fields = append(fields, student.FieldCode)
 	}
+	if m.addheight != nil {
+		fields = append(fields, student.FieldHeight)
+	}
 	return fields
 }
 
@@ -1066,6 +1155,8 @@ func (m *StudentMutation) AddedField(name string) (ent.Value, bool) {
 		return m.AddedWeight()
 	case student.FieldCode:
 		return m.AddedCode()
+	case student.FieldHeight:
+		return m.AddedHeight()
 	}
 	return nil, false
 }
@@ -1110,6 +1201,13 @@ func (m *StudentMutation) AddField(name string, value ent.Value) error {
 		}
 		m.AddCode(v)
 		return nil
+	case student.FieldHeight:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddHeight(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Student numeric field %s", name)
 }
@@ -1138,6 +1236,9 @@ func (m *StudentMutation) ClearedFields() []string {
 	}
 	if m.FieldCleared(student.FieldIdentifyID) {
 		fields = append(fields, student.FieldIdentifyID)
+	}
+	if m.FieldCleared(student.FieldHeight) {
+		fields = append(fields, student.FieldHeight)
 	}
 	return fields
 }
@@ -1173,6 +1274,9 @@ func (m *StudentMutation) ClearField(name string) error {
 		return nil
 	case student.FieldIdentifyID:
 		m.ClearIdentifyID()
+		return nil
+	case student.FieldHeight:
+		m.ClearHeight()
 		return nil
 	}
 	return fmt.Errorf("unknown Student nullable field %s", name)
@@ -1214,6 +1318,9 @@ func (m *StudentMutation) ResetField(name string) error {
 		return nil
 	case student.FieldIdentifyID:
 		m.ResetIdentifyID()
+		return nil
+	case student.FieldHeight:
+		m.ResetHeight()
 		return nil
 	}
 	return fmt.Errorf("unknown Student field %s", name)

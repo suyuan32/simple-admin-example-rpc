@@ -238,6 +238,33 @@ func (su *StudentUpdate) ClearIdentifyID() *StudentUpdate {
 	return su
 }
 
+// SetHeight sets the "height" field.
+func (su *StudentUpdate) SetHeight(i int) *StudentUpdate {
+	su.mutation.ResetHeight()
+	su.mutation.SetHeight(i)
+	return su
+}
+
+// SetNillableHeight sets the "height" field if the given value is not nil.
+func (su *StudentUpdate) SetNillableHeight(i *int) *StudentUpdate {
+	if i != nil {
+		su.SetHeight(*i)
+	}
+	return su
+}
+
+// AddHeight adds i to the "height" field.
+func (su *StudentUpdate) AddHeight(i int) *StudentUpdate {
+	su.mutation.AddHeight(i)
+	return su
+}
+
+// ClearHeight clears the value of the "height" field.
+func (su *StudentUpdate) ClearHeight() *StudentUpdate {
+	su.mutation.ClearHeight()
+	return su
+}
+
 // AddTeacherIDs adds the "teachers" edge to the Teacher entity by IDs.
 func (su *StudentUpdate) AddTeacherIDs(ids ...uint64) *StudentUpdate {
 	su.mutation.AddTeacherIDs(ids...)
@@ -389,6 +416,15 @@ func (su *StudentUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if su.mutation.IdentifyIDCleared() {
 		_spec.ClearField(student.FieldIdentifyID, field.TypeString)
+	}
+	if value, ok := su.mutation.Height(); ok {
+		_spec.SetField(student.FieldHeight, field.TypeInt, value)
+	}
+	if value, ok := su.mutation.AddedHeight(); ok {
+		_spec.AddField(student.FieldHeight, field.TypeInt, value)
+	}
+	if su.mutation.HeightCleared() {
+		_spec.ClearField(student.FieldHeight, field.TypeInt)
 	}
 	if su.mutation.TeachersCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -664,6 +700,33 @@ func (suo *StudentUpdateOne) ClearIdentifyID() *StudentUpdateOne {
 	return suo
 }
 
+// SetHeight sets the "height" field.
+func (suo *StudentUpdateOne) SetHeight(i int) *StudentUpdateOne {
+	suo.mutation.ResetHeight()
+	suo.mutation.SetHeight(i)
+	return suo
+}
+
+// SetNillableHeight sets the "height" field if the given value is not nil.
+func (suo *StudentUpdateOne) SetNillableHeight(i *int) *StudentUpdateOne {
+	if i != nil {
+		suo.SetHeight(*i)
+	}
+	return suo
+}
+
+// AddHeight adds i to the "height" field.
+func (suo *StudentUpdateOne) AddHeight(i int) *StudentUpdateOne {
+	suo.mutation.AddHeight(i)
+	return suo
+}
+
+// ClearHeight clears the value of the "height" field.
+func (suo *StudentUpdateOne) ClearHeight() *StudentUpdateOne {
+	suo.mutation.ClearHeight()
+	return suo
+}
+
 // AddTeacherIDs adds the "teachers" edge to the Teacher entity by IDs.
 func (suo *StudentUpdateOne) AddTeacherIDs(ids ...uint64) *StudentUpdateOne {
 	suo.mutation.AddTeacherIDs(ids...)
@@ -845,6 +908,15 @@ func (suo *StudentUpdateOne) sqlSave(ctx context.Context) (_node *Student, err e
 	}
 	if suo.mutation.IdentifyIDCleared() {
 		_spec.ClearField(student.FieldIdentifyID, field.TypeString)
+	}
+	if value, ok := suo.mutation.Height(); ok {
+		_spec.SetField(student.FieldHeight, field.TypeInt, value)
+	}
+	if value, ok := suo.mutation.AddedHeight(); ok {
+		_spec.AddField(student.FieldHeight, field.TypeInt, value)
+	}
+	if suo.mutation.HeightCleared() {
+		_spec.ClearField(student.FieldHeight, field.TypeInt)
 	}
 	if suo.mutation.TeachersCleared() {
 		edge := &sqlgraph.EdgeSpec{

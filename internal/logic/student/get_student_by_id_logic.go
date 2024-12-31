@@ -45,5 +45,6 @@ func (l *GetStudentByIdLogic) GetStudentById(in *example.UUIDReq) (*example.Stud
 		Healthy:    &result.Healthy,
 		Code:       &result.Code,
 		IdentifyId: &result.IdentifyID,
+		Height:     pointy.GetPointer(int64(result.Height)),
 	}, nil
 }

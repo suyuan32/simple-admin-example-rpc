@@ -43,6 +43,9 @@ func (l *CreateStudentLogic) CreateStudent(in *example.StudentInfo) (*example.Ba
 	if in.Age != nil {
 		query.SetNotNilAge(pointy.GetPointer(int16(*in.Age)))
 	}
+	if in.Height != nil {
+		query.SetNotNilHeight(pointy.GetPointer(int(*in.Height)))
+	}
 
 	result, err := query.Save(l.ctx)
 

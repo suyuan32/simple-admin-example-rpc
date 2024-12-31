@@ -160,6 +160,20 @@ func (sc *StudentCreate) SetNillableIdentifyID(s *string) *StudentCreate {
 	return sc
 }
 
+// SetHeight sets the "height" field.
+func (sc *StudentCreate) SetHeight(i int) *StudentCreate {
+	sc.mutation.SetHeight(i)
+	return sc
+}
+
+// SetNillableHeight sets the "height" field if the given value is not nil.
+func (sc *StudentCreate) SetNillableHeight(i *int) *StudentCreate {
+	if i != nil {
+		sc.SetHeight(*i)
+	}
+	return sc
+}
+
 // SetID sets the "id" field.
 func (sc *StudentCreate) SetID(u uuid.UUID) *StudentCreate {
 	sc.mutation.SetID(u)
@@ -334,6 +348,10 @@ func (sc *StudentCreate) createSpec() (*Student, *sqlgraph.CreateSpec) {
 	if value, ok := sc.mutation.IdentifyID(); ok {
 		_spec.SetField(student.FieldIdentifyID, field.TypeString, value)
 		_node.IdentifyID = value
+	}
+	if value, ok := sc.mutation.Height(); ok {
+		_spec.SetField(student.FieldHeight, field.TypeInt, value)
+		_node.Height = value
 	}
 	if nodes := sc.mutation.TeachersIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{

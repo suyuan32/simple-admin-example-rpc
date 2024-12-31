@@ -37,6 +37,8 @@ const (
 	FieldCode = "code"
 	// FieldIdentifyID holds the string denoting the identify_id field in the database.
 	FieldIdentifyID = "identify_id"
+	// FieldHeight holds the string denoting the height field in the database.
+	FieldHeight = "height"
 	// EdgeTeachers holds the string denoting the teachers edge name in mutations.
 	EdgeTeachers = "teachers"
 	// Table holds the table name of the student in the database.
@@ -62,6 +64,7 @@ var Columns = []string{
 	FieldHealthy,
 	FieldCode,
 	FieldIdentifyID,
+	FieldHeight,
 }
 
 var (
@@ -154,6 +157,11 @@ func ByCode(opts ...sql.OrderTermOption) OrderOption {
 // ByIdentifyID orders the results by the identify_id field.
 func ByIdentifyID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldIdentifyID, opts...).ToFunc()
+}
+
+// ByHeight orders the results by the height field.
+func ByHeight(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldHeight, opts...).ToFunc()
 }
 
 // ByTeachersCount orders the results by teachers count.
