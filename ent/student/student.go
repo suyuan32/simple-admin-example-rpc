@@ -39,6 +39,10 @@ const (
 	FieldIdentifyID = "identify_id"
 	// FieldHeight holds the string denoting the height field in the database.
 	FieldHeight = "height"
+	// FieldExpiredAt holds the string denoting the expired_at field in the database.
+	FieldExpiredAt = "expired_at"
+	// FieldStudentNumber holds the string denoting the student_number field in the database.
+	FieldStudentNumber = "student_number"
 	// EdgeTeachers holds the string denoting the teachers edge name in mutations.
 	EdgeTeachers = "teachers"
 	// Table holds the table name of the student in the database.
@@ -65,6 +69,8 @@ var Columns = []string{
 	FieldCode,
 	FieldIdentifyID,
 	FieldHeight,
+	FieldExpiredAt,
+	FieldStudentNumber,
 }
 
 var (
@@ -162,6 +168,16 @@ func ByIdentifyID(opts ...sql.OrderTermOption) OrderOption {
 // ByHeight orders the results by the height field.
 func ByHeight(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldHeight, opts...).ToFunc()
+}
+
+// ByExpiredAt orders the results by the expired_at field.
+func ByExpiredAt(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldExpiredAt, opts...).ToFunc()
+}
+
+// ByStudentNumber orders the results by the student_number field.
+func ByStudentNumber(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldStudentNumber, opts...).ToFunc()
 }
 
 // ByTeachersCount orders the results by teachers count.

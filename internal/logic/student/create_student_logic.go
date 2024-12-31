@@ -7,7 +7,8 @@ import (
 	"github.com/suyuan32/simple-admin-example-rpc/internal/utils/dberrorhandler"
 	"github.com/suyuan32/simple-admin-example-rpc/types/example"
 
-	"github.com/suyuan32/simple-admin-common/msg/errormsg"
+	"github.com/suyuan32/simple-admin-common/i18n"
+	"github.com/suyuan32/simple-admin-common/utils/uuidx"
 
 	"github.com/suyuan32/simple-admin-common/utils/pointy"
 	"github.com/zeromicro/go-zero/core/logx"
@@ -35,7 +36,9 @@ func (l *CreateStudentLogic) CreateStudent(in *example.StudentInfo) (*example.Ba
 		SetNotNilWeight(in.Weight).
 		SetNotNilHealthy(in.Healthy).
 		SetNotNilCode(in.Code).
-		SetNotNilIdentifyID(in.IdentifyId)
+		SetNotNilIdentifyID(in.IdentifyId).
+		SetNotNilExpiredAt(pointy.GetTimeMilliPointer(in.ExpiredAt)).
+		SetNotNilStudentNumber(uuidx.ParseUUIDStringToPointer(in.StudentNumber))
 
 	if in.Status != nil {
 		query.SetNotNilStatus(pointy.GetPointer(uint8(*in.Status)))
@@ -53,5 +56,5 @@ func (l *CreateStudentLogic) CreateStudent(in *example.StudentInfo) (*example.Ba
 		return nil, dberrorhandler.DefaultEntError(l.Logger, err, in)
 	}
 
-	return &example.BaseUUIDResp{Id: result.ID.String(), Msg: errormsg.CreateSuccess}, nil
+	return &example.BaseUUIDResp{Id: result.ID.String(), Msg: i18n.CreateSuccess}, nil
 }

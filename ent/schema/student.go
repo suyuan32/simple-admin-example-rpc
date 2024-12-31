@@ -6,6 +6,7 @@ import (
 	"entgo.io/ent/schema"
 	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
+	"github.com/gofrs/uuid/v5"
 	"github.com/suyuan32/simple-admin-common/orm/ent/mixins"
 )
 
@@ -27,6 +28,8 @@ func (Student) Fields() []ent.Field {
 		field.Int64("code").Optional().Comment("Student's code | 学生编码"),
 		field.String("identify_id").Optional().Comment("Student's identify_id | 学生身份证号"),
 		field.Int("height").Optional().Comment("Student's height | 身高"),
+		field.Time("expired_at").Optional().Comment("Expired At | 到期时间"),
+		field.UUID("student_number", uuid.UUID{}).Optional().Comment("Student's number | 学生号码"),
 	}
 }
 

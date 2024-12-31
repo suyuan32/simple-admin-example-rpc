@@ -57,6 +57,10 @@ message StudentInfo {
   optional string identify_id = 12;
   //  Student's height | 身高
   optional int64 height = 13;
+  //  Expired At | 到期时间
+  optional int64 expired_at = 14;
+  //  Student's number | 学生号码
+  optional string student_number = 15;
 }
 
 message StudentListReq {
@@ -72,6 +76,8 @@ message StudentListReq {
   optional int64 code = 10;
   optional string identify_id = 11;
   optional int64 height = 12;
+  optional int64 expired_at = 13;
+  optional string student_number = 14;
 }
 
 message StudentListResp {

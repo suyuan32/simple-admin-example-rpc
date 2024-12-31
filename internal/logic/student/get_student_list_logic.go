@@ -2,6 +2,7 @@ package student
 
 import (
 	"context"
+	"time"
 
 	"github.com/suyuan32/simple-admin-example-rpc/ent/predicate"
 	"github.com/suyuan32/simple-admin-example-rpc/ent/student"
@@ -10,6 +11,7 @@ import (
 	"github.com/suyuan32/simple-admin-example-rpc/types/example"
 
 	"github.com/suyuan32/simple-admin-common/utils/pointy"
+	"github.com/suyuan32/simple-admin-common/utils/uuidx"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -59,6 +61,12 @@ func (l *GetStudentListLogic) GetStudentList(in *example.StudentListReq) (*examp
 	if in.Height != nil {
 		predicates = append(predicates, student.HeightEQ(int(*in.Height)))
 	}
+	if in.ExpiredAt != nil {
+		predicates = append(predicates, student.ExpiredAtGT(time.UnixMilli(*in.ExpiredAt)))
+	}
+	if in.StudentNumber != nil {
+		predicates = append(predicates, student.StudentNumberEQ(uuidx.ParseUUIDString(*in.StudentNumber)))
+	}
 	result, err := l.svcCtx.DB.Student.Query().Where(predicates...).Page(l.ctx, in.Page, in.PageSize)
 
 	if err != nil {
@@ -70,19 +78,21 @@ func (l *GetStudentListLogic) GetStudentList(in *example.StudentListReq) (*examp
 
 	for _, v := range result.List {
 		resp.Data = append(resp.Data, &example.StudentInfo{
-			Id:         pointy.GetPointer(v.ID.String()),
-			CreatedAt:  pointy.GetPointer(v.CreatedAt.UnixMilli()),
-			UpdatedAt:  pointy.GetPointer(v.UpdatedAt.UnixMilli()),
-			Status:     pointy.GetPointer(uint32(v.Status)),
-			Name:       &v.Name,
-			Age:        pointy.GetPointer(int32(v.Age)),
-			Address:    &v.Address,
-			Score:      &v.Score,
-			Weight:     &v.Weight,
-			Healthy:    &v.Healthy,
-			Code:       &v.Code,
-			IdentifyId: &v.IdentifyID,
-			Height:     pointy.GetPointer(int64(v.Height)),
+			Id:            pointy.GetPointer(v.ID.String()),
+			CreatedAt:     pointy.GetPointer(v.CreatedAt.UnixMilli()),
+			UpdatedAt:     pointy.GetPointer(v.UpdatedAt.UnixMilli()),
+			Status:        pointy.GetPointer(uint32(v.Status)),
+			Name:          &v.Name,
+			Age:           pointy.GetPointer(int32(v.Age)),
+			Address:       &v.Address,
+			Score:         &v.Score,
+			Weight:        &v.Weight,
+			Healthy:       &v.Healthy,
+			Code:          &v.Code,
+			IdentifyId:    &v.IdentifyID,
+			Height:        pointy.GetPointer(int64(v.Height)),
+			ExpiredAt:     pointy.GetUnixMilliPointer(v.ExpiredAt.UnixMilli()),
+			StudentNumber: pointy.GetPointer(v.StudentNumber.String()),
 		})
 	}
 

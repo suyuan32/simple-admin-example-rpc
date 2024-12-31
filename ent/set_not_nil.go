@@ -2,7 +2,11 @@
 
 package ent
 
-import "time"
+import (
+	"time"
+
+	uuid "github.com/gofrs/uuid/v5"
+)
 
 // set field if value's pointer is not nil.
 func (s *StudentUpdate) SetNotNilUpdatedAt(value *time.Time) *StudentUpdate {
@@ -264,6 +268,54 @@ func (s *StudentUpdateOne) SetNotNilHeight(value *int) *StudentUpdateOne {
 func (s *StudentCreate) SetNotNilHeight(value *int) *StudentCreate {
 	if value != nil {
 		return s.SetHeight(*value)
+	}
+	return s
+}
+
+// set field if value's pointer is not nil.
+func (s *StudentUpdate) SetNotNilExpiredAt(value *time.Time) *StudentUpdate {
+	if value != nil {
+		return s.SetExpiredAt(*value)
+	}
+	return s
+}
+
+// set field if value's pointer is not nil.
+func (s *StudentUpdateOne) SetNotNilExpiredAt(value *time.Time) *StudentUpdateOne {
+	if value != nil {
+		return s.SetExpiredAt(*value)
+	}
+	return s
+}
+
+// set field if value's pointer is not nil.
+func (s *StudentCreate) SetNotNilExpiredAt(value *time.Time) *StudentCreate {
+	if value != nil {
+		return s.SetExpiredAt(*value)
+	}
+	return s
+}
+
+// set field if value's pointer is not nil.
+func (s *StudentUpdate) SetNotNilStudentNumber(value *uuid.UUID) *StudentUpdate {
+	if value != nil {
+		return s.SetStudentNumber(*value)
+	}
+	return s
+}
+
+// set field if value's pointer is not nil.
+func (s *StudentUpdateOne) SetNotNilStudentNumber(value *uuid.UUID) *StudentUpdateOne {
+	if value != nil {
+		return s.SetStudentNumber(*value)
+	}
+	return s
+}
+
+// set field if value's pointer is not nil.
+func (s *StudentCreate) SetNotNilStudentNumber(value *uuid.UUID) *StudentCreate {
+	if value != nil {
+		return s.SetStudentNumber(*value)
 	}
 	return s
 }

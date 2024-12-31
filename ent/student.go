@@ -43,6 +43,10 @@ type Student struct {
 	IdentifyID string `json:"identify_id,omitempty"`
 	// Student's height | 身高
 	Height int `json:"height,omitempty"`
+	// Expired At | 到期时间
+	ExpiredAt time.Time `json:"expired_at,omitempty"`
+	// Student's number | 学生号码
+	StudentNumber uuid.UUID `json:"student_number,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the StudentQuery when eager-loading is set.
 	Edges        StudentEdges `json:"edges"`
@@ -78,9 +82,9 @@ func (*Student) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullInt64)
 		case student.FieldName, student.FieldAddress, student.FieldIdentifyID:
 			values[i] = new(sql.NullString)
-		case student.FieldCreatedAt, student.FieldUpdatedAt:
+		case student.FieldCreatedAt, student.FieldUpdatedAt, student.FieldExpiredAt:
 			values[i] = new(sql.NullTime)
-		case student.FieldID:
+		case student.FieldID, student.FieldStudentNumber:
 			values[i] = new(uuid.UUID)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -175,6 +179,18 @@ func (s *Student) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				s.Height = int(value.Int64)
 			}
+		case student.FieldExpiredAt:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field expired_at", values[i])
+			} else if value.Valid {
+				s.ExpiredAt = value.Time
+			}
+		case student.FieldStudentNumber:
+			if value, ok := values[i].(*uuid.UUID); !ok {
+				return fmt.Errorf("unexpected type %T for field student_number", values[i])
+			} else if value != nil {
+				s.StudentNumber = *value
+			}
 		default:
 			s.selectValues.Set(columns[i], values[i])
 		}
@@ -251,6 +267,12 @@ func (s *Student) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("height=")
 	builder.WriteString(fmt.Sprintf("%v", s.Height))
+	builder.WriteString(", ")
+	builder.WriteString("expired_at=")
+	builder.WriteString(s.ExpiredAt.Format(time.ANSIC))
+	builder.WriteString(", ")
+	builder.WriteString("student_number=")
+	builder.WriteString(fmt.Sprintf("%v", s.StudentNumber))
 	builder.WriteByte(')')
 	return builder.String()
 }

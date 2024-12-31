@@ -174,6 +174,34 @@ func (sc *StudentCreate) SetNillableHeight(i *int) *StudentCreate {
 	return sc
 }
 
+// SetExpiredAt sets the "expired_at" field.
+func (sc *StudentCreate) SetExpiredAt(t time.Time) *StudentCreate {
+	sc.mutation.SetExpiredAt(t)
+	return sc
+}
+
+// SetNillableExpiredAt sets the "expired_at" field if the given value is not nil.
+func (sc *StudentCreate) SetNillableExpiredAt(t *time.Time) *StudentCreate {
+	if t != nil {
+		sc.SetExpiredAt(*t)
+	}
+	return sc
+}
+
+// SetStudentNumber sets the "student_number" field.
+func (sc *StudentCreate) SetStudentNumber(u uuid.UUID) *StudentCreate {
+	sc.mutation.SetStudentNumber(u)
+	return sc
+}
+
+// SetNillableStudentNumber sets the "student_number" field if the given value is not nil.
+func (sc *StudentCreate) SetNillableStudentNumber(u *uuid.UUID) *StudentCreate {
+	if u != nil {
+		sc.SetStudentNumber(*u)
+	}
+	return sc
+}
+
 // SetID sets the "id" field.
 func (sc *StudentCreate) SetID(u uuid.UUID) *StudentCreate {
 	sc.mutation.SetID(u)
@@ -352,6 +380,14 @@ func (sc *StudentCreate) createSpec() (*Student, *sqlgraph.CreateSpec) {
 	if value, ok := sc.mutation.Height(); ok {
 		_spec.SetField(student.FieldHeight, field.TypeInt, value)
 		_node.Height = value
+	}
+	if value, ok := sc.mutation.ExpiredAt(); ok {
+		_spec.SetField(student.FieldExpiredAt, field.TypeTime, value)
+		_node.ExpiredAt = value
+	}
+	if value, ok := sc.mutation.StudentNumber(); ok {
+		_spec.SetField(student.FieldStudentNumber, field.TypeUUID, value)
+		_node.StudentNumber = value
 	}
 	if nodes := sc.mutation.TeachersIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{

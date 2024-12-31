@@ -54,6 +54,8 @@ type StudentMutation struct {
 	identify_id     *string
 	height          *int
 	addheight       *int
+	expired_at      *time.Time
+	student_number  *uuid.UUID
 	clearedFields   map[string]struct{}
 	teachers        map[uint64]struct{}
 	removedteachers map[uint64]struct{}
@@ -828,6 +830,104 @@ func (m *StudentMutation) ResetHeight() {
 	delete(m.clearedFields, student.FieldHeight)
 }
 
+// SetExpiredAt sets the "expired_at" field.
+func (m *StudentMutation) SetExpiredAt(t time.Time) {
+	m.expired_at = &t
+}
+
+// ExpiredAt returns the value of the "expired_at" field in the mutation.
+func (m *StudentMutation) ExpiredAt() (r time.Time, exists bool) {
+	v := m.expired_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldExpiredAt returns the old "expired_at" field's value of the Student entity.
+// If the Student object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *StudentMutation) OldExpiredAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldExpiredAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldExpiredAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldExpiredAt: %w", err)
+	}
+	return oldValue.ExpiredAt, nil
+}
+
+// ClearExpiredAt clears the value of the "expired_at" field.
+func (m *StudentMutation) ClearExpiredAt() {
+	m.expired_at = nil
+	m.clearedFields[student.FieldExpiredAt] = struct{}{}
+}
+
+// ExpiredAtCleared returns if the "expired_at" field was cleared in this mutation.
+func (m *StudentMutation) ExpiredAtCleared() bool {
+	_, ok := m.clearedFields[student.FieldExpiredAt]
+	return ok
+}
+
+// ResetExpiredAt resets all changes to the "expired_at" field.
+func (m *StudentMutation) ResetExpiredAt() {
+	m.expired_at = nil
+	delete(m.clearedFields, student.FieldExpiredAt)
+}
+
+// SetStudentNumber sets the "student_number" field.
+func (m *StudentMutation) SetStudentNumber(u uuid.UUID) {
+	m.student_number = &u
+}
+
+// StudentNumber returns the value of the "student_number" field in the mutation.
+func (m *StudentMutation) StudentNumber() (r uuid.UUID, exists bool) {
+	v := m.student_number
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldStudentNumber returns the old "student_number" field's value of the Student entity.
+// If the Student object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *StudentMutation) OldStudentNumber(ctx context.Context) (v uuid.UUID, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldStudentNumber is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldStudentNumber requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldStudentNumber: %w", err)
+	}
+	return oldValue.StudentNumber, nil
+}
+
+// ClearStudentNumber clears the value of the "student_number" field.
+func (m *StudentMutation) ClearStudentNumber() {
+	m.student_number = nil
+	m.clearedFields[student.FieldStudentNumber] = struct{}{}
+}
+
+// StudentNumberCleared returns if the "student_number" field was cleared in this mutation.
+func (m *StudentMutation) StudentNumberCleared() bool {
+	_, ok := m.clearedFields[student.FieldStudentNumber]
+	return ok
+}
+
+// ResetStudentNumber resets all changes to the "student_number" field.
+func (m *StudentMutation) ResetStudentNumber() {
+	m.student_number = nil
+	delete(m.clearedFields, student.FieldStudentNumber)
+}
+
 // AddTeacherIDs adds the "teachers" edge to the Teacher entity by ids.
 func (m *StudentMutation) AddTeacherIDs(ids ...uint64) {
 	if m.teachers == nil {
@@ -916,7 +1016,7 @@ func (m *StudentMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *StudentMutation) Fields() []string {
-	fields := make([]string, 0, 12)
+	fields := make([]string, 0, 14)
 	if m.created_at != nil {
 		fields = append(fields, student.FieldCreatedAt)
 	}
@@ -953,6 +1053,12 @@ func (m *StudentMutation) Fields() []string {
 	if m.height != nil {
 		fields = append(fields, student.FieldHeight)
 	}
+	if m.expired_at != nil {
+		fields = append(fields, student.FieldExpiredAt)
+	}
+	if m.student_number != nil {
+		fields = append(fields, student.FieldStudentNumber)
+	}
 	return fields
 }
 
@@ -985,6 +1091,10 @@ func (m *StudentMutation) Field(name string) (ent.Value, bool) {
 		return m.IdentifyID()
 	case student.FieldHeight:
 		return m.Height()
+	case student.FieldExpiredAt:
+		return m.ExpiredAt()
+	case student.FieldStudentNumber:
+		return m.StudentNumber()
 	}
 	return nil, false
 }
@@ -1018,6 +1128,10 @@ func (m *StudentMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldIdentifyID(ctx)
 	case student.FieldHeight:
 		return m.OldHeight(ctx)
+	case student.FieldExpiredAt:
+		return m.OldExpiredAt(ctx)
+	case student.FieldStudentNumber:
+		return m.OldStudentNumber(ctx)
 	}
 	return nil, fmt.Errorf("unknown Student field %s", name)
 }
@@ -1110,6 +1224,20 @@ func (m *StudentMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetHeight(v)
+		return nil
+	case student.FieldExpiredAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetExpiredAt(v)
+		return nil
+	case student.FieldStudentNumber:
+		v, ok := value.(uuid.UUID)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetStudentNumber(v)
 		return nil
 	}
 	return fmt.Errorf("unknown Student field %s", name)
@@ -1240,6 +1368,12 @@ func (m *StudentMutation) ClearedFields() []string {
 	if m.FieldCleared(student.FieldHeight) {
 		fields = append(fields, student.FieldHeight)
 	}
+	if m.FieldCleared(student.FieldExpiredAt) {
+		fields = append(fields, student.FieldExpiredAt)
+	}
+	if m.FieldCleared(student.FieldStudentNumber) {
+		fields = append(fields, student.FieldStudentNumber)
+	}
 	return fields
 }
 
@@ -1277,6 +1411,12 @@ func (m *StudentMutation) ClearField(name string) error {
 		return nil
 	case student.FieldHeight:
 		m.ClearHeight()
+		return nil
+	case student.FieldExpiredAt:
+		m.ClearExpiredAt()
+		return nil
+	case student.FieldStudentNumber:
+		m.ClearStudentNumber()
 		return nil
 	}
 	return fmt.Errorf("unknown Student nullable field %s", name)
@@ -1321,6 +1461,12 @@ func (m *StudentMutation) ResetField(name string) error {
 		return nil
 	case student.FieldHeight:
 		m.ResetHeight()
+		return nil
+	case student.FieldExpiredAt:
+		m.ResetExpiredAt()
+		return nil
+	case student.FieldStudentNumber:
+		m.ResetStudentNumber()
 		return nil
 	}
 	return fmt.Errorf("unknown Student field %s", name)

@@ -116,6 +116,16 @@ func Height(v int) predicate.Student {
 	return predicate.Student(sql.FieldEQ(FieldHeight, v))
 }
 
+// ExpiredAt applies equality check predicate on the "expired_at" field. It's identical to ExpiredAtEQ.
+func ExpiredAt(v time.Time) predicate.Student {
+	return predicate.Student(sql.FieldEQ(FieldExpiredAt, v))
+}
+
+// StudentNumber applies equality check predicate on the "student_number" field. It's identical to StudentNumberEQ.
+func StudentNumber(v uuid.UUID) predicate.Student {
+	return predicate.Student(sql.FieldEQ(FieldStudentNumber, v))
+}
+
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
 func CreatedAtEQ(v time.Time) predicate.Student {
 	return predicate.Student(sql.FieldEQ(FieldCreatedAt, v))
@@ -719,6 +729,106 @@ func HeightIsNil() predicate.Student {
 // HeightNotNil applies the NotNil predicate on the "height" field.
 func HeightNotNil() predicate.Student {
 	return predicate.Student(sql.FieldNotNull(FieldHeight))
+}
+
+// ExpiredAtEQ applies the EQ predicate on the "expired_at" field.
+func ExpiredAtEQ(v time.Time) predicate.Student {
+	return predicate.Student(sql.FieldEQ(FieldExpiredAt, v))
+}
+
+// ExpiredAtNEQ applies the NEQ predicate on the "expired_at" field.
+func ExpiredAtNEQ(v time.Time) predicate.Student {
+	return predicate.Student(sql.FieldNEQ(FieldExpiredAt, v))
+}
+
+// ExpiredAtIn applies the In predicate on the "expired_at" field.
+func ExpiredAtIn(vs ...time.Time) predicate.Student {
+	return predicate.Student(sql.FieldIn(FieldExpiredAt, vs...))
+}
+
+// ExpiredAtNotIn applies the NotIn predicate on the "expired_at" field.
+func ExpiredAtNotIn(vs ...time.Time) predicate.Student {
+	return predicate.Student(sql.FieldNotIn(FieldExpiredAt, vs...))
+}
+
+// ExpiredAtGT applies the GT predicate on the "expired_at" field.
+func ExpiredAtGT(v time.Time) predicate.Student {
+	return predicate.Student(sql.FieldGT(FieldExpiredAt, v))
+}
+
+// ExpiredAtGTE applies the GTE predicate on the "expired_at" field.
+func ExpiredAtGTE(v time.Time) predicate.Student {
+	return predicate.Student(sql.FieldGTE(FieldExpiredAt, v))
+}
+
+// ExpiredAtLT applies the LT predicate on the "expired_at" field.
+func ExpiredAtLT(v time.Time) predicate.Student {
+	return predicate.Student(sql.FieldLT(FieldExpiredAt, v))
+}
+
+// ExpiredAtLTE applies the LTE predicate on the "expired_at" field.
+func ExpiredAtLTE(v time.Time) predicate.Student {
+	return predicate.Student(sql.FieldLTE(FieldExpiredAt, v))
+}
+
+// ExpiredAtIsNil applies the IsNil predicate on the "expired_at" field.
+func ExpiredAtIsNil() predicate.Student {
+	return predicate.Student(sql.FieldIsNull(FieldExpiredAt))
+}
+
+// ExpiredAtNotNil applies the NotNil predicate on the "expired_at" field.
+func ExpiredAtNotNil() predicate.Student {
+	return predicate.Student(sql.FieldNotNull(FieldExpiredAt))
+}
+
+// StudentNumberEQ applies the EQ predicate on the "student_number" field.
+func StudentNumberEQ(v uuid.UUID) predicate.Student {
+	return predicate.Student(sql.FieldEQ(FieldStudentNumber, v))
+}
+
+// StudentNumberNEQ applies the NEQ predicate on the "student_number" field.
+func StudentNumberNEQ(v uuid.UUID) predicate.Student {
+	return predicate.Student(sql.FieldNEQ(FieldStudentNumber, v))
+}
+
+// StudentNumberIn applies the In predicate on the "student_number" field.
+func StudentNumberIn(vs ...uuid.UUID) predicate.Student {
+	return predicate.Student(sql.FieldIn(FieldStudentNumber, vs...))
+}
+
+// StudentNumberNotIn applies the NotIn predicate on the "student_number" field.
+func StudentNumberNotIn(vs ...uuid.UUID) predicate.Student {
+	return predicate.Student(sql.FieldNotIn(FieldStudentNumber, vs...))
+}
+
+// StudentNumberGT applies the GT predicate on the "student_number" field.
+func StudentNumberGT(v uuid.UUID) predicate.Student {
+	return predicate.Student(sql.FieldGT(FieldStudentNumber, v))
+}
+
+// StudentNumberGTE applies the GTE predicate on the "student_number" field.
+func StudentNumberGTE(v uuid.UUID) predicate.Student {
+	return predicate.Student(sql.FieldGTE(FieldStudentNumber, v))
+}
+
+// StudentNumberLT applies the LT predicate on the "student_number" field.
+func StudentNumberLT(v uuid.UUID) predicate.Student {
+	return predicate.Student(sql.FieldLT(FieldStudentNumber, v))
+}
+
+// StudentNumberLTE applies the LTE predicate on the "student_number" field.
+func StudentNumberLTE(v uuid.UUID) predicate.Student {
+	return predicate.Student(sql.FieldLTE(FieldStudentNumber, v))
+}
+
+// StudentNumberIsNil applies the IsNil predicate on the "student_number" field.
+func StudentNumberIsNil() predicate.Student {
+	return predicate.Student(sql.FieldIsNull(FieldStudentNumber))
+}
+
+// StudentNumberNotNil applies the NotNil predicate on the "student_number" field.
+func StudentNumberNotNil() predicate.Student {
+	return predicate.Student(sql.FieldNotNull(FieldStudentNumber))
 }
 
 // HasTeachers applies the HasEdge predicate on the "teachers" edge.

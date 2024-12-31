@@ -11,6 +11,7 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
+	uuid "github.com/gofrs/uuid/v5"
 	"github.com/suyuan32/simple-admin-example-rpc/ent/predicate"
 	"github.com/suyuan32/simple-admin-example-rpc/ent/student"
 	"github.com/suyuan32/simple-admin-example-rpc/ent/teacher"
@@ -265,6 +266,46 @@ func (su *StudentUpdate) ClearHeight() *StudentUpdate {
 	return su
 }
 
+// SetExpiredAt sets the "expired_at" field.
+func (su *StudentUpdate) SetExpiredAt(t time.Time) *StudentUpdate {
+	su.mutation.SetExpiredAt(t)
+	return su
+}
+
+// SetNillableExpiredAt sets the "expired_at" field if the given value is not nil.
+func (su *StudentUpdate) SetNillableExpiredAt(t *time.Time) *StudentUpdate {
+	if t != nil {
+		su.SetExpiredAt(*t)
+	}
+	return su
+}
+
+// ClearExpiredAt clears the value of the "expired_at" field.
+func (su *StudentUpdate) ClearExpiredAt() *StudentUpdate {
+	su.mutation.ClearExpiredAt()
+	return su
+}
+
+// SetStudentNumber sets the "student_number" field.
+func (su *StudentUpdate) SetStudentNumber(u uuid.UUID) *StudentUpdate {
+	su.mutation.SetStudentNumber(u)
+	return su
+}
+
+// SetNillableStudentNumber sets the "student_number" field if the given value is not nil.
+func (su *StudentUpdate) SetNillableStudentNumber(u *uuid.UUID) *StudentUpdate {
+	if u != nil {
+		su.SetStudentNumber(*u)
+	}
+	return su
+}
+
+// ClearStudentNumber clears the value of the "student_number" field.
+func (su *StudentUpdate) ClearStudentNumber() *StudentUpdate {
+	su.mutation.ClearStudentNumber()
+	return su
+}
+
 // AddTeacherIDs adds the "teachers" edge to the Teacher entity by IDs.
 func (su *StudentUpdate) AddTeacherIDs(ids ...uint64) *StudentUpdate {
 	su.mutation.AddTeacherIDs(ids...)
@@ -425,6 +466,18 @@ func (su *StudentUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if su.mutation.HeightCleared() {
 		_spec.ClearField(student.FieldHeight, field.TypeInt)
+	}
+	if value, ok := su.mutation.ExpiredAt(); ok {
+		_spec.SetField(student.FieldExpiredAt, field.TypeTime, value)
+	}
+	if su.mutation.ExpiredAtCleared() {
+		_spec.ClearField(student.FieldExpiredAt, field.TypeTime)
+	}
+	if value, ok := su.mutation.StudentNumber(); ok {
+		_spec.SetField(student.FieldStudentNumber, field.TypeUUID, value)
+	}
+	if su.mutation.StudentNumberCleared() {
+		_spec.ClearField(student.FieldStudentNumber, field.TypeUUID)
 	}
 	if su.mutation.TeachersCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -727,6 +780,46 @@ func (suo *StudentUpdateOne) ClearHeight() *StudentUpdateOne {
 	return suo
 }
 
+// SetExpiredAt sets the "expired_at" field.
+func (suo *StudentUpdateOne) SetExpiredAt(t time.Time) *StudentUpdateOne {
+	suo.mutation.SetExpiredAt(t)
+	return suo
+}
+
+// SetNillableExpiredAt sets the "expired_at" field if the given value is not nil.
+func (suo *StudentUpdateOne) SetNillableExpiredAt(t *time.Time) *StudentUpdateOne {
+	if t != nil {
+		suo.SetExpiredAt(*t)
+	}
+	return suo
+}
+
+// ClearExpiredAt clears the value of the "expired_at" field.
+func (suo *StudentUpdateOne) ClearExpiredAt() *StudentUpdateOne {
+	suo.mutation.ClearExpiredAt()
+	return suo
+}
+
+// SetStudentNumber sets the "student_number" field.
+func (suo *StudentUpdateOne) SetStudentNumber(u uuid.UUID) *StudentUpdateOne {
+	suo.mutation.SetStudentNumber(u)
+	return suo
+}
+
+// SetNillableStudentNumber sets the "student_number" field if the given value is not nil.
+func (suo *StudentUpdateOne) SetNillableStudentNumber(u *uuid.UUID) *StudentUpdateOne {
+	if u != nil {
+		suo.SetStudentNumber(*u)
+	}
+	return suo
+}
+
+// ClearStudentNumber clears the value of the "student_number" field.
+func (suo *StudentUpdateOne) ClearStudentNumber() *StudentUpdateOne {
+	suo.mutation.ClearStudentNumber()
+	return suo
+}
+
 // AddTeacherIDs adds the "teachers" edge to the Teacher entity by IDs.
 func (suo *StudentUpdateOne) AddTeacherIDs(ids ...uint64) *StudentUpdateOne {
 	suo.mutation.AddTeacherIDs(ids...)
@@ -917,6 +1010,18 @@ func (suo *StudentUpdateOne) sqlSave(ctx context.Context) (_node *Student, err e
 	}
 	if suo.mutation.HeightCleared() {
 		_spec.ClearField(student.FieldHeight, field.TypeInt)
+	}
+	if value, ok := suo.mutation.ExpiredAt(); ok {
+		_spec.SetField(student.FieldExpiredAt, field.TypeTime, value)
+	}
+	if suo.mutation.ExpiredAtCleared() {
+		_spec.ClearField(student.FieldExpiredAt, field.TypeTime)
+	}
+	if value, ok := suo.mutation.StudentNumber(); ok {
+		_spec.SetField(student.FieldStudentNumber, field.TypeUUID, value)
+	}
+	if suo.mutation.StudentNumberCleared() {
+		_spec.ClearField(student.FieldStudentNumber, field.TypeUUID)
 	}
 	if suo.mutation.TeachersCleared() {
 		edge := &sqlgraph.EdgeSpec{
