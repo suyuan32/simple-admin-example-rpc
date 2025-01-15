@@ -4,6 +4,8 @@ import (
 	"context"
 	"time"
 
+	"github.com/suyuan32/simple-admin-common/utils/uuidx"
+
 	"github.com/suyuan32/simple-admin-example-rpc/ent/predicate"
 	"github.com/suyuan32/simple-admin-example-rpc/ent/student"
 	"github.com/suyuan32/simple-admin-example-rpc/internal/svc"
@@ -11,7 +13,6 @@ import (
 	"github.com/suyuan32/simple-admin-example-rpc/types/example"
 
 	"github.com/suyuan32/simple-admin-common/utils/pointy"
-	"github.com/suyuan32/simple-admin-common/utils/uuidx"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -31,6 +32,12 @@ func NewGetStudentListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Ge
 
 func (l *GetStudentListLogic) GetStudentList(in *example.StudentListReq) (*example.StudentListResp, error) {
 	var predicates []predicate.Student
+	if in.CreatedAt != nil {
+		predicates = append(predicates, student.CreatedAtGTE(time.UnixMilli(*in.CreatedAt)))
+	}
+	if in.UpdatedAt != nil {
+		predicates = append(predicates, student.UpdatedAtGTE(time.UnixMilli(*in.UpdatedAt)))
+	}
 	if in.Status != nil {
 		predicates = append(predicates, student.StatusEQ(uint8(*in.Status)))
 	}
@@ -62,7 +69,7 @@ func (l *GetStudentListLogic) GetStudentList(in *example.StudentListReq) (*examp
 		predicates = append(predicates, student.HeightEQ(int(*in.Height)))
 	}
 	if in.ExpiredAt != nil {
-		predicates = append(predicates, student.ExpiredAtGT(time.UnixMilli(*in.ExpiredAt)))
+		predicates = append(predicates, student.ExpiredAtGTE(time.UnixMilli(*in.ExpiredAt)))
 	}
 	if in.StudentNumber != nil {
 		predicates = append(predicates, student.StudentNumberEQ(uuidx.ParseUUIDString(*in.StudentNumber)))
