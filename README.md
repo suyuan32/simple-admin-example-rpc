@@ -1,4 +1,4 @@
-# simple admin example rpc v1.7.3 gen by goctls v1.7.3
+# simple admin example rpc v1.10.2 gen by goctls v1.10.2
 
 > 只需运行如下命令即可生成这个rpc项目模板
 
